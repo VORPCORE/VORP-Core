@@ -108,6 +108,7 @@ namespace vorpcore_sv.Class
             _usercharacters = new Dictionary<int, Character>();
             _license = license;
             LoadCharacters(identifier);
+            //Cargarmos todos sus characters de la base de datos si al cargarlos no tiene entonces cuando se llame a spawnpalyer habrá que crear 1
         }
 
         public Dictionary<string, dynamic> GetUser()
@@ -202,11 +203,11 @@ namespace vorpcore_sv.Class
                     IDictionary<string, object> character = (dynamic)icharacter;
                     if (character.ContainsKey("identifier"))
                     {
-                        Character newCharacter = new Character(identifier,Convert.ToInt32(character["charidentifier"]),(string)character["group"],
+                        Character newCharacter = new Character(identifier,(int) character["charidentifier"],(string)character["group"],
                             (string) character["job"],int.Parse(character["jobgrade"].ToString()),(string) character["firstname"],(string) character["lastname"]
                             ,(string) character["inventory"],
                             (string) character["status"],(string) character["coords"],double.Parse(character["money"].ToString())
-                            ,double.Parse(character["gold"].ToString()),double.Parse(character["rol"].ToString()),int.Parse(character["xp"].ToString()), Convert.ToBoolean(character["isdead"]),(string)character["skinPlayer"],
+                            ,double.Parse(character["gold"].ToString()),double.Parse(character["rol"].ToString()),int.Parse(character["xp"].ToString()), (bool)character["isdead"],(string)character["skinPlayer"],
                             (string)character["compPlayer"]);
                         if (_usercharacters.ContainsKey(newCharacter.CharIdentifier))
                         {
@@ -223,7 +224,7 @@ namespace vorpcore_sv.Class
 
         public async void addCharacter(string firstname, string lastname, string skin, string comps)
         {
-            Character newChar = new Character(Identifier, LoadConfig.Config["initGroup"].ToString(), LoadConfig.Config["initJob"].ToString(), LoadConfig.Config["initJobGrade"].ToObject<int>(), firstname, lastname, "{}", "{}", "{}", LoadConfig.Config["initMoney"].ToObject<double>(), LoadConfig.Config["initGold"].ToObject<double>(), LoadConfig.Config["initRol"].ToObject<double>(), LoadConfig.Config["initXp"].ToObject<int>(), false, skin, comps);
+            Character newChar = new Character(Identifier,"user", "none", 0, firstname, lastname, "{}", "{}", "{}", LoadConfig.Config["initMoney"].ToObject<double>(), LoadConfig.Config["initGold"].ToObject<double>(), LoadConfig.Config["initRol"].ToObject<double>(), LoadConfig.Config["initXp"].ToObject<int>(), false, skin, comps);
             int charidentifier = await newChar.SaveNewCharacterInDb();
             _usercharacters.Add(charidentifier, newChar);
             Debug.WriteLine("Added new character with identifier " + _usercharacters[charidentifier].PlayerVar.Identifiers["steam"]);

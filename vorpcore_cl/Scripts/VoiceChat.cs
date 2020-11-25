@@ -51,10 +51,6 @@ namespace vorpcore_cl.Scripts
                     Vector3 playerCoords = API.GetEntityCoords(API.PlayerPedId(), true, true);
                     Function.Call((Hash)0x2A32FAA57B937173, 0x94FDAE17, playerCoords.X, playerCoords.Y, playerCoords.Z - 0.5f, 0.0f, 0.0f, 0.0f, 0, 0.0f, 0.0f, voiceRange[voiceRangeSelected], voiceRange[voiceRangeSelected], 1.0, 255, 179, 38, 200, false, true, 2, false, false, false, false);
                 }
-                await Delay(1);
-            }
-            else{
-                await Delay(10000);
             }
         }
     }

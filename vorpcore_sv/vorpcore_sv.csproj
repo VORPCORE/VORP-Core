@@ -32,7 +32,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CitizenFX.Core">
-      <HintPath>..\..\..\FxRedMServer\server-files\citizen\clr2\lib\mono\4.5\CitizenFX.Core.dll</HintPath>
+      <HintPath>D:\MyRedMServer\server-data\citizen\clr2\lib\mono\4.5\CitizenFX.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -58,7 +58,6 @@
     <Compile Include="Utils\ApiController.cs" />
     <Compile Include="Utils\Callbacks.cs" />
     <Compile Include="Utils\LoadConfig.cs" />
-    <Compile Include="Utils\LogManager.cs" />
     <Compile Include="Utils\SaveCoordsDB.cs" />
     <Compile Include="vorpcore_sv.cs" />
   </ItemGroup>

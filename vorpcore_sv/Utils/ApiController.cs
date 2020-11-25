@@ -3,7 +3,6 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.Serialization.Json;
 using System.Threading.Tasks;
 using vorpcore_sv.Scripts;
@@ -35,7 +34,9 @@ namespace vorpcore_sv.Utils
                      {
                          try
                          {
-                             LogManager.WriteLog($"Vorp Core: {name} function callback registered!", "success");
+                             Console.ForegroundColor = ConsoleColor.Green;
+                             Console.WriteLine($"Vorp Core: {name} function callback registered!");
+                             Console.ForegroundColor = ConsoleColor.White;
 
                              Callbacks.ServerCallBacks[name] = callback;
                          }
@@ -44,8 +45,7 @@ namespace vorpcore_sv.Utils
                              Debug.WriteLine(e.Message);
                          }
                      }),
-                    ["getUsers"] = new getUsersSource(getConnectedUsers),
-                    ["sendLog"] = new Action<string, string>((msg, type) => { LogManager.WriteLog(msg, type); })
+                    ["getUsers"] = new getUsersSource(getConnectedUsers)
                 };
                 cb.Invoke(corefunctions);
             });
@@ -81,19 +81,8 @@ namespace vorpcore_sv.Utils
 
         public static Player getSource(int handle)
         {
-            Player p = null;
-
-            try
-            {
-                PlayerList pl = new PlayerList();
-                p = pl[handle];
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("Server Handle Not Found");
-                p = null;
-            }
-
+            PlayerList pl = new PlayerList();
+            Player p = pl[handle];
             return p;
         }
 

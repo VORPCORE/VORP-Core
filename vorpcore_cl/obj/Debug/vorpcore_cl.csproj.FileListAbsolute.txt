@@ -23,7 +23,7 @@ D:\VORP-Repos\VORP-Core\build\vorp_core\vorpcore_cl.net.dll
 D:\VORP-Repos\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.csprojAssemblyReference.cache
 D:\VORP-Repos\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.csproj.CoreCompileInputs.cache
 D:\VORP-Repos\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.net.dll
-C:\Users\osman\Documents\GitHub\VORP-Core\build\vorp_core\vorpcore_cl.net.dll
-C:\Users\osman\Documents\GitHub\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.csprojAssemblyReference.cache
-C:\Users\osman\Documents\GitHub\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.csproj.CoreCompileInputs.cache
-C:\Users\osman\Documents\GitHub\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.net.dll
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\build\vorp_core\vorpcore_cl.net.dll
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\vorpcore_cl\obj\Debug\vorpcore_cl.csprojAssemblyReference.cache
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\vorpcore_cl\obj\Debug\vorpcore_cl.csproj.CoreCompileInputs.cache
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\vorpcore_cl\obj\Debug\vorpcore_cl.net.dll

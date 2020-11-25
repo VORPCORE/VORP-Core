@@ -20,9 +20,9 @@ D:\VORP-Repos\VORP-Core\build\vorp_core\vorpcore_sv.net.dll
 D:\VORP-Repos\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.csprojAssemblyReference.cache
 D:\VORP-Repos\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.csproj.CoreCompileInputs.cache
 D:\VORP-Repos\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.net.dll
-C:\Users\osman\Documents\GitHub\VORP-Core\build\vorp_core\Config.json
-C:\Users\osman\Documents\GitHub\VORP-Core\build\vorp_core\Es.json
-C:\Users\osman\Documents\GitHub\VORP-Core\build\vorp_core\vorpcore_sv.net.dll
-C:\Users\osman\Documents\GitHub\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.csprojAssemblyReference.cache
-C:\Users\osman\Documents\GitHub\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.csproj.CoreCompileInputs.cache
-C:\Users\osman\Documents\GitHub\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.net.dll
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\build\vorp_core\Config.json
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\build\vorp_core\Es.json
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\build\vorp_core\vorpcore_sv.net.dll
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\vorpcore_sv\obj\Debug\vorpcore_sv.csprojAssemblyReference.cache
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\vorpcore_sv\obj\Debug\vorpcore_sv.csproj.CoreCompileInputs.cache
+C:\Users\Majed\Documents\GitHub\VORP-Core-JohnMarston\vorpcore_sv\obj\Debug\vorpcore_sv.net.dll
