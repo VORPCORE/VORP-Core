@@ -2,8 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace vorpcore_sv.Class
@@ -37,11 +35,13 @@ namespace vorpcore_sv.Class
 
         public int Source { set => source = value; }
 
-        public Player PlayerVar {
-            get {
+        public Player PlayerVar
+        {
+            get
+            {
                 PlayerList pl = vorpcore_sv.PlayerList;
                 return pl[source];
-            } 
+            }
         }
 
         public string Identifier { get => identifier; }
@@ -66,17 +66,17 @@ namespace vorpcore_sv.Class
             set
             {
                 skin = value;
-                Exports["ghmattimysql"].execute("UPDATE characters SET `skinPlayer` = ? WHERE `identifier` = ? AND `charidentifier` = ?", new object[] { value, Identifier,CharIdentifier });
+                Exports["ghmattimysql"].execute("UPDATE characters SET `skinPlayer` = ? WHERE `identifier` = ? AND `charidentifier` = ?", new object[] { value, Identifier, CharIdentifier });
             }
         }
-        
+
         public string Comps
         {
             get => comps;
             set
             {
                 comps = value;
-                Exports["ghmattimysql"].execute("UPDATE characters SET `compPlayer` = ? WHERE `identifier` = ? AND `charidentifier` = ?", new object[] { value, Identifier,CharIdentifier });
+                Exports["ghmattimysql"].execute("UPDATE characters SET `compPlayer` = ? WHERE `identifier` = ? AND `charidentifier` = ?", new object[] { value, Identifier, CharIdentifier });
             }
         }
 
@@ -88,7 +88,7 @@ namespace vorpcore_sv.Class
             this.inventory = "{}";
         }
 
-        public Character(string identifier, int charIdentifier ,string group, string job, int jobgrade, string firstname, string lastname, string inventory, string status, string coords, double money, double gold, double rol, int xp, bool isdead,string skin,string comps)
+        public Character(string identifier, int charIdentifier, string group, string job, int jobgrade, string firstname, string lastname, string inventory, string status, string coords, double money, double gold, double rol, int xp, bool isdead, string skin, string comps)
         {
             this.identifier = identifier;
             this.charIdentifier = charIdentifier;
@@ -131,7 +131,7 @@ namespace vorpcore_sv.Class
 
         public Dictionary<string, dynamic> getCharacter()
         {
-            Dictionary<string, dynamic> userData = new Dictionary<string,dynamic>();
+            Dictionary<string, dynamic> userData = new Dictionary<string, dynamic>();
             userData.Add("identifier", identifier);
             userData.Add("charIdentifier", charIdentifier);
             userData.Add("group", group);
@@ -147,9 +147,10 @@ namespace vorpcore_sv.Class
             userData.Add("status", status);
             userData.Add("coords", coords);
             userData.Add("isdead", isdead);
-            userData.Add("skin",skin);
+            userData.Add("skin", skin);
             userData.Add("comps", comps);
-            userData.Add("setStatus", new Action<string>((status) => {
+            userData.Add("setStatus", new Action<string>((status) =>
+            {
                 try
                 {
                     Status = status;
@@ -159,12 +160,13 @@ namespace vorpcore_sv.Class
                     Debug.WriteLine(e.Message);
                 }
             }));
-            userData.Add("setJobGrade",new Action<int>((jobgrade)=> {
+            userData.Add("setJobGrade", new Action<int>((jobgrade) =>
+            {
                 try
                 {
                     Jobgrade = jobgrade;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
                 }
@@ -175,7 +177,7 @@ namespace vorpcore_sv.Class
                 {
                     group = g;
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
                 }
@@ -189,7 +191,7 @@ namespace vorpcore_sv.Class
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-                }     
+                }
             }));
             userData.Add("setMoney", new Action<double>((m) =>
             {
@@ -262,29 +264,30 @@ namespace vorpcore_sv.Class
                     Debug.WriteLine(e.Message);
                 }
             }));
-            userData.Add("updateSkin",new Action<string>((nskin) =>
+            userData.Add("updateSkin", new Action<string>((nskin) =>
+             {
+                 try
+                 {
+                     Skin = nskin;
+                 }
+                 catch (Exception e)
+                 {
+                     Debug.WriteLine(e.Message);
+                 }
+             }));
+            userData.Add("updateComps", new Action<string>((ncomps) =>
+             {
+                 try
+                 {
+                     Comps = ncomps;
+                 }
+                 catch (Exception e)
+                 {
+                     Debug.WriteLine(e.Message);
+                 }
+             }));
+            userData.Add("addCurrency", new Action<int, double>((currency, quantity) =>
             {
-                try
-                {
-                    Skin = nskin;
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-            }));
-            userData.Add("updateComps",new Action<string>((ncomps) =>
-            {
-                try
-                {
-                    Comps = ncomps;
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-            }));
-            userData.Add("addCurrency", new Action<int, double>((currency,quantity) => {             
                 try
                 {
                     addCurrency(currency, quantity);
@@ -294,7 +297,8 @@ namespace vorpcore_sv.Class
                     Debug.WriteLine(e.Message);
                 }
             }));
-            userData.Add("removeCurrency", new Action<int, double>((currency,quantity) => {
+            userData.Add("removeCurrency", new Action<int, double>((currency, quantity) =>
+            {
                 try
                 {
                     removeCurrency(currency, quantity);
@@ -304,7 +308,8 @@ namespace vorpcore_sv.Class
                     Debug.WriteLine(e.Message);
                 }
             }));
-            userData.Add("addXp", new Action<int>((xp) => {
+            userData.Add("addXp", new Action<int>((xp) =>
+            {
                 try
                 {
                     addXp(xp);
@@ -314,7 +319,8 @@ namespace vorpcore_sv.Class
                     Debug.WriteLine(e.Message);
                 }
             }));
-            userData.Add("removeXp", new Action<int>((xp) => {
+            userData.Add("removeXp", new Action<int>((xp) =>
+            {
                 try
                 {
                     removeXp(xp);
@@ -336,7 +342,7 @@ namespace vorpcore_sv.Class
             nuipost.Add("goldquanty", Gold);
             nuipost.Add("rolquanty", Rol);
             nuipost.Add("xp", Xp);
-            nuipost.Add("serverId",source.ToString());
+            nuipost.Add("serverId", source.ToString());
 
             PlayerVar.TriggerEvent("vorp:updateUi", nuipost.ToString());
         }
@@ -423,18 +429,18 @@ namespace vorpcore_sv.Class
 
         public void DeleteCharacter()
         {
-            Exports["ghmattimysql"].execute("DELETE FROM characters WHERE `identifier` = ? AND `charidentifier` = ? ", new object[] {Identifier,CharIdentifier });
+            Exports["ghmattimysql"].execute("DELETE FROM characters WHERE `identifier` = ? AND `charidentifier` = ? ", new object[] { Identifier, CharIdentifier });
         }
 
         public void SaveCharacterCoords(string coords)
         {
             Coords = coords;
-            Exports["ghmattimysql"].execute("UPDATE characters SET `coords` = ? WHERE `identifier` = ? AND `charidentifier` = ?", new object[] {coords, Identifier, CharIdentifier });
+            Exports["ghmattimysql"].execute("UPDATE characters SET `coords` = ? WHERE `identifier` = ? AND `charidentifier` = ?", new object[] { coords, Identifier, CharIdentifier });
         }
 
         public void SaveCharacterInDb()
         {
-            Exports["ghmattimysql"].execute("UPDATE characters SET `group` = ?,`money` = ?,`gold` = ?,`rol` = ?,`xp` = ?,`job` = ?, `status` = ?,`firstname` = ?, `lastname` = ?, `jobgrade` = ?,`coords` = ?,`isdead` = ? WHERE `identifier` = ? AND `charidentifier` = ?", new object[] {group,money,gold,rol,xp,job,status,firstname,lastname,jobgrade,coords,isdead ? 1 : 0,identifier,charIdentifier });
+            Exports["ghmattimysql"].execute("UPDATE characters SET `group` = ?,`money` = ?,`gold` = ?,`rol` = ?,`xp` = ?,`job` = ?, `status` = ?,`firstname` = ?, `lastname` = ?, `jobgrade` = ?,`coords` = ?,`isdead` = ? WHERE `identifier` = ? AND `charidentifier` = ?", new object[] { group, money, gold, rol, xp, job, status, firstname, lastname, jobgrade, coords, isdead ? 1 : 0, identifier, charIdentifier });
         }
     }
 }

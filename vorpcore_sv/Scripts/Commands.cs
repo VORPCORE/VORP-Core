@@ -229,7 +229,7 @@ namespace vorpcore_sv.Scripts
             API.RegisterCommand("addwhitelist", new Action<int, List<object>, string>((source, args, rawCommand) =>
             {
                 if (source > 0) // it's a player.
-                 {
+                {
                     Player _source = ApiController.getSource(source);
                     TriggerEvent("vorp:getCharacter", source, new Action<dynamic>((user) =>
                     {

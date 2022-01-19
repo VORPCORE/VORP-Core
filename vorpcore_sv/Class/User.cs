@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using CitizenFX.Core;
-using CitizenFX.Core.Native;
+﻿using CitizenFX.Core;
 using Newtonsoft.Json.Linq;
+using System;
+using System.Collections.Generic;
 using vorpcore_sv.Utils;
 
 namespace vorpcore_sv.Class
 {
     //class for users that contains their characters
-    public class User:BaseScript
+    public class User : BaseScript
     {
         private string _identifier; //User steamid
         private string _license; //User rockstar    
         private string _group;//User admin group
         private int _playerwarnings;//Used for admins to know how many warnings a user has
-        private Dictionary<int,Character> _usercharacters;
+        private Dictionary<int, Character> _usercharacters;
         private int _numofcharacters;
         private int usedCharacterId = -1;
         private int source = -1;
@@ -34,7 +32,7 @@ namespace vorpcore_sv.Class
                     {
                         source = int.Parse(player.Handle);
                         _usercharacters[value].Source = source;
-                        player.TriggerEvent("vorp:SelectedCharacter",usedCharacterId);
+                        player.TriggerEvent("vorp:SelectedCharacter", usedCharacterId);
                         JObject postUi = new JObject();
                         postUi.Add("type", "ui");
                         postUi.Add("action", "update");
@@ -99,7 +97,7 @@ namespace vorpcore_sv.Class
                 Exports["ghmattimysql"].execute("UPDATE users SET `warnings` = ? WHERE `identifier` = ?", new object[] { _playerwarnings, Identifier });
             }
         }
-        
+
 
         public User(string identifier, string group, int playerwarnings, string license)
         {
@@ -113,13 +111,13 @@ namespace vorpcore_sv.Class
 
         public Dictionary<string, dynamic> GetUser()
         {
-            Dictionary<string,dynamic> character = new Dictionary<string, dynamic>();
+            Dictionary<string, dynamic> character = new Dictionary<string, dynamic>();
             if (_usercharacters.ContainsKey(usedCharacterId))
             {
                 character = _usercharacters[usedCharacterId].getCharacter();
             }
-            List<Dictionary<string,dynamic>> userCharacters = new List<Dictionary<string,dynamic>>();
-            foreach (KeyValuePair<int,Character> chara in _usercharacters)
+            List<Dictionary<string, dynamic>> userCharacters = new List<Dictionary<string, dynamic>>();
+            foreach (KeyValuePair<int, Character> chara in _usercharacters)
             {
                 userCharacters.Add(chara.Value.getCharacter());
             }
@@ -135,11 +133,11 @@ namespace vorpcore_sv.Class
                     {
                         Group = group;
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
                         Debug.WriteLine(e.Message);
                     }
-                   
+
                 }),
                 ["setPlayerWarnings"] = new Action<int>((warnings) =>
                 {
@@ -155,34 +153,40 @@ namespace vorpcore_sv.Class
                 ["getUsedCharacter"] = character,
                 ["getUserCharacters"] = userCharacters,
                 ["getNumOfCharacters"] = _numofcharacters,
-                ["addCharacter"] = new Action<string, string, string, string>((firstname, lastname, skin, comps) => {
+                ["addCharacter"] = new Action<string, string, string, string>((firstname, lastname, skin, comps) =>
+                {
                     Numofcharacters++;
                     try
                     {
                         addCharacter(firstname, lastname, skin, comps);
-                    }catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
                         Debug.WriteLine(e.Message);
                     }
                 }),
-                ["removeCharacter"] = new Action<int>((charid) => {
+                ["removeCharacter"] = new Action<int>((charid) =>
+                {
                     try
                     {
                         if (_usercharacters.ContainsKey(charid))
                         {
                             delCharacter(charid);
                         }
-                    }catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
                         Debug.WriteLine(e.Message);
                     }
-                    
+
                 }),
-                ["setUsedCharacter"] = new Action<int>((charid) => {
+                ["setUsedCharacter"] = new Action<int>((charid) =>
+                {
                     try
                     {
                         SetUsedCharacter(charid);
-                    }catch(Exception e)
+                    }
+                    catch (Exception e)
                     {
                         Debug.WriteLine(e.Message);
                     }
@@ -219,7 +223,7 @@ namespace vorpcore_sv.Class
                             }
                         }
                     }
-                    Debug.WriteLine("User characters"+usercharacters.Count);
+                    Debug.WriteLine("User characters" + usercharacters.Count);
                 }
 
             }));
@@ -266,7 +270,7 @@ namespace vorpcore_sv.Class
 
         public void SaveUser()
         {
-            foreach (KeyValuePair<int,Character> character in _usercharacters)
+            foreach (KeyValuePair<int, Character> character in _usercharacters)
             {
                 character.Value.SaveCharacterInDb();
             }

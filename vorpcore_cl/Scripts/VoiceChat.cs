@@ -1,9 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static CitizenFX.Core.Native.API;
 
 namespace vorpcore_cl.Scripts
 {

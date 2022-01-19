@@ -1,6 +1,5 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using static CitizenFX.Core.Native.API;
@@ -42,9 +41,10 @@ namespace vorpcore_cl.Scripts
         [Tick]
         private async Task SetPlayerIdOnHead()
         {
-            if (!UseIDHeads) {
+            if (!UseIDHeads)
+            {
                 await Delay(100);
-                return; 
+                return;
             }
 
             for (int i = 0; i < 255; i++)

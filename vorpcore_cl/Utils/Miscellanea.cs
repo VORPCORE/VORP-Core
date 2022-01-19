@@ -29,10 +29,10 @@ namespace vorpcore_cl.Utils
             }
         }
 
-         /*
-         * LoadModel | "int hash" is a hash key from model
-         * Wait for Model hash Load in cache
-         */
+        /*
+        * LoadModel | "int hash" is a hash key from model
+        * Wait for Model hash Load in cache
+        */
         public static async Task<bool> LoadTexture(string texture)
         {
             if (!Function.Call<bool>((Hash)0x7332461FC59EB7EC, texture))
