@@ -52,9 +52,10 @@ namespace vorpcore_sv.Utils
                 cb.Invoke(corefunctions);
             });
         }
+
         public static Dictionary<string, dynamic> getUser(int source)
         {
-            PlayerList p = new PlayerList();
+            PlayerList p = vorpcore_sv.PlayerList;
             string steam = "steam:" + p[source].Identifiers["steam"];
             if (LoadUsers._users.ContainsKey(steam))
             {
@@ -68,7 +69,7 @@ namespace vorpcore_sv.Utils
 
         public static Dictionary<string, Dictionary<string, dynamic>> getConnectedUsers()
         {
-            PlayerList p = new PlayerList();
+            PlayerList p = vorpcore_sv.PlayerList;
             Dictionary<string, Dictionary<string, dynamic>> UsersDictionary = new Dictionary<string, Dictionary<string, dynamic>>();
             foreach(Player player in p)
             {
@@ -87,7 +88,7 @@ namespace vorpcore_sv.Utils
 
             try
             {
-                PlayerList pl = new PlayerList();
+                PlayerList pl = vorpcore_sv.PlayerList;
                 p = pl[handle];
             }
             catch (Exception ex)

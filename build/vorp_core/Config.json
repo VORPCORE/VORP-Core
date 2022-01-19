@@ -19,8 +19,23 @@
   "RespawnKey": "0xDFF812F9",
   "RespawnTitleFont": 1,
   "RespawnSubTitleFont": 1,
-  "RespawnCoords": [ -353.08, 752.11, 116.0, 321.76 ], // X, Y, Z, Heading
-
+//  "RespawnCoords": [ -353.08, 752.11, 116.0, 321.76 ], // X, Y, Z, Heading
+  "hospital" : {
+    "Valentine" : {
+      "name" :"Valentine",
+      "x":-289.3433,
+      "y": 810.8577,
+      "z":119.586,
+      "h":35.4935
+    },
+    "Saint Denis" : {
+      "name" :"Saint Denis",
+      "x":2720.791,
+      "y": -1228.876,
+      "z":50.5676,
+      "h":166.054
+    }
+  },
   "HeadId": true,
   "HeadIdDistance": 15,
   "ModeKey": true,
