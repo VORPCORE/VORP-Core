@@ -31,10 +31,7 @@ namespace vorpcore_sv.Utils
                      {
                          try
                          {
-                             Console.ForegroundColor = ConsoleColor.Green;
                              Console.WriteLine($"Vorp Core: {name} function callback registered!");
-                             Console.ForegroundColor = ConsoleColor.White;
-
                              Callbacks.ServerCallBacks[name] = callback;
                          }
                          catch (Exception e)
