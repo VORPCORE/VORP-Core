@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>$(MSBuildProjectName).net</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
