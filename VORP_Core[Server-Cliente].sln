@@ -9,7 +9,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "vorpcore_sv", "vorpcore_sv\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vorp.Core.Server", "Vorp.Core.Server\Vorp.Core.Server.csproj", "{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}"
 EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Vorp.Shared", "Vorp.Shared\Vorp.Shared.shproj", "{A9B29B21-9445-4AAD-84C0-1BCEBE9E1C73}"
+EndProject
 Global
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Vorp.Shared\Vorp.Shared.projitems*{6ed84e11-01d5-4a67-9bc8-da394a7964e9}*SharedItemsImports = 5
+		Vorp.Shared\Vorp.Shared.projitems*{a9b29b21-9445-4aad-84c0-1bcebe9e1c73}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
