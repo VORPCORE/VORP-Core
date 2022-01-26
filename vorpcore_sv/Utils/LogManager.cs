@@ -11,7 +11,7 @@ namespace vorpcore_sv.Utils
 
         }
 
-        public static async Task WriteLog(string msg, string type)
+        public static void WriteLog(string msg, string type)
         {
             switch (type)
             {
