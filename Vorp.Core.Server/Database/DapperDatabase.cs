@@ -2,8 +2,10 @@
 using MySqlConnector;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace Vorp.Core.Server.Database
@@ -83,6 +85,14 @@ namespace Vorp.Core.Server.Database
             sb.Append($"Exception Message: {exceptionMessage}\n");
             sb.Append($"Time Elapsed: {elapsedMilliseconds}");
             Logger.Error($"{sb}");
+        }
+
+        public static string GetDescriptionFromAttribute(MemberInfo member)
+        {
+            if (member == null) return null;
+
+            var attrib = (DescriptionAttribute)Attribute.GetCustomAttribute(member, typeof(DescriptionAttribute), false);
+            return (attrib?.Description ?? member.Name).ToLower();
         }
     }
 }
