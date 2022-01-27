@@ -9,6 +9,7 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>redm,fivem,cfx,vorp</PackageTags>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Configurations>Debug;Release;Server</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
