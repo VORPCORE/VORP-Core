@@ -1,4 +1,5 @@
-﻿using CitizenFX.Core;
+﻿global using CitizenFX.Core;
+global using static CitizenFX.Core.Native.API;
 using System;
 
 namespace Vorp.Core.Server

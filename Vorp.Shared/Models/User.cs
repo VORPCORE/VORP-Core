@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Vorp.Shared.Models
 {
@@ -19,6 +18,7 @@ namespace Vorp.Shared.Models
         // Character Items
         public Dictionary<int, Character> Characters { get; private set; } = new Dictionary<int, Character>();
         public int NumberOfCharacters => Characters.Count;
+        public Character ActiveCharacter => Characters.Select(x => x.Value).Where(x => x.IsActive).FirstOrDefault();
 
         public User(string serverId,
                     string steamId,
@@ -33,6 +33,18 @@ namespace Vorp.Shared.Models
             Warnings = warnings;
         }
 
-        // Methods
+        public void SetActiveCharacter(int charId)
+        {
+            if (!Characters.ContainsKey(charId)) return;
+            Characters.ToList().ForEach(x => x.Value.IsActive = false);
+            Characters[charId].IsActive = true;
+        }
+
+
+        // should review group to become a bit array of permissions
+        public void SetGroup(string group)
+        {
+            Group = group;
+        }
     }
 }
