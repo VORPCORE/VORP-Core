@@ -2,6 +2,11 @@
 {
     internal class Logger
     {
+        public static void Error(string msg)
+        {
+            WriteLogMessage($"[ERROR] {msg}");
+        }
+
         public static void Debug(string msg)
         {
             WriteLogMessage($"[DEBUG] {msg}");

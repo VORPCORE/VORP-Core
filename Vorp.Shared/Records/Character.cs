@@ -1,4 +1,4 @@
-﻿namespace Vorp.Shared.Models
+﻿namespace Vorp.Shared.Records
 {
     public record Character(int CharacterId, string Firstname, string Lastname)
     {
