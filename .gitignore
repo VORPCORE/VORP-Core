@@ -11,3 +11,4 @@
 /.vs
 /.idea
 /Vorp.Core.Server/obj
+/Vorp.Core.Server/bin/Server/netstandard2.0
