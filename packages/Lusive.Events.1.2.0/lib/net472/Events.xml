@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Events</name>
+    </assembly>
+    <members>
+        <member name="T:Lusive.Events.Attributes.ForceAttribute">
+            <summary>
+            Indicates that this property should be forcefully added to serialization.
+            </summary>
+        </member>
+        <member name="T:Lusive.Events.Attributes.IgnoreAttribute">
+            <summary>
+            Indicates that this property should be disregarded from serialization.
+            </summary>
+        </member>
+    </members>
+</doc>
