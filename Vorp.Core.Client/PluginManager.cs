@@ -2,10 +2,6 @@
 global using static CitizenFX.Core.Native.API;
 global using Vorp.Diagnostics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Vorp.Core.Client.Events;
 
 namespace Vorp.Core.Client
