@@ -8,6 +8,12 @@ namespace Vorp.Shared.Records
 {
     public record User
     {
+#if SERVER
+        const string SQL_UPDATE_GROUP = "update users set `group` = @group where `identifier` = @id;";
+        const string SQL_UPDATE_WARNING = "update users set `warnings` = @warningCount where `identifier` = @id;";
+        const string SQL_GET_CHARACTERS = "select * from characters where `identifier` = @id";
+#endif
+
         #region Fields
 
         [Description("identifier")]
@@ -64,7 +70,7 @@ namespace Vorp.Shared.Records
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("id", SteamIdentifier);
             dynamicParameters.Add("group", group);
-            bool changePersisted = DapperDatabase<User>.Execute("update users set `group` = @group where `identifier` = @id;", dynamicParameters);
+            bool changePersisted = DapperDatabase<User>.Execute(SQL_UPDATE_GROUP, dynamicParameters);
             if (changePersisted)
                 Group = group;
         }
@@ -74,7 +80,7 @@ namespace Vorp.Shared.Records
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("id", SteamIdentifier);
             dynamicParameters.Add("warningCount", Warnings);
-            bool changePersisted = DapperDatabase<User>.Execute("update users set `warnings` = @warningCount where `identifier` = @id;", dynamicParameters);
+            bool changePersisted = DapperDatabase<User>.Execute(SQL_UPDATE_WARNING, dynamicParameters);
             if (changePersisted)
                 Warnings = warnings;
         }
@@ -83,7 +89,7 @@ namespace Vorp.Shared.Records
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("id", SteamIdentifier);
-            List<Character> characters = DapperDatabase<Character>.GetList("select * from characters where `identifier` = @id", dynamicParameters);
+            List<Character> characters = DapperDatabase<Character>.GetList(SQL_GET_CHARACTERS, dynamicParameters);
             foreach (Character character in characters)
                 Characters.Add(character.CharacterId, character);
         }
