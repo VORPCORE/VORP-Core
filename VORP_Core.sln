@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Vorp.Core.Server", "Vorp.Co
 EndProject
 Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Vorp.Shared", "Vorp.Shared\Vorp.Shared.shproj", "{A9B29B21-9445-4AAD-84C0-1BCEBE9E1C73}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy Projects", "Legacy Projects", "{28D0D758-6653-45A9-889F-1E1699F4E278}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Vorp.Shared\Vorp.Shared.projitems*{6ed84e11-01d5-4a67-9bc8-da394a7964e9}*SharedItemsImports = 5
@@ -43,6 +45,10 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC} = {28D0D758-6653-45A9-889F-1E1699F4E278}
+		{A754D885-DA97-4ED1-835A-AEB3160DBD46} = {28D0D758-6653-45A9-889F-1E1699F4E278}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9B005D7-947F-4677-9A82-5E0A8C8A0235}
