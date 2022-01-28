@@ -1,8 +1,11 @@
-﻿using Dapper;
+﻿#if SERVER
+using Dapper;
+using Vorp.Core.Server.Database;
+#endif
+
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Vorp.Core.Server.Database;
 
 namespace Vorp.Shared.Records
 {

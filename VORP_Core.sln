@@ -17,33 +17,43 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vorp.Core.Client", "Vorp.Co
 EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Vorp.Shared\Vorp.Shared.projitems*{590cc09f-3f68-4554-abe1-bfdfaa65357e}*SharedItemsImports = 4
 		Vorp.Shared\Vorp.Shared.projitems*{6ed84e11-01d5-4a67-9bc8-da394a7964e9}*SharedItemsImports = 5
 		Vorp.Shared\Vorp.Shared.projitems*{a9b29b21-9445-4aad-84c0-1bcebe9e1c73}*SharedItemsImports = 13
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Client|Any CPU = Client|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 		Server|Any CPU = Server|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC}.Client|Any CPU.ActiveCfg = Server|Any CPU
+		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC}.Client|Any CPU.Build.0 = Server|Any CPU
 		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC}.Server|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE91D7D8-B284-49DF-8690-5E7071CEC0DC}.Server|Any CPU.Build.0 = Debug|Any CPU
+		{A754D885-DA97-4ED1-835A-AEB3160DBD46}.Client|Any CPU.ActiveCfg = Server|Any CPU
+		{A754D885-DA97-4ED1-835A-AEB3160DBD46}.Client|Any CPU.Build.0 = Server|Any CPU
 		{A754D885-DA97-4ED1-835A-AEB3160DBD46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A754D885-DA97-4ED1-835A-AEB3160DBD46}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A754D885-DA97-4ED1-835A-AEB3160DBD46}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A754D885-DA97-4ED1-835A-AEB3160DBD46}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A754D885-DA97-4ED1-835A-AEB3160DBD46}.Server|Any CPU.ActiveCfg = Debug|Any CPU
 		{A754D885-DA97-4ED1-835A-AEB3160DBD46}.Server|Any CPU.Build.0 = Debug|Any CPU
+		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Client|Any CPU.ActiveCfg = Server|Any CPU
+		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Client|Any CPU.Build.0 = Server|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Server|Any CPU.ActiveCfg = Server|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Server|Any CPU.Build.0 = Server|Any CPU
+		{590CC09F-3F68-4554-ABE1-BFDFAA65357E}.Client|Any CPU.ActiveCfg = Client|Any CPU
+		{590CC09F-3F68-4554-ABE1-BFDFAA65357E}.Client|Any CPU.Build.0 = Client|Any CPU
 		{590CC09F-3F68-4554-ABE1-BFDFAA65357E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{590CC09F-3F68-4554-ABE1-BFDFAA65357E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{590CC09F-3F68-4554-ABE1-BFDFAA65357E}.Release|Any CPU.ActiveCfg = Release|Any CPU
