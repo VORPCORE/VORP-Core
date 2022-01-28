@@ -1,20 +1,27 @@
-﻿namespace Vorp.Diagnostics
+﻿using Lusive.Events.Diagnostics;
+
+namespace Vorp.Diagnostics
 {
-    internal class Logger
+    internal class Logger : IEventLogger
     {
-        public static void Error(string msg)
+        public void Debug(params object[] values)
         {
-            WriteLogMessage($"[ERROR] {msg}");
+            CitizenFX.Core.Debug.WriteLine(Format(values));
         }
 
-        public static void Debug(string msg)
+        public void Info(params object[] values)
         {
-            WriteLogMessage($"[DEBUG] {msg}");
+            CitizenFX.Core.Debug.WriteLine(Format(values));
         }
 
-        private static void WriteLogMessage(string msg)
+        public void Error(params object[] values)
         {
-            CitizenFX.Core.Debug.WriteLine(msg);
+            CitizenFX.Core.Debug.WriteLine(Format(values));
+        }
+
+        public string Format(object[] values)
+        {
+            return $"[Events] {string.Join(", ", values)}";
         }
     }
 }
