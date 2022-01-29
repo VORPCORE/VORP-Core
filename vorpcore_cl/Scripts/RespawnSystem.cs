@@ -92,7 +92,6 @@ namespace vorpcore_cl.Scripts
 
         public static async Task resspawnPlayer()
         {
-            Function.Call((Hash)0x71BC8E838B9C6035, API.PlayerPedId());
             API.AnimpostfxStop("DeathFailMP01");
             string currentHospital = string.Empty;
             float minDistance = -1;
@@ -119,6 +118,7 @@ namespace vorpcore_cl.Scripts
 
             }
             Function.Call((Hash)0x203BEFFDBE12E96A, API.PlayerPedId(), Utils.GetConfig.Config["hospital"][currentHospital]["x"].ToObject<float>(), Utils.GetConfig.Config["hospital"][currentHospital]["y"].ToObject<float>(), Utils.GetConfig.Config["hospital"][currentHospital]["z"].ToObject<float>(), Utils.GetConfig.Config["hospital"][currentHospital]["h"].ToObject<float>(), false, false, false); await Delay(100);
+            Function.Call((Hash)0x71BC8E838B9C6035, API.PlayerPedId());
             TriggerServerEvent("vorpcharacter:getPlayerSkin");
             API.DoScreenFadeIn(1000);
             TriggerServerEvent("vorp:ImDead", false); //This is new or copy can u send me a dm?
