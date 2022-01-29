@@ -19,7 +19,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DevelopmentServer|AnyCPU'">
     <Optimize>True</Optimize>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
+    <DefineConstants>$(DefineConstants);SERVER</DefineConstants>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

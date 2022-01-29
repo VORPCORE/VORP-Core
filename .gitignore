@@ -10,8 +10,7 @@
 /vorpcore_sv/obj/**
 /.vs
 /.idea
+/Vorp.Core.Server/bin
 /Vorp.Core.Server/obj
-/Vorp.Core.Server/bin/Server/netstandard2.0
-/Vorp.Core.Client/obj/Debug
 /Vorp.Core.Client/bin
-/Vorp.Core.Client/obj/Client
+/Vorp.Core.Client/obj
