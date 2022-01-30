@@ -31,6 +31,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\server-config.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Resources\server-config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CitizenFX.Core.Server" Version="1.0.5261" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Lusive.Events" Version="1.2.0" />
