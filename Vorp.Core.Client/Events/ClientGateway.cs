@@ -19,7 +19,7 @@ namespace Vorp.Core.Client.Events
 
         public ClientGateway(PluginManager client)
         {
-            Logger = new Logger();
+            Logger = new EventLogger();
             Serialization = new BinarySerialization(Logger);
             DelayDelegate = async delay => await BaseScript.Delay(delay);
             PrepareDelegate = PrepareAsync;

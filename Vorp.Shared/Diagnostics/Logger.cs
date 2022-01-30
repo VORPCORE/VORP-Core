@@ -1,27 +1,43 @@
-﻿using Lusive.Events.Diagnostics;
+﻿using System;
 
-namespace Vorp.Diagnostics
+namespace Vorp.Shared.Diagnostics
 {
-    internal class Logger : IEventLogger
+    public static class Logger
     {
-        public void Debug(params object[] values)
+        public static void Info(string msg)
         {
-            CitizenFX.Core.Debug.WriteLine(Format(values));
+            Format($"[INFO] {msg}");
         }
 
-        public void Info(params object[] values)
+        public static void Success(string msg)
         {
-            CitizenFX.Core.Debug.WriteLine(Format(values));
+            Format($"[SUCCESS] {msg}");
         }
 
-        public void Error(params object[] values)
+        public static void Warn(string msg)
         {
-            CitizenFX.Core.Debug.WriteLine(Format(values));
+            Format($"[WARN] {msg}");
         }
 
-        public string Format(object[] values)
+        public static void Debug(string msg)
         {
-            return $"[Events] {string.Join(", ", values)}";
+            if (GetConvarInt("vorp_debug", 0) == 1)
+                Format($"[DEBUG] {msg}");
+        }
+
+        public static void Error(string msg)
+        {
+            Format($"[ERROR] {msg}");
+        }
+
+        public static void Error(Exception ex, string msg)
+        {
+            Format($"[ERROR] {msg}\r\n{ex}");
+        }
+
+        static void Format(string msg)
+        {
+            CitizenFX.Core.Debug.WriteLine($"[VORP-CORE] {msg}");
         }
     }
 }

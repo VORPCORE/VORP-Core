@@ -84,7 +84,7 @@ namespace Vorp.Core.Server.Database
             sb.Append($"Query: {query}\n");
             sb.Append($"Exception Message: {exceptionMessage}\n");
             sb.Append($"Time Elapsed: {elapsedMilliseconds}");
-            new Logger().Error($"{sb}");
+            new EventLogger().Error($"{sb}");
         }
 
         public static string GetDescriptionFromAttribute(MemberInfo member)

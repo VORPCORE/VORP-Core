@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using Vorp.Diagnostics;
 
 namespace Vorp.Core.Server.Events
 {
@@ -22,7 +23,7 @@ namespace Vorp.Core.Server.Events
 
         public ServerGateway(PluginManager script)
         {
-            Logger = new Logger();
+            Logger = new EventLogger();
             Serialization = new BinarySerialization(Logger);
             DelayDelegate = async delay => await BaseScript.Delay(delay);
             PushDelegate = Push;
