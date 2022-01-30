@@ -1,0 +1,22 @@
+{
+  "log": {
+    "debug": false,
+    "warn": false,
+    "error": false
+  },
+  "discord": {
+    "botKey": "",
+    "botname": "VORP Discord",
+    "webhooks": {
+      "server-debug": "",
+      "server-error": "",
+      "server-player-log": ""
+    }
+  },
+  "database": {
+    "username": "",
+    "password": "",
+    "server": "",
+    "port": 3306
+  }
+}

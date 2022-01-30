@@ -21,8 +21,7 @@ namespace Vorp.Shared.Diagnostics
 
         public static void Debug(string msg)
         {
-            if (GetConvarInt("vorp_debug", 0) == 1)
-                Format($"[DEBUG] {msg}");
+            Format($"[DEBUG] {msg}");
         }
 
         public static void Error(string msg)
