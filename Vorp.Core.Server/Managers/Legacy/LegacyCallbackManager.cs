@@ -33,7 +33,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             }
             catch(Exception ex)
             {
-                Logger.Error($"[LegacyCallbackManager] Callback '{name}' failed.");
+                Logger.Error(ex, $"[LegacyCallbackManager] Callback '{name}' failed.");
             }
         }
 
