@@ -15,6 +15,26 @@ namespace Vorp.Core.Server.Managers.Legacy
         {
             Logger.Info($"[MANAGER] Legacy Manager Init");
             Instance.EventRegistry.Add("vorp:addNewCallBack", new Action<string, CallbackDelegate>(OnAddNewCallback));
+            Instance.EventRegistry.Add("vorp:TriggerServerCallback", new Action<Player, string, int, object>(OnTriggerServerCallback));
+        }
+
+        private void OnTriggerServerCallback([FromSource] Player source, string name, int requestId, object args)
+        {
+            try
+            {
+                int _source = int.Parse(source.Handle);
+                if (Callbacks.ContainsKey(name))
+                {
+                    Callbacks[name](_source, new Action<dynamic>((data) =>
+                    {
+                        source.TriggerEvent("vorp:ServerCallback", requestId, data);
+                    }), args);
+                }
+            }
+            catch(Exception ex)
+            {
+                Logger.Error($"[LegacyCallbackManager] Callback '{name}' failed.");
+            }
         }
 
         private void OnAddNewCallback(string name, CallbackDelegate cb)
