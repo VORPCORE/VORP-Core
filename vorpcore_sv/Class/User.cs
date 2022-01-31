@@ -135,7 +135,7 @@ namespace vorpcore_sv.Class
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e.Message);
+                        Debug.WriteLine($"setGroup: {e.Message}");
                     }
 
                 }),
@@ -147,7 +147,7 @@ namespace vorpcore_sv.Class
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e.Message);
+                        Debug.WriteLine($"setPlayerWarnings: {e.Message}");
                     }
                 }),
                 ["getUsedCharacter"] = character,
@@ -162,7 +162,7 @@ namespace vorpcore_sv.Class
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e.Message);
+                        Debug.WriteLine($"addCharacter: {e.Message}");
                     }
                 }),
                 ["removeCharacter"] = new Action<int>((charid) =>
@@ -176,7 +176,7 @@ namespace vorpcore_sv.Class
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e.Message);
+                        Debug.WriteLine($"removeCharacter: {e.Message}");
                     }
 
                 }),
@@ -188,7 +188,7 @@ namespace vorpcore_sv.Class
                     }
                     catch (Exception e)
                     {
-                        Debug.WriteLine(e.Message);
+                        Debug.WriteLine($"setUsedCharacter: {e.Message}");
                     }
                 })
             };

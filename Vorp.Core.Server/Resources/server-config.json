@@ -13,10 +13,19 @@
       "server-player-log": ""
     }
   },
-  "database": {
+  "sql": {
+    "type": "mysql",
     "username": "",
     "password": "",
+    "database": "",
     "server": "",
     "port": 3306
+  },
+  "users": {
+    "newUserGroup": "user",
+    "characters": {
+      "maximum": 2,
+      "newCharacterGroup": "user"
+    }
   }
 }

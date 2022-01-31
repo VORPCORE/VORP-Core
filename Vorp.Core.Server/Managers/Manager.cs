@@ -1,4 +1,7 @@
-﻿namespace Vorp.Core.Server.Managers
+﻿using System.Collections.Concurrent;
+using Vorp.Shared.Records;
+
+namespace Vorp.Core.Server.Managers
 {
     public abstract class Manager<T> where T : Manager<T>, new()
     {
@@ -8,6 +11,8 @@
         }
 
         public PluginManager Instance { get; private set; }
+        public PlayerList PlayersList => PluginManager.PlayersList;
+        public ConcurrentDictionary<string, User> ActiveUsers => PluginManager.ActiveUsers;
 
         protected Manager()
         {

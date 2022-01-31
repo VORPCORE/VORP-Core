@@ -1,6 +1,7 @@
 ﻿global using CitizenFX.Core;
 global using static CitizenFX.Core.Native.API;
 global using Vorp.Diagnostics;
+global using Newtonsoft.Json;
 using System;
 using Vorp.Core.Client.Events;
 

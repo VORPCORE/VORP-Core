@@ -1,14 +1,17 @@
 ﻿global using CitizenFX.Core;
+global using Newtonsoft.Json;
+global using System;
 global using Vorp.Core.Server.Attributes;
 global using Vorp.Shared.Diagnostics;
 global using static CitizenFX.Core.Native.API;
-using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Vorp.Core.Server.Events;
 using Vorp.Core.Server.Managers;
+using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server
 {
@@ -18,12 +21,11 @@ namespace Vorp.Core.Server
         public static PlayerList PlayersList { get; private set; }
         public EventHandlerDictionary EventRegistry => EventHandlers;
         public ExportDictionary ExportDictionary => Exports;
-
         public Dictionary<Type, object> Managers { get; } = new Dictionary<Type, object>();
         public Dictionary<Type, List<MethodInfo>> TickHandlers { get; set; } = new Dictionary<Type, List<MethodInfo>>();
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
-
         private ServerGateway _events;
+        public static ConcurrentDictionary<string, User> ActiveUsers = new ConcurrentDictionary<string, User>();
 
         public PluginManager()
         {

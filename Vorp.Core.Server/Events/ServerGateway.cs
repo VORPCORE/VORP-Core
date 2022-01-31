@@ -4,7 +4,6 @@ using Lusive.Events.Exceptions;
 using Lusive.Events.Message;
 using Lusive.Events.Serialization;
 using Lusive.Events.Serialization.Implementations;
-using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;

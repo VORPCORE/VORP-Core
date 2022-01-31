@@ -1,11 +1,14 @@
 ﻿#if SERVER
 using Dapper;
 using Vorp.Core.Server.Database;
+using Vorp.Core.Server.Managers;
 #endif
 
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Vorp.Shared.Models;
+using System.Threading.Tasks;
 
 namespace Vorp.Shared.Records
 {
@@ -15,6 +18,8 @@ namespace Vorp.Shared.Records
         const string SQL_UPDATE_GROUP = "update users set `group` = @group where `identifier` = @id;";
         const string SQL_UPDATE_WARNING = "update users set `warnings` = @warningCount where `identifier` = @id;";
         const string SQL_GET_CHARACTERS = "select * from characters where `identifier` = @id";
+
+        ServerConfigManager _serverConfigManager => ServerConfigManager.GetModule();
 #endif
 
         #region Fields
@@ -33,7 +38,9 @@ namespace Vorp.Shared.Records
 
         #endregion
 
-
+#if SERVER
+        public Player Player { get; private set; }
+#endif
         public string ServerId { get; private set; }
         // DB Keys
         public ulong DiscordIdentifier { get; private set; }
@@ -68,33 +75,190 @@ namespace Vorp.Shared.Records
         }
 
         // should review group to become a bit array of permissions?
-        public void SetGroup(string group)
+        public async Task<bool> SetGroup(string group)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("id", SteamIdentifier);
             dynamicParameters.Add("group", group);
-            bool changePersisted = DapperDatabase<User>.Execute(SQL_UPDATE_GROUP, dynamicParameters);
+            bool changePersisted = await DapperDatabase<User>.ExecuteAsync(SQL_UPDATE_GROUP, dynamicParameters);
             if (changePersisted)
                 Group = group;
+            return changePersisted;
         }
 
-        public void SetWarning(int warnings)
+        public async Task<bool> SetWarning(int warnings)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("id", SteamIdentifier);
             dynamicParameters.Add("warningCount", Warnings);
-            bool changePersisted = DapperDatabase<User>.Execute(SQL_UPDATE_WARNING, dynamicParameters);
+            bool changePersisted = await DapperDatabase<User>.ExecuteAsync(SQL_UPDATE_WARNING, dynamicParameters);
             if (changePersisted)
                 Warnings = warnings;
+            return changePersisted;
         }
 
-        public void GetCharacters()
+        public async void GetCharacters()
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("id", SteamIdentifier);
-            List<Character> characters = DapperDatabase<Character>.GetList(SQL_GET_CHARACTERS, dynamicParameters);
+            List<Character> characters = await DapperDatabase<Character>.GetListAsync(SQL_GET_CHARACTERS, dynamicParameters);
             foreach (Character character in characters)
                 Characters.Add(character.CharacterId, character);
+        }
+
+        public Dictionary<string, dynamic> GetUser()
+        {
+            return new Dictionary<string, dynamic>()
+            {
+                ["getIdentifier"] = SteamIdentifier,
+                ["getGroup"] = Group,
+                ["getPlayerwarnings"] = Warnings,
+                ["source"] = ServerId,
+                ["setGroup"] = new Func<string, Task<bool>>(async (group) =>
+                {
+                    try
+                    {
+                        return await SetGroup(group);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"setGroup: {e.Message}");
+                        return false;
+                    }
+
+                }),
+                ["setPlayerWarnings"] = new Func<int, Task<bool>>(async (warnings) =>
+                {
+                    try
+                    {
+                        return await SetWarning(warnings);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"setPlayerWarnings: {e.Message}");
+                        return false;
+                    }
+                }),
+                ["getUsedCharacter"] = ActiveCharacter,
+                ["getUserCharacters"] = Characters,
+                ["getNumOfCharacters"] = Characters.Count,
+                ["addCharacter"] = new Func<string, string, string, string, Task<bool>>(async (firstname, lastname, skin, comps) =>
+                {
+                    if (Characters.Count >= _serverConfigManager.UserConfig.Characters.Maximum) return false;
+                    try
+                    {
+                        // AddCharacter(firstname, lastname, skin, comps);
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"addCharacter: {e.Message}");
+                        return false;
+                    }
+                }),
+                ["removeCharacter"] = new Func<int, Task<bool>>(async (charid) =>
+                {
+                    try
+                    {
+                        // DeleteCharacter(charid);
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"removeCharacter: {e.Message}");
+                        return false;
+                    }
+
+                }),
+                ["setUsedCharacter"] = new Func<int, Task<bool>>(async (charid) =>
+                {
+                    try
+                    {
+                        SetActiveCharacter(charid);
+                        return true;
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine($"setUsedCharacter: {e.Message}");
+                        return false;
+                    }
+                })
+            };
+        }
+
+        public Dictionary<string, dynamic> GetActiveCharacter()
+        {
+            Character activeChar = ActiveCharacter;
+
+            return new Dictionary<string, dynamic>()
+            {
+                { "identifier", activeChar.SteamIdentifier },
+                { "charIdentifier", activeChar.CharacterId },
+                { "group", activeChar.Group },
+                { "job", activeChar.Job },
+                { "jobGrade", activeChar.JobGrade },
+                { "money", activeChar.Cash },
+                { "gold", activeChar.Gold },
+                { "rol", activeChar.RoleToken },
+                { "xp", activeChar.Experience },
+                { "firstname", activeChar.Firstname },
+                { "lastname", activeChar.Lastname },
+                { "inventory", activeChar.Inventory },
+                { "status", activeChar.Status },
+                { "coords", activeChar.Coords },
+                { "isdead", activeChar.IsDead },
+                { "skin", activeChar.Skin },
+                { "comps", activeChar.Components },
+                { "setStatus", new Action<string>(status => activeChar.Status = status) },
+                { "setJobGrade", new Action<int>(jobGrade => activeChar.JobGrade = jobGrade) },
+                { "setGroup", new Action<string>(async group => await activeChar.SetGroup(group)) },
+                { "setMoney", new Action<double>(cash => activeChar.SetCash(cash)) },
+                { "setGold", new Action<double>(gold => activeChar.SetGold(gold)) },
+                { "setRol", new Action<double>(roleToken => activeChar.SetRoleToken(roleToken)) },
+                { "setXp", new Action<int>(experience => activeChar.SetExperience(experience)) },
+                { "setFirstname", new Action<string>(firstname => Logger.Error($"Method 'setFirstname' Deprecated, please inform us if you us this, and why.")) },
+                { "setLastname", new Action<string>(firstlastnamename => Logger.Error($"Method 'setLastname' Deprecated, please inform us if you us this, and why.")) },
+                { "updateSkin", new Action<string>(skin => activeChar.Skin = skin) },
+                { "updateComps", new Action<string>(comp => activeChar.Components = comp) },
+                { "addCurrency", new Action<int, double>(async (currency, amount) =>
+                    {
+                        await activeChar.AdjustCurrency(true, currency, amount);
+                        UpdateUI();
+                    })
+                },
+                { "removeCurrency", new Action<int, double>(async (currency, amount) =>
+                    {
+                        await activeChar.AdjustCurrency(false, currency, amount);
+                        UpdateUI();
+                    })
+                },
+                { "addXp", new Action<int>(async experience =>
+                    {
+                        await activeChar.AdjustExperience(true, experience);
+                        UpdateUI();
+                    })
+                },
+                { "removeXp", new Action<int>(async experience =>
+                    {
+                        await activeChar.AdjustExperience(false, experience);
+                        UpdateUI();
+                    })
+                },
+            };
+        }
+
+        public void UpdateUI()
+        {
+            Character activeChar = ActiveCharacter;
+            JsonBuilder jb = new JsonBuilder();
+            jb.Add("type", "ui");
+            jb.Add("action", "update");
+            jb.Add("moneyquanty", activeChar.Cash);
+            jb.Add("goldquanty", activeChar.Gold);
+            jb.Add("rolquanty", activeChar.RoleToken);
+            jb.Add("xp", activeChar.Experience);
+            jb.Add("serverId", ServerId);
+            Player.TriggerEvent("vorp:updateUi", $"{jb}");
         }
 #endif
     }

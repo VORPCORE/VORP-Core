@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vorp.Core.Server.Attributes
+﻿namespace Vorp.Core.Server.Attributes
 {
     public class TickHandler : Attribute
     {

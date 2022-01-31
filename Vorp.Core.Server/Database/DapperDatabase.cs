@@ -1,12 +1,12 @@
 ﻿using Dapper;
 using MySqlConnector;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Vorp.Core.Server.Database
 {
@@ -14,14 +14,14 @@ namespace Vorp.Core.Server.Database
     {
         private static string _connectionString => GetConvar("mysql_connection_string", "missing");
 
-        public static List<T> GetList(string query, DynamicParameters args = null)
+        public static async Task<List<T>> GetListAsync(string query, DynamicParameters args = null)
         {
             var watch = Stopwatch.StartNew();
             try
             {
                 using (var conn = new MySqlConnection(_connectionString))
                 {
-                    return conn.Query<T>(query, args).AsList();
+                    return (await conn.QueryAsync<T>(query, args)).AsList();
                 }
             }
             catch (Exception ex)
@@ -35,14 +35,14 @@ namespace Vorp.Core.Server.Database
             return null;
         }
 
-        public static T GetSingle(string query, DynamicParameters args = null)
+        public static async Task<T> GetSingleAsync(string query, DynamicParameters args = null)
         {
             var watch = Stopwatch.StartNew();
             try
             {
                 using (var conn = new MySqlConnection(_connectionString))
                 {
-                    return conn.Query<T>(query, args).FirstOrDefault();
+                    return (await conn.QueryAsync<T>(query, args)).FirstOrDefault();
                 }
             }
             catch (Exception ex)
@@ -56,14 +56,14 @@ namespace Vorp.Core.Server.Database
             return default(T);
         }
 
-        public static bool Execute(string query, DynamicParameters args = null)
+        public static async Task<bool> ExecuteAsync(string query, DynamicParameters args = null)
         {
             var watch = Stopwatch.StartNew();
             try
             {
                 using (var conn = new MySqlConnection(_connectionString))
                 {
-                    return conn.Execute(query, args) > 0;
+                    return (await conn.ExecuteAsync(query, args)) > 0;
                 }
             }
             catch (Exception ex)
@@ -84,7 +84,7 @@ namespace Vorp.Core.Server.Database
             sb.Append($"Query: {query}\n");
             sb.Append($"Exception Message: {exceptionMessage}\n");
             sb.Append($"Time Elapsed: {elapsedMilliseconds}");
-            new EventLogger().Error($"{sb}");
+            Logger.Error($"{sb}");
         }
 
         public static string GetDescriptionFromAttribute(MemberInfo member)

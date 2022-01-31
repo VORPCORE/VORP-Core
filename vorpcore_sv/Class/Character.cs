@@ -156,7 +156,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setStatus {e.Message}");
                 }
             }));
             userData.Add("setJobGrade", new Action<int>((jobgrade) =>
@@ -167,7 +167,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setJobGrade {e.Message}");
                 }
             }));
             userData.Add("setGroup", new Action<string>((g) =>
@@ -178,7 +178,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setGroup {e.Message}");
                 }
             }));
             userData.Add("setJob", new Action<string>((j) =>
@@ -189,7 +189,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setJob {e.Message}");
                 }
             }));
             userData.Add("setMoney", new Action<double>((m) =>
@@ -201,7 +201,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setMoney {e.Message}");
                 }
             }));
             userData.Add("setGold", new Action<double>((g) =>
@@ -213,7 +213,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setGold {e.Message}");
                 }
             }));
             userData.Add("setRol", new Action<double>((r) =>
@@ -225,7 +225,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setRol {e.Message}");
                 }
 
             }));
@@ -238,7 +238,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setXp {e.Message}");
                 }
             }));
             userData.Add("setFirstname", new Action<string>((f) =>
@@ -249,7 +249,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setFirstname {e.Message}");
                 }
             }));
             userData.Add("setLastname", new Action<string>((l) =>
@@ -260,7 +260,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"setLastname {e.Message}");
                 }
             }));
             userData.Add("updateSkin", new Action<string>((nskin) =>
@@ -271,7 +271,7 @@ namespace vorpcore_sv.Class
                  }
                  catch (Exception e)
                  {
-                     Debug.WriteLine(e.Message);
+                     Debug.WriteLine($"updateSkin {e.Message}");
                  }
              }));
             userData.Add("updateComps", new Action<string>((ncomps) =>
@@ -282,7 +282,7 @@ namespace vorpcore_sv.Class
                  }
                  catch (Exception e)
                  {
-                     Debug.WriteLine(e.Message);
+                     Debug.WriteLine($"updateComps {e.Message}");
                  }
              }));
             userData.Add("addCurrency", new Action<int, double>((currency, quantity) =>
@@ -293,7 +293,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"addCurrency {e.Message}");
                 }
             }));
             userData.Add("removeCurrency", new Action<int, double>((currency, quantity) =>
@@ -304,7 +304,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"removeCurrency {e.Message}");
                 }
             }));
             userData.Add("addXp", new Action<int>((xp) =>
@@ -315,7 +315,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"addXp {e.Message}");
                 }
             }));
             userData.Add("removeXp", new Action<int>((xp) =>
@@ -326,7 +326,7 @@ namespace vorpcore_sv.Class
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine($"removeXp {e.Message}");
                 }
             }));
             return userData;

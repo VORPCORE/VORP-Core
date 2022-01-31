@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Vorp.Core.Server.Managers.Legacy
 {
@@ -13,7 +11,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         public override void Begin()
         {
-            Logger.Info($"[MANAGER] Legacy Manager Init");
+            Logger.Info($"[MANAGER] Legacy Callback Manager Init");
             Instance.EventRegistry.Add("vorp:addNewCallBack", new Action<string, CallbackDelegate>(OnAddNewCallback));
             Instance.EventRegistry.Add("vorp:TriggerServerCallback", new Action<Player, string, int, object>(OnTriggerServerCallback));
         }
@@ -31,7 +29,7 @@ namespace Vorp.Core.Server.Managers.Legacy
                     }), args);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Logger.Error(ex, $"[LegacyCallbackManager] Callback '{name}' failed.");
             }
