@@ -13,5 +13,8 @@ namespace Vorp.Core.Server.Models
 
         [DataMember(Name = "webhooks")]
         public DiscordWebhooks Webhooks;
+
+        [DataMember(Name = "whitelist")]
+        public DiscordWhitelist Whitelist;
     }
 }

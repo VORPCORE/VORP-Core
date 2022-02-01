@@ -7,6 +7,10 @@
   "discord": {
     "botKey": "",
     "botname": "VORP Discord",
+    "whitelist": {
+      "enabled": false,
+      "role": 0
+    },
     "webhooks": {
       "server-debug": "",
       "server-error": "",
