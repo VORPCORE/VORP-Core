@@ -156,5 +156,22 @@ namespace Vorp.Core.Server
         {
             Tick -= task;
         }
+
+        public bool IsUserActive(string steamIdentifier)
+        {
+            foreach(KeyValuePair<string, User> kvp in ActiveUsers)
+            {
+                User user = kvp.Value;
+                if (user.SteamIdentifier == steamIdentifier)
+                {
+                    // if the currently known user returns an endpoint with that server Id, then they are still connected.
+                    // if it returns nothing, then the server should allow the connection and pass their current data back
+                    // this should also skip any additional loading from the database
+                    return !string.IsNullOrEmpty(GetPlayerEndpoint(user.ServerId));
+                }
+                return false;
+            }
+            return false;
+        }
     }
 }
