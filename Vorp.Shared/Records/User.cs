@@ -113,7 +113,7 @@ namespace Vorp.Shared.Records
             return changePersisted;
         }
 
-        public async void GetCharacters()
+        public async Task GetCharacters()
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("identifier", SteamIdentifier);
