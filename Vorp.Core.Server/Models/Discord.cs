@@ -16,5 +16,8 @@ namespace Vorp.Core.Server.Models
 
         [DataMember(Name = "whitelist")]
         public DiscordWhitelist Whitelist;
+
+        [DataMember(Name = "guildId")]
+        public ulong GuildId;
     }
 }
