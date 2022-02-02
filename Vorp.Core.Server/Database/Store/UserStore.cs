@@ -9,6 +9,11 @@ namespace Vorp.Core.Server.Database.Store
     {
         static ServerConfigManager _srvCfg => ServerConfigManager.GetModule();
 
+        public static async Task<int> GetCountOfUsers()
+        {
+            return await DapperDatabase<int>.GetSingleAsync("SELECT COUNT(*) FROM users;");
+        }
+
         public static async Task<bool> IsUserInWhitelist(string steamIdent)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
@@ -32,6 +37,12 @@ namespace Vorp.Core.Server.Database.Store
             if (user == null)
             {
                 user = new User(serverId, steamIdent, license, _srvCfg.UserConfig.NewUserGroup, 0);
+
+                // if they are the first user, then set them as an admin
+                bool isFirstUser = await GetCountOfUsers() == 0;
+                if (isFirstUser)
+                    await user.SetGroup("admin", true);
+
                 bool saved = await user.Save();
 
                 if (!saved)
