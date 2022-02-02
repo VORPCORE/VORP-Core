@@ -192,6 +192,23 @@ namespace Vorp.Shared.Records
             }
         }
 
+        internal async Task<bool> SetDead(bool isDead)
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("characterId", CharacterId);
+                dynamicParameters.Add("dead", isDead);
+                int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `isdead` += @dead WHERE `charIdentifier` = @characterId; SELECT `isdead` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                return result > 0; // if result is true, then user is dead
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "SetGroup");
+                return false;
+            }
+        }
+
         internal void SetExperience(int experience)
         {
             Experience = experience;
