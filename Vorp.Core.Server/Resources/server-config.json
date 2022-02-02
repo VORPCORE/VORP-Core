@@ -9,6 +9,7 @@
   "discord": {
     "botKey": "",
     "botname": "VORP Discord",
+    "guildId": 0,
     "whitelist": {
       "role": 0
     },
