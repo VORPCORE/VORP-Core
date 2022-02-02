@@ -111,6 +111,7 @@ namespace Vorp.Core.Server.Web
             return string.Empty;
         }
 
+        // TODO: Add translation language keys for drop messages
         public async Task<bool> CheckDiscordIdIsInGuild(Player player)
         {
             bool IsMember = false;
