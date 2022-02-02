@@ -19,5 +19,8 @@ namespace Vorp.Core.Server.Models
 
         [DataMember(Name = "guildId")]
         public ulong GuildId;
+
+        [DataMember(Name = "url")]
+        public string Url;
     }
 }
