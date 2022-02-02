@@ -32,7 +32,23 @@ namespace Vorp.Core.Server.Managers.Legacy
             ExportDictionary.Add("ExportRemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperience));
             // This event is not secure
             EventRegistry.Add("vorp:setJob", new Action<int, string>(OnSetCharacterJob));
-            ExportDictionary.Add("ExportSetJob", new Func<int, string, Task<bool>>(ExportSetCharacterJob));
+            ExportDictionary.Add("ExportSetCharacterJob", new Func<int, string, Task<bool>>(ExportSetCharacterJob));
+            // This event is not secure
+            EventRegistry.Add("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
+            ExportDictionary.Add("ExportSetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroup));
+        }
+
+        private async Task<bool> ExportSetCharacterGroup(int serverId, string job)
+        {
+            User user = GetUser(serverId);
+            if (user == null) return false;
+            return await user.ActiveCharacter.SetGroup(job);
+        }
+
+        private async void OnSetCharacterGroup(int serverId, string job)
+        {
+            Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportSetCharacterJob'.");
+            await ExportSetCharacterGroup(serverId, job);
         }
 
         private async Task<bool> ExportSetCharacterJob(int serverId, string job)
