@@ -11,14 +11,9 @@ namespace Vorp.Core.Server.Web
 {
     public enum WebhookChannel
     {
-        Chat = 1,
-        Report,
-        StaffLog,
-        ServerLog,
-        ServerErrors,
-        PlayerLog,
-        ServerEventLog,
-        PlayerDeathLog
+        ServerPlayerLog,
+        ServerErrorLog,
+        ServerDebugLog,
     }
 
     public enum DiscordColor : int
@@ -37,7 +32,7 @@ namespace Vorp.Core.Server.Web
         static string _discordUrl => _srvCfg.Discord.Url;
 
         static Request request = new Request();
-        public Dictionary<WebhookChannel, DiscordWebhook> Webhooks = new Dictionary<WebhookChannel, DiscordWebhook>();
+        public Dictionary<WebhookChannel, string> Webhooks = new Dictionary<WebhookChannel, string>();
         static long lastUpdate = GetGameTimer();
         static string DATE_FORMAT = "yyyy-MM-dd HH:mm";
         static bool IsDelayRunnning = false;
@@ -80,9 +75,11 @@ namespace Vorp.Core.Server.Web
 
         private void UpdateWebhooks()
         {
-            Webhooks = new Dictionary<WebhookChannel, DiscordWebhook>()
+            Webhooks = new Dictionary<WebhookChannel, string>()
             {
-
+                { WebhookChannel.ServerPlayerLog, _srvCfg.Discord.Webhooks.ServerPlayerLog },
+                { WebhookChannel.ServerErrorLog, _srvCfg.Discord.Webhooks.ServerError },
+                { WebhookChannel.ServerDebugLog, _srvCfg.Discord.Webhooks.ServerDebug },
             };
         }
 
@@ -191,190 +188,6 @@ namespace Vorp.Core.Server.Web
             return IsMember;
         }
 
-        public async void SendChatMessage(string name, string message)
-        {
-            if (!Webhooks.ContainsKey(WebhookChannel.Chat))
-            {
-                Logger.Warn($"SendDiscordChatMessage() -> Discord Chat Webhook Missing");
-                return;
-            }
-
-            await SendDiscordSimpleMessage(WebhookChannel.Chat, _srvCfg.Discord.Botname, name, message);
-            await BaseScript.Delay(0);
-        }
-
-        public async void SendDiscordServerEventLogMessage(string message)
-        {
-            if (!Webhooks.ContainsKey(WebhookChannel.ServerEventLog))
-            {
-                Logger.Warn($"SendDiscordChatMessage() -> Discord Server Event Webhook Missing");
-                return;
-            }
-
-            try
-            {
-                DiscordWebhook discordWebhook = Webhooks[WebhookChannel.ServerEventLog];
-
-                Webhook webhook = new Webhook(discordWebhook.Url);
-
-                webhook.AvatarUrl = discordWebhook.Avatar;
-                webhook.Content = StripUnicodeCharactersFromString($"{message.Trim('"')}");
-                webhook.Username = StripUnicodeCharactersFromString(_srvCfg.Discord.Botname);
-
-                await BaseScript.Delay(0);
-                await webhook.Send();
-
-                await Task.FromResult(0);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"SendDiscordPlayerLogMessage() -> {ex.Message}");
-            }
-
-        }
-
-        public async void SendDiscordPlayerDeathLogMessage(string message)
-        {
-            if (!Webhooks.ContainsKey(WebhookChannel.PlayerDeathLog))
-            {
-                Logger.Warn($"SendDiscordChatMessage() -> Discord Player Death Log Webhook Missing");
-                return;
-            }
-
-            try
-            {
-                DiscordWebhook discordWebhook = Webhooks[WebhookChannel.PlayerDeathLog];
-
-                Webhook webhook = new Webhook(discordWebhook.Url);
-
-                webhook.AvatarUrl = discordWebhook.Avatar;
-                webhook.Content = StripUnicodeCharactersFromString($"{message}");
-                webhook.Username = StripUnicodeCharactersFromString(_srvCfg.Discord.Botname);
-
-                await BaseScript.Delay(0);
-
-                await webhook.Send();
-
-                await Task.FromResult(0);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"SendDiscordPlayerDeathLogMessage() -> {ex.Message}");
-            }
-
-        }
-
-        public async void SendDiscordPlayerLogMessage(string message)
-        {
-            if (!Webhooks.ContainsKey(WebhookChannel.PlayerLog))
-            {
-                Logger.Warn($"SendDiscordChatMessage() -> Discord Player Log Webhook Missing");
-                return;
-            }
-
-            try
-            {
-                DiscordWebhook discordWebhook = Webhooks[WebhookChannel.PlayerLog];
-
-                Webhook webhook = new Webhook(discordWebhook.Url);
-
-                webhook.AvatarUrl = discordWebhook.Avatar;
-                webhook.Content = StripUnicodeCharactersFromString($"{message}");
-                webhook.Username = StripUnicodeCharactersFromString(_srvCfg.Discord.Botname);
-
-                await BaseScript.Delay(0);
-
-                await webhook.Send();
-
-                await Task.FromResult(0);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"SendDiscordPlayerLogMessage() -> {ex.Message}");
-            }
-
-        }
-
-        public async void SendDiscordStaffLogMessage(string adminName, string player, string action, string reason, string duration = "")
-        {
-            try
-            {
-                if (!Webhooks.ContainsKey(WebhookChannel.StaffLog))
-                {
-                    Logger.Warn($"SendDiscordStaffLogMessage() -> Discord {WebhookChannel.StaffLog} Webhook Missing");
-                    return;
-                }
-
-                if (IsDelayRunnning) return;
-
-                DiscordWebhook discordWebhook = Webhooks[WebhookChannel.StaffLog];
-
-                Webhook webhook = new Webhook(discordWebhook.Url);
-
-                webhook.AvatarUrl = discordWebhook.Avatar;
-                webhook.Username = "Staff";
-
-                Embed embed = new Embed();
-                embed.Author = new EmbedAuthor { Name = adminName, IconUrl = discordWebhook.Avatar };
-                embed.Title = StripUnicodeCharactersFromString($"Player: {player}");
-
-                embed.Description = StripUnicodeCharactersFromString($" **{action}**: {reason}");
-                if (!string.IsNullOrEmpty(duration))
-                    embed.Description = StripUnicodeCharactersFromString($" **{action}**: {reason} \n **Duration**: {duration}");
-
-                embed.Color = (int)DiscordColor.Orange;
-                if (action == "Ban")
-                    embed.Color = (int)DiscordColor.Red;
-
-                webhook.Embeds.Add(embed);
-                await BaseScript.Delay(0);
-                await webhook.Send();
-
-                await Task.FromResult(0);
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"SendDiscordStaffMessage() -> {ex.Message}");
-            }
-        }
-
-        public async void SendDiscordReportMessage(string reporterName, string playerBeingReported, string reason)
-        {
-            try
-            {
-                if (!Webhooks.ContainsKey(WebhookChannel.Report))
-                {
-                    Logger.Warn($"SendDiscordReportMessage() -> Discord {WebhookChannel.Report} Webhook Missing");
-                    return;
-                }
-
-                if (IsDelayRunnning) return;
-
-                DiscordWebhook discordWebhook = Webhooks[WebhookChannel.Report];
-
-                Webhook webhook = new Webhook(discordWebhook.Url);
-
-                webhook.AvatarUrl = discordWebhook.Avatar;
-                string cleanName = StripUnicodeCharactersFromString(_srvCfg.Discord.Botname);
-                webhook.Username = cleanName;
-
-                Embed embed = new Embed();
-                embed.Author = new EmbedAuthor { Name = $"Report By: {reporterName}", IconUrl = discordWebhook.Avatar };
-                embed.Title = $"Report";
-                embed.Description = $"Player: {playerBeingReported}\nReason: {reason}";
-                embed.Color = (int)DiscordColor.Blue;
-                embed.Thumbnail = new EmbedThumbnail { Url = discordWebhook.Avatar };
-
-                webhook.Embeds.Add(embed);
-                await BaseScript.Delay(0);
-                await webhook.Send();
-            }
-            catch (Exception ex)
-            {
-                Logger.Error($"SendDiscordReportMessage() -> {ex.Message}");
-            }
-        }
-
         public async Task SendDiscordEmbededMessage(WebhookChannel webhookChannel, string name, string title, string description, DiscordColor discordColor)
         {
             try
@@ -389,19 +202,17 @@ namespace Vorp.Core.Server.Web
 
                 string cleanName = StripUnicodeCharactersFromString(name);
 
-                DiscordWebhook discordWebhook = Webhooks[webhookChannel];
+                string discordWebhook = Webhooks[webhookChannel];
 
-                Webhook webhook = new Webhook(discordWebhook.Url);
+                Webhook webhook = new Webhook(discordWebhook);
 
-                webhook.AvatarUrl = discordWebhook.Avatar;
                 webhook.Username = cleanName;
 
                 Embed embed = new Embed();
-                embed.Author = new EmbedAuthor { Name = cleanName, IconUrl = discordWebhook.Avatar };
+                embed.Author = new EmbedAuthor { Name = cleanName };
                 embed.Title = StripUnicodeCharactersFromString(title);
                 embed.Description = StripUnicodeCharactersFromString(description);
                 embed.Color = (int)discordColor;
-                embed.Thumbnail = new EmbedThumbnail { Url = discordWebhook.Avatar };
 
                 webhook.Embeds.Add(embed);
                 await BaseScript.Delay(0);
@@ -419,11 +230,10 @@ namespace Vorp.Core.Server.Web
         {
             try
             {
-                DiscordWebhook discordWebhook = Webhooks[webhookChannel];
+                string discordWebhook = Webhooks[webhookChannel];
 
-                Webhook webhook = new Webhook(discordWebhook.Url);
+                Webhook webhook = new Webhook(discordWebhook);
 
-                webhook.AvatarUrl = discordWebhook.Avatar;
                 webhook.Content = StripUnicodeCharactersFromString($"{name} > {message.Trim('"')}");
                 webhook.Username = StripUnicodeCharactersFromString(username);
 
@@ -437,25 +247,6 @@ namespace Vorp.Core.Server.Web
             {
                 Logger.Error($"SendDiscordSimpleMessage() -> {ex.Message}");
             }
-        }
-
-        async void DelayTriggered(long delayMillis)
-        {
-            DelayMillis = delayMillis * 1000;
-        }
-
-        async Task OnDelayCooldownTask()
-        {
-            long gameTimer = API.GetGameTimer();
-            IsDelayRunnning = true;
-
-            while ((API.GetGameTimer() - gameTimer) < DelayMillis)
-            {
-                await BaseScript.Delay(1000);
-            }
-
-            PluginManager.Instance.DetachTickHandler(OnDelayCooldownTask);
-            IsDelayRunnning = false;
         }
     }
 }
