@@ -14,6 +14,9 @@ namespace Vorp.Core.Server.Managers
         public PlayerList PlayersList => PluginManager.PlayersList;
         public ConcurrentDictionary<string, User> ActiveUsers => PluginManager.ActiveUsers;
 
+        public EventHandlerDictionary EventRegistry => Instance.EventRegistry;
+        public ExportDictionary ExportDictionary => Instance.ExportDictionary;
+
         protected Manager()
         {
             Instance = PluginManager.Instance;
