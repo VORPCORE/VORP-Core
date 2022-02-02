@@ -15,9 +15,9 @@ namespace Vorp.Shared.Records
     public record User
     {
 #if SERVER
-        const string SQL_UPDATE_GROUP = "update users set `group` = @group where `identifier` = @id;";
-        const string SQL_UPDATE_WARNING = "update users set `warnings` = @warningCount where `identifier` = @id;";
-        const string SQL_GET_CHARACTERS = "select * from characters where `identifier` = @id";
+        const string SQL_UPDATE_GROUP = "update users set `group` = @group where `identifier` = @identifier;";
+        const string SQL_UPDATE_WARNING = "update users set `warnings` = @warningCount where `identifier` = @identifier;";
+        const string SQL_GET_CHARACTERS = "select * from characters where `identifier` = @identifier";
 
         ServerConfigManager _serverConfigManager => ServerConfigManager.GetModule();
 #endif
@@ -94,7 +94,7 @@ namespace Vorp.Shared.Records
             }
 
             DynamicParameters dynamicParameters = new DynamicParameters();
-            dynamicParameters.Add("id", SteamIdentifier);
+            dynamicParameters.Add("identifier", SteamIdentifier);
             dynamicParameters.Add("group", group);
             bool changePersisted = await DapperDatabase<User>.ExecuteAsync(SQL_UPDATE_GROUP, dynamicParameters);
             if (changePersisted)
@@ -105,7 +105,7 @@ namespace Vorp.Shared.Records
         public async Task<bool> SetWarning(int warnings)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
-            dynamicParameters.Add("id", SteamIdentifier);
+            dynamicParameters.Add("identifier", SteamIdentifier);
             dynamicParameters.Add("warningCount", Warnings);
             bool changePersisted = await DapperDatabase<User>.ExecuteAsync(SQL_UPDATE_WARNING, dynamicParameters);
             if (changePersisted)
@@ -116,7 +116,7 @@ namespace Vorp.Shared.Records
         public async void GetCharacters()
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
-            dynamicParameters.Add("id", SteamIdentifier);
+            dynamicParameters.Add("identifier", SteamIdentifier);
             List<Character> characters = await DapperDatabase<Character>.GetListAsync(SQL_GET_CHARACTERS, dynamicParameters);
             foreach (Character character in characters)
                 Characters.Add(character.CharacterId, character);
