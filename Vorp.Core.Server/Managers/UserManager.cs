@@ -89,7 +89,7 @@ namespace Vorp.Core.Server.Managers
             if (!isCurrentlyConnected)
             {
                 // either they are new, or already exist
-                User user = await UserStore.GetUser(player.Handle, steamId, license);
+                User user = await UserStore.GetUser(player.Handle, steamId, license, true);
 
                 if (user == null)
                 {
