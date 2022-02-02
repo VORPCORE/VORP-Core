@@ -26,6 +26,7 @@ namespace Vorp.Core.Server.Managers
             Logger.Info($"Player '{player.Name}' dropped (Reason: {reason}).");
             if (!ActiveUsers.ContainsKey(player.Handle)) return;
             User user = ActiveUsers[player.Handle];
+            // We do not remove the player straight away as other resources may request data when a player drops
             user.MarkPlayerHasDropped();
         }
 
