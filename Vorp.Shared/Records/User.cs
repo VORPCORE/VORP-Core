@@ -40,6 +40,7 @@ namespace Vorp.Shared.Records
 
 #if SERVER
         public Player Player { get; private set; }
+        public string Endpoint => GetPlayerEndpoint(ServerId);
 #endif
         public string ServerId { get; private set; }
         // DB Keys
@@ -65,6 +66,13 @@ namespace Vorp.Shared.Records
         }
 
 #if SERVER
+        public long GameTimeWhenDropped { get; private set; }
+
+        public void MarkPlayerHasDropped()
+        {
+            GameTimeWhenDropped = GetGameTimer();
+        }
+
         internal async Task<bool> Save()
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
