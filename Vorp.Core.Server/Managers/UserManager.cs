@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Vorp.Core.Server.Database.Store;
 using Vorp.Core.Server.Web;
 using Vorp.Shared.Records;
@@ -10,9 +11,49 @@ namespace Vorp.Core.Server.Managers
         ServerConfigManager _srvCfg => ServerConfigManager.GetModule();
         DiscordClient _discord => DiscordClient.GetModule();
 
+        long lastTimeCleanupRan = 0;
+        const int TWO_MINUTES = (1000 * 60) * 2;
+
         public override void Begin()
         {
             EventRegistry.Add("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnecting));
+            EventRegistry.Add("playerDropped", new Action<Player, string>(OnPlayerDropped));
+            lastTimeCleanupRan = GetGameTimer();
+        }
+
+        private void OnPlayerDropped([FromSource] Player player, string reason)
+        {
+            Logger.Info($"Player '{player.Name}' dropped (Reason: {reason}).");
+            if (!ActiveUsers.ContainsKey(player.Handle)) return;
+            User user = ActiveUsers[player.Handle];
+            user.MarkPlayerHasDropped();
+        }
+
+        [TickHandler]
+        private async Task OnPlayerCleanUp()
+        {
+            if ((GetGameTimer() - lastTimeCleanupRan) > TWO_MINUTES)
+            {
+                // copy the active user list so we don't run into any errors
+                Dictionary<string, User> users = new Dictionary<string, User>(ActiveUsers);
+
+                // loop each user in the active list
+                foreach(KeyValuePair<string, User> kvp in users)
+                {
+                    User user = kvp.Value;
+                    // if its been over two minutes since we last saw them, remove them
+                    if ((GetGameTimer() - user.GameTimeWhenDropped) > TWO_MINUTES)
+                    {
+                        // TODO: Save character data before removing the player.
+                        bool isEndpointClear = string.IsNullOrEmpty(user.Endpoint);
+                        if (isEndpointClear)
+                            ActiveUsers.TryRemove(kvp.Key, out User removedUser);
+                    }
+                }
+
+                lastTimeCleanupRan = GetGameTimer();
+            }
+            await BaseScript.Delay(5000); // run every 5 seconds
         }
 
         private async void OnPlayerConnecting([FromSource] Player player, string name, CallbackDelegate denyWithReason, dynamic deferrals)
