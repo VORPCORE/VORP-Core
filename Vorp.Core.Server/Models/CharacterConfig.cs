@@ -8,7 +8,32 @@ namespace Vorp.Core.Server.Models
         [DataMember(Name = "maximum")]
         public int Maximum;
         
-        [DataMember(Name = "newCharacterGroup")]
-        public string NewCharacterGroup;
+        [DataMember(Name = "init")]
+        public InitiatedCharacter Init;
+    }
+
+    [DataContract]
+    public class InitiatedCharacter
+    {
+        [DataMember(Name = "cash")]
+        public double Cash;
+
+        [DataMember(Name = "gold")]
+        public double Gold;
+
+        [DataMember(Name = "roleToken")]
+        public double RoleToken;
+
+        [DataMember(Name = "experience")]
+        public int Experience;
+
+        [DataMember(Name = "job")]
+        public string Job;
+
+        [DataMember(Name = "jobGrade")]
+        public string JobGrade;
+
+        [DataMember(Name = "group")]
+        public string Group;
     }
 }
