@@ -14,6 +14,9 @@ namespace Vorp.Core.Server.Models
             "database"
         };
 
+        [DataMember(Name = "language")]
+        public string Language;
+
         [DataMember(Name = "whitelistType")]
         public string WhitelistType {
             get

@@ -1,10 +1,13 @@
-﻿using Vorp.Core.Server.Models;
+﻿using System.Collections.Generic;
+using Vorp.Core.Server.Models;
 
 namespace Vorp.Core.Server.Managers
 {
     public class ServerConfigManager : Manager<ServerConfigManager>
     {
         ServerConfig _serverConfig;
+
+        Dictionary<string, string> _serverLanguage = new();
 
         public override void Begin()
         {
@@ -17,6 +20,9 @@ namespace Vorp.Core.Server.Managers
             try
             {
                 _serverConfig = JsonConvert.DeserializeObject<ServerConfig>(Properties.Resources.serverConfig);
+                string languagesFile = LoadResourceFile(GetCurrentResourceName(), $"Resources/{_serverConfig.Language}.json");
+                _serverLanguage = JsonConvert.DeserializeObject<Dictionary<string, string>>(languagesFile);
+                Logger.Info($"Language '{_serverConfig.Language}.json' loaded!");
             }
             catch (Exception ex)
             {
@@ -30,6 +36,14 @@ namespace Vorp.Core.Server.Managers
         public Discord Discord => _serverConfig.Discord;
         public SqlConfig SqlConfig => _serverConfig.SqlConfig;
         public UserConfig UserConfig => _serverConfig.UserConfig;
+
+        public string GetTranslation(string key)
+        {
+            if (_serverLanguage.ContainsKey(key))
+                return $"Translation for '{key}' not found.";
+
+            return _serverLanguage[key];
+        }
 
     }
 }
