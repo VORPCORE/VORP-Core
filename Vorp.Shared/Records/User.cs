@@ -65,6 +65,16 @@ namespace Vorp.Shared.Records
         }
 
 #if SERVER
+        internal async Task<bool> Save()
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("identifier", SteamIdentifier);
+            dynamicParameters.Add("group", Group);
+            dynamicParameters.Add("warnings", Warnings);
+            dynamicParameters.Add("banned", Banned);
+            return await DapperDatabase<bool>.ExecuteAsync("INSERT INTO users VALUES (@identifier, @group, @warnings, @banned);", dynamicParameters);
+        }
+
         // Server must be the location to change these settings, client only needs to read it
         public bool SetActiveCharacter(int charId)
         {
@@ -184,6 +194,11 @@ namespace Vorp.Shared.Records
                     }
                 })
             };
+        }
+
+        internal void UpdateServerId(string handle)
+        {
+            ServerId = handle;
         }
 
         public Dictionary<string, dynamic> GetActiveCharacter()
