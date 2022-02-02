@@ -85,8 +85,14 @@ namespace Vorp.Shared.Records
         }
 
         // should review group to become a bit array of permissions?
-        public async Task<bool> SetGroup(string group)
+        public async Task<bool> SetGroup(string group, bool internalOnly = false)
         {
+            if (internalOnly)
+            {
+                Group = group;
+                return true;
+            }
+
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("id", SteamIdentifier);
             dynamicParameters.Add("group", group);
