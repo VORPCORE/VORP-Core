@@ -29,7 +29,7 @@ namespace Vorp.Core.Server.Database.Store
             return await DapperDatabase<bool>.GetSingleAsync("SELECT TRUE FROM users WHERE `identifier` = @steam and `banned` = 1 LIMIT 1;", dynamicParameters);
         }
 
-        internal static async Task<User> GetUser(string serverId, string steamIdent, string license)
+        internal static async Task<User> GetUser(string serverId, string steamIdent, string license, bool withCharacters = false)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("steam", steamIdent);
@@ -48,7 +48,10 @@ namespace Vorp.Core.Server.Database.Store
                 if (!saved)
                     return null;
             }
-            await user.GetCharacters(); // Assign characters here
+            
+            if (withCharacters)
+                await user.GetCharacters(); // Assign characters here
+
             return user;
         }
     }
