@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Vorp.Shared.Models;
 using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server.Managers.Legacy
@@ -36,7 +37,35 @@ namespace Vorp.Core.Server.Managers.Legacy
             Instance.EventRegistry.Add("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
             Instance.ExportDictionary.Add("SetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroup));
 
+            // Review these events
+            Instance.EventRegistry.Add("vorp:saveLastCoords", new Action<Player, Vector3, float>(OnSaveLastCoords));
+            Instance.EventRegistry.Add("vorp:ImDead", new Action<Player, bool>(OnPlayerIsDead));
+
             Instance.EventRegistry.Add("getCore", new Action<CallbackDelegate>(OnGetCore));
+        }
+
+        // Sadly no server side native for IsEntityDead yet.
+        private async void OnPlayerIsDead([FromSource] Player player, bool isDead)
+        {
+            if (!ActiveUsers.ContainsKey(player.Handle)) return;
+            User user = ActiveUsers[player.Handle];
+            await user.ActiveCharacter.SetDead(isDead);
+        }
+
+        // Why does this even exist?! when saving a character on Drop, the position needs to be handled, maybe asking the client every minute?
+        // If OneSync is enabled, we can just ask for this information on the server via player.Character
+        private void OnSaveLastCoords([FromSource] Player player, Vector3 position, float heading)
+        {
+            if (!ActiveUsers.ContainsKey(player.Handle)) return;
+            User user = ActiveUsers[player.Handle];
+
+            JsonBuilder jb = new();
+            jb.Add("x", position.X);
+            jb.Add("y", position.Y);
+            jb.Add("z", position.Z);
+            jb.Add("heading", heading);
+
+            user.ActiveCharacter.Coords = jb.Build();
         }
 
         private void OnGetCore(CallbackDelegate cb)

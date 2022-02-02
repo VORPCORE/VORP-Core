@@ -1,4 +1,5 @@
 {
+  "whitelistType": "none",
   "log": {
     "debug": false,
     "warn": false,
@@ -8,7 +9,6 @@
     "botKey": "",
     "botname": "VORP Discord",
     "whitelist": {
-      "enabled": false,
       "role": 0
     },
     "webhooks": {
