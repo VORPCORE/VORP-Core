@@ -1,12 +1,30 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Vorp.Core.Server.Models
 {
     [DataContract]
     public class SqlConfig
     {
+        private string _databaseType;
+        private List<string> _databaseTypes = new()
+        {
+            "mysql",
+            "mariadb"
+        };
+
         [DataMember(Name = "type")]
-        public string Type;
+        public string Type
+        {
+            get { return _databaseType; }
+            set
+            {
+                if (!_databaseTypes.Contains(value))
+                    Logger.Error($"Unknown Database Type: must be, {string.Join(", ", _databaseTypes)}");
+
+                _databaseType = value;
+            }
+        }
 
         [DataMember(Name = "username")]
         public string Username;

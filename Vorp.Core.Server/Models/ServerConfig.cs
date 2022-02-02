@@ -23,7 +23,7 @@ namespace Vorp.Core.Server.Models
             set
             {
                 if (!_whitelistTypes.Contains(value))
-                    Logger.Error($"Whitelist Type can only be, none, discord, or database.");
+                    Logger.Error($"Whitelist Type can only be, {string.Join(", ", _whitelistTypes)}.");
 
                 _whitelistType = value;
             }

@@ -29,7 +29,15 @@
     "newUserGroup": "user",
     "characters": {
       "maximum": 2,
-      "newCharacterGroup": "user"
+      "init": {
+        "cash": 0.0,
+        "gold": 0.0,
+        "roleToken": 0.0,
+        "experience": 0,
+        "job": "none",
+        "jobGrade": 0,
+        "group": "user"
+      }
     }
   }
 }
