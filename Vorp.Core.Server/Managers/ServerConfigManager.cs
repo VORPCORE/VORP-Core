@@ -20,7 +20,7 @@ namespace Vorp.Core.Server.Managers
             try
             {
                 _serverConfig = JsonConvert.DeserializeObject<ServerConfig>(Properties.Resources.serverConfig);
-                string languagesFile = LoadResourceFile(GetCurrentResourceName(), $"Resources/{_serverConfig.Language}.json");
+                string languagesFile = LoadResourceFile(GetCurrentResourceName(), $"Resources/Languages/{_serverConfig.Language}.json");
                 _serverLanguage = JsonConvert.DeserializeObject<Dictionary<string, string>>(languagesFile);
                 Logger.Info($"Language '{_serverConfig.Language}.json' loaded!");
             }
