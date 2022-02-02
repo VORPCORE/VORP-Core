@@ -30,12 +30,17 @@ namespace Vorp.Core.Server.Managers
             }
         }
 
+        public ServerConfig Config => _serverConfig;
         public bool Debug => _serverConfig.Log.Debug;
         public bool Warning => _serverConfig.Log.Warn;
         public bool Error => _serverConfig.Log.Error;
         public Discord Discord => _serverConfig.Discord;
         public SqlConfig SqlConfig => _serverConfig.SqlConfig;
         public UserConfig UserConfig => _serverConfig.UserConfig;
+
+        // whitelists
+        public bool IsWhitelistDatabase => _serverConfig.WhitelistType == "database";
+        public bool IsWhitelistDiscord => _serverConfig.WhitelistType == "discord";
 
         public string GetTranslation(string key)
         {
