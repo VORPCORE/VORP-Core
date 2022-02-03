@@ -47,8 +47,8 @@ namespace Vorp.Core.Server.Managers.Legacy
         // Sadly no server side native for IsEntityDead yet.
         private async void OnPlayerIsDead([FromSource] Player player, bool isDead)
         {
-            if (!ActiveUsers.ContainsKey(player.Handle)) return;
-            User user = ActiveUsers[player.Handle];
+            if (!UserSessions.ContainsKey(player.Handle)) return;
+            User user = UserSessions[player.Handle];
             await user.ActiveCharacter.SetDead(isDead);
         }
 
@@ -56,8 +56,8 @@ namespace Vorp.Core.Server.Managers.Legacy
         // If OneSync is enabled, we can just ask for this information on the server via player.Character
         private void OnSaveLastCoords([FromSource] Player player, Vector3 position, float heading)
         {
-            if (!ActiveUsers.ContainsKey(player.Handle)) return;
-            User user = ActiveUsers[player.Handle];
+            if (!UserSessions.ContainsKey(player.Handle)) return;
+            User user = UserSessions[player.Handle];
 
             JsonBuilder jb = new();
             jb.Add("x", position.X);
@@ -106,9 +106,9 @@ namespace Vorp.Core.Server.Managers.Legacy
             Dictionary<string, Dictionary<string, dynamic>> users = new Dictionary<string, Dictionary<string, dynamic>>();
             foreach(Player player in PlayersList)
             {
-                if (!ActiveUsers.ContainsKey(player.Handle)) continue;
+                if (!UserSessions.ContainsKey(player.Handle)) continue;
                 string steamIdent = $"steam:{player.Identifiers["steam"]}";
-                users.Add(steamIdent, ActiveUsers[player.Handle].GetUser());
+                users.Add(steamIdent, UserSessions[player.Handle].GetUser());
             }
             return users;
         }
@@ -219,12 +219,12 @@ namespace Vorp.Core.Server.Managers.Legacy
                 Logger.Error($"[LegacyApi] Player not found.");
                 return null;
             }
-            if (!ActiveUsers.ContainsKey(player.Handle))
+            if (!UserSessions.ContainsKey(player.Handle))
             {
                 Logger.Error($"[LegacyApi] Player not found in Active Users.");
                 return null;
             }
-            return ActiveUsers[player.Handle];
+            return UserSessions[player.Handle];
         }
     }
 }

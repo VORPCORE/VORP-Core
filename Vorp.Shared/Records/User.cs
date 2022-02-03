@@ -67,10 +67,12 @@ namespace Vorp.Shared.Records
 
 #if SERVER
         public long GameTimeWhenDropped { get; private set; }
+        public bool IsActive { get; internal set; }
 
         public void MarkPlayerHasDropped()
         {
             GameTimeWhenDropped = GetGameTimer();
+            IsActive = false;
         }
 
         internal async Task<bool> Save()

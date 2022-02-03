@@ -141,13 +141,13 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private void OnPlayerSpawn([FromSource] Player player)
         {
-            if (!ActiveUsers.ContainsKey(player.Handle))
+            if (!UserSessions.ContainsKey(player.Handle))
             {
                 Logger.Error($"Player '{player.Handle}' tried to spawn, but isn't setup.");
                 return;
             }
 
-            User user = ActiveUsers[player.Handle];
+            User user = UserSessions[player.Handle];
             int numberOfCharacters = user.NumberOfCharacters;
             if (numberOfCharacters == 0)
             {
@@ -168,12 +168,12 @@ namespace Vorp.Core.Server.Managers.Legacy
         {
             string srvId = $"{serverId}";
 
-            if (!ActiveUsers.ContainsKey(srvId))
+            if (!UserSessions.ContainsKey(srvId))
             {
                 return null;
             }
 
-            return ActiveUsers[srvId];
+            return UserSessions[srvId];
         }
     }
 }

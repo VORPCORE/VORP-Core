@@ -25,7 +25,7 @@ namespace Vorp.Core.Server
         public Dictionary<Type, List<MethodInfo>> TickHandlers { get; set; } = new Dictionary<Type, List<MethodInfo>>();
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
         private ServerGateway _events;
-        public static ConcurrentDictionary<string, User> ActiveUsers = new ConcurrentDictionary<string, User>();
+        public static ConcurrentDictionary<string, User> UserSessions = new ConcurrentDictionary<string, User>();
         public bool IsOneSyncEnabled => GetConvar("onesync", "off") != "off";
 
         public PluginManager()
@@ -160,7 +160,7 @@ namespace Vorp.Core.Server
 
         public bool IsUserActive(string steamIdentifier)
         {
-            foreach(KeyValuePair<string, User> kvp in ActiveUsers)
+            foreach(KeyValuePair<string, User> kvp in UserSessions)
             {
                 User user = kvp.Value;
                 if (user.SteamIdentifier == steamIdentifier)

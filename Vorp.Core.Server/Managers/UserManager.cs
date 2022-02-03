@@ -18,15 +18,23 @@ namespace Vorp.Core.Server.Managers
         public override void Begin()
         {
             EventRegistry.Add("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnecting));
+            EventRegistry.Add("playerJoined", new Action<Player>(OnPlayerJoined));
             EventRegistry.Add("playerDropped", new Action<Player, string>(OnPlayerDropped));
             lastTimeCleanupRan = GetGameTimer();
+        }
+
+        private void OnPlayerJoined([FromSource] Player player)
+        {
+            if (!UserSessions.ContainsKey(player.Handle)) return;
+            User user = UserSessions[player.Handle];
+            user.IsActive = true;
         }
 
         private void OnPlayerDropped([FromSource] Player player, string reason)
         {
             Logger.Info($"Player '{player.Name}' dropped (Reason: {reason}).");
-            if (!ActiveUsers.ContainsKey(player.Handle)) return;
-            User user = ActiveUsers[player.Handle];
+            if (!UserSessions.ContainsKey(player.Handle)) return;
+            User user = UserSessions[player.Handle];
             // We do not remove the player straight away as other resources may request data when a player drops
             user.MarkPlayerHasDropped();
         }
@@ -37,7 +45,7 @@ namespace Vorp.Core.Server.Managers
             if ((GetGameTimer() - lastTimeCleanupRan) > TWO_MINUTES)
             {
                 // copy the active user list so we don't run into any errors
-                Dictionary<string, User> users = new Dictionary<string, User>(ActiveUsers);
+                Dictionary<string, User> users = new Dictionary<string, User>(UserSessions);
 
                 // loop each user in the active list
                 foreach(KeyValuePair<string, User> kvp in users)
@@ -57,7 +65,7 @@ namespace Vorp.Core.Server.Managers
                             jb.Add("heading", playerHeading);
                             user.ActiveCharacter.Coords = $"{jb}";
 
-                            ActiveUsers[kvp.Key].ActiveCharacter.Coords = user.ActiveCharacter.Coords;
+                            UserSessions[kvp.Key].ActiveCharacter.Coords = user.ActiveCharacter.Coords;
                         }
                     }
                     
@@ -67,7 +75,7 @@ namespace Vorp.Core.Server.Managers
                         // TODO: Save character data before removing the player.
                         bool isEndpointClear = string.IsNullOrEmpty(user.Endpoint);
                         if (isEndpointClear)
-                            ActiveUsers.TryRemove(kvp.Key, out User removedUser);
+                            UserSessions.TryRemove(kvp.Key, out User removedUser);
                     }
                 }
 
@@ -142,7 +150,7 @@ namespace Vorp.Core.Server.Managers
             if (isCurrentlyConnected)
             {
                 // should this fire an event at the player?! It honestly should, then they know to request a character list
-                User user = ActiveUsers[player.Handle];
+                User user = UserSessions[player.Handle];
                 user.UpdateServerId(player.Handle); // update the serverId to be sure
                 deferrals.done();
             }
@@ -158,7 +166,7 @@ namespace Vorp.Core.Server.Managers
                     return;
                 }
 
-                ActiveUsers.TryAdd(player.Handle, user);
+                UserSessions.TryAdd(player.Handle, user);
                 deferrals.done();
             }
         }
