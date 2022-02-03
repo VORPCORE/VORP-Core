@@ -56,6 +56,8 @@ namespace Vorp.Core.Server.Managers
                             jb.Add("z", playerPosition.Z);
                             jb.Add("heading", playerHeading);
                             user.ActiveCharacter.Coords = $"{jb}";
+
+                            ActiveUsers[kvp.Key].ActiveCharacter.Coords = user.ActiveCharacter.Coords;
                         }
                     }
                     
