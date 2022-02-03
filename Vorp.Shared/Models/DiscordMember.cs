@@ -2,13 +2,13 @@
 
 namespace Vorp.Shared.Models
 {
-    public partial class Member
+    public partial class DiscordMember
     {
         [JsonProperty("nick")]
         public object Nick { get; set; }
 
         [JsonProperty("user", NullValueHandling = NullValueHandling.Ignore)]
-        public User User { get; set; }
+        public DiscordUser User { get; set; }
 
         [JsonProperty("roles", NullValueHandling = NullValueHandling.Ignore)]
         public string[] Roles { get; set; }
@@ -26,7 +26,7 @@ namespace Vorp.Shared.Models
         public DateTimeOffset? JoinedAt { get; set; }
     }
 
-    public partial class User
+    public partial class DiscordUser
     {
         [JsonProperty("username", NullValueHandling = NullValueHandling.Ignore)]
         public string Username { get; set; }

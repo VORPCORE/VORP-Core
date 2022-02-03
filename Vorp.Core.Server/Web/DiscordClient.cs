@@ -162,7 +162,7 @@ namespace Vorp.Core.Server.Web
                 return IsMember;
             }
 
-            Member discordMember = JsonConvert.DeserializeObject<Member>(requestResponse.content);
+            DiscordMember discordMember = JsonConvert.DeserializeObject<DiscordMember>(requestResponse.content);
 
             string verifiedRoleConvar = API.GetConvar("discord_verified_roleId", "ROLE_NOT_SET");
 

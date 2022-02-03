@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Vorp.Core.Server.Database.Store;
 using Vorp.Core.Server.Web;
+using Vorp.Shared.Models;
 using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server.Managers
@@ -42,7 +43,23 @@ namespace Vorp.Core.Server.Managers
                 foreach(KeyValuePair<string, User> kvp in users)
                 {
                     User user = kvp.Value;
-                    // if its been over two minutes since we last saw them, remove them
+                    if (user.ActiveCharacter != null)
+                    {
+                        Player player = PlayersList[user.ServerId];
+                        if (player != null && Instance.IsOneSyncEnabled)
+                        {
+                            Vector3 playerPosition = player.Character.Position;
+                            float playerHeading = player.Character.Heading;
+                            JsonBuilder jb = new();
+                            jb.Add("x", playerPosition.X);
+                            jb.Add("y", playerPosition.Y);
+                            jb.Add("z", playerPosition.Z);
+                            jb.Add("heading", playerHeading);
+                            user.ActiveCharacter.Coords = $"{jb}";
+                        }
+                    }
+                    
+                        // if its been over two minutes since we last saw them, remove them
                     if ((GetGameTimer() - user.GameTimeWhenDropped) > TWO_MINUTES)
                     {
                         // TODO: Save character data before removing the player.
