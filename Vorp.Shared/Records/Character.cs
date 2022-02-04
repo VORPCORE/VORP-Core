@@ -165,7 +165,42 @@ namespace Vorp.Shared.Records
                 DynamicParameters dynamicParameters = new DynamicParameters();
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("job", job);
-                Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `job` += @job WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `job` = @job WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "SetJob");
+                return false;
+            }
+        }
+
+        internal async Task<bool> SetJobGrade(int grade)
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("characterId", CharacterId);
+                dynamicParameters.Add("grade", grade);
+                Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `jobgrade` = @grade WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "SetJob");
+                return false;
+            }
+        }
+
+        internal async Task<bool> SetJobAndGrade(string job, int grade)
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("characterId", CharacterId);
+                dynamicParameters.Add("job", job);
+                dynamicParameters.Add("grade", grade);
+                Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `job` = @job, `jobgrade` = @grade WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
                 return true;
             }
             catch (Exception ex)
@@ -182,7 +217,7 @@ namespace Vorp.Shared.Records
                 DynamicParameters dynamicParameters = new DynamicParameters();
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("group", group);
-                Group = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `group` += @group WHERE `charIdentifier` = @characterId; SELECT `group` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                Group = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `group` = @group WHERE `charIdentifier` = @characterId; SELECT `group` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
                 return true;
             }
             catch (Exception ex)
@@ -199,7 +234,7 @@ namespace Vorp.Shared.Records
                 DynamicParameters dynamicParameters = new DynamicParameters();
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("dead", isDead);
-                int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `isdead` += @dead WHERE `charIdentifier` = @characterId; SELECT `isdead` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `isdead` = @dead WHERE `charIdentifier` = @characterId; SELECT `isdead` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
                 return result > 0; // if result is true, then user is dead
             }
             catch (Exception ex)
