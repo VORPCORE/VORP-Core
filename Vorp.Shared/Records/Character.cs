@@ -244,6 +244,60 @@ namespace Vorp.Shared.Records
             }
         }
 
+        internal async Task<bool> Save()
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                // I hate that this is in this table, should be a UserID. SQL Refactor required
+                // TODO: Refactor SQL so users have a unique key that is NOT the Steam ID
+                // (framework should work without a steam requirement, this is why CFX keeps having issues, bloody steam!!!)
+                dynamicParameters.Add("identifier", SteamIdentifier); 
+                if (CharacterId > 0) dynamicParameters.Add("characterId", CharacterId);
+                dynamicParameters.Add("group", Group);
+                dynamicParameters.Add("money", Cash);
+                dynamicParameters.Add("gold", Gold);
+                dynamicParameters.Add("rol", RoleToken);
+                dynamicParameters.Add("xp", Experience);
+                dynamicParameters.Add("inventory", Inventory);
+                dynamicParameters.Add("job", Job);
+                dynamicParameters.Add("status", Status);
+                dynamicParameters.Add("firstname", Firstname);
+                dynamicParameters.Add("lastname", Lastname);
+                dynamicParameters.Add("skinPlayer", Skin);
+                dynamicParameters.Add("compPlayer", Components);
+                dynamicParameters.Add("jobgrade", JobGrade);
+                dynamicParameters.Add("coords", Coords);
+                dynamicParameters.Add("dead", IsDead);
+
+                // Need two queries...first one will add a new character
+                string query = @"INSERT INTO characters
+                    (`identifier`,`group`,`money`,`gold`,`rol`,`xp`,`inventory`,`job`,
+                    `status`,`firstname`,`lastname`,`skinPlayer`,`compPlayer`,`jobgrade`,
+                    `coords`,`isdead`)
+                    VALUES (@identifier, @group, @money, @gold, @rol, @xp, @inventory, @job, @status,
+                            @firstname, @lastname, @skinPlayer, @compPlayer, @jobGrade, @coords, @dead);";
+
+                // if its an existing character, we just need to update
+                if (CharacterId > 0)
+                    query = @"update characters set
+                    `identifier` = @identifier,`group` = @group,`money` = @money,`gold` = @gold,
+                    `rol` = @rol,`xp` = @xp,`inventory` = @inventory,`job` = @job,
+                    `status` = @status,`firstname` = @firstname,`lastname` = @lastname,
+                    `skinPlayer` = @skinPlayer,`compPlayer` = @compPlayer,`jobgrade` = @jobGrade,
+                    `coords` = @coords,`isdead` = @dead
+                    WHERE
+                        `charIdentifier` = @characterId;";
+
+                return await DapperDatabase<int>.ExecuteAsync(query, dynamicParameters);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "SetGroup");
+                return false;
+            }
+        }
+
         internal void SetExperience(int experience)
         {
             Experience = experience;
