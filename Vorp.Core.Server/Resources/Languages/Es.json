@@ -1,0 +1,17 @@
+﻿{
+  "IsConnected": "🚫 Ya hay un usuario conectado con el mismo identificador (steam | rockstar)",
+  "NoSteam": "🚫 Necesitas tener steam abierto, por favor abre steam y reinicia RedM",
+  "NoInWhitelist": "🚫 Lo sentimos acutalmente no estas en la whitelist.",
+  "NoPermissions": "You don't have enough permissions",
+  "CheckingIdentifier": "Comprobando tu steamId",
+  "LoadingUser": "Cargando tu usuario",
+  "BannedUser": "Estas baneado del servidor",
+  "TitleOnDead": "Has muerto!",
+  "SubTitleOnDead": "Reapareceras en {0} segundos",
+  "SubTitlePressKey": "Presiona ~e~E~q~ para revivir",
+  "YouAreCarried": "Estas siendo cargado por una persona",
+  "VoiceRangeChanged": "Rango de chat de voz cambiado a {0} metros",
+  "error_discord_not_authorised": "Discord identity was not found, please make sure RedM is authorised with Discord.",
+  "error_discord_not_whitelisted": "You are not whitelisted to play on this server.",
+  "error_creating_user": "An error occurred when trying to create your user, please contact server support."
+}

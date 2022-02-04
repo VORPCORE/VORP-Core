@@ -32,11 +32,15 @@
 
   <ItemGroup>
     <None Remove="Resources\Languages\En.json" />
+    <None Remove="Resources\Languages\Es.json" />
     <None Remove="Resources\server-config.json" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Resources\Languages\En.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Languages\Es.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\server-config.json">
