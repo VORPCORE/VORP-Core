@@ -77,7 +77,7 @@ namespace Vorp.Core.Server.Managers
                         // if its been over two minutes since we last saw them, remove them
                     if ((GetGameTimer() - user.GameTimeWhenDropped) > TWO_MINUTES)
                     {
-                        // TODO: Save character data before removing the player.
+                        await user.ActiveCharacter.Save();
                         bool isEndpointClear = string.IsNullOrEmpty(user.Endpoint);
                         if (isEndpointClear)
                             UserSessions.TryRemove(kvp.Key, out User removedUser);
