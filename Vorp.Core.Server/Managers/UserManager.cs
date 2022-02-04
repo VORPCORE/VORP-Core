@@ -21,7 +21,25 @@ namespace Vorp.Core.Server.Managers
             EventRegistry.Add("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnecting));
             EventRegistry.Add("playerJoined", new Action<Player>(OnPlayerJoined));
             EventRegistry.Add("playerDropped", new Action<Player, string>(OnPlayerDropped));
+            EventRegistry.Add("onResourceStop", new Action<string>(OnResourceStop));
             lastTimeCleanupRan = GetGameTimer();
+        }
+
+        private async void OnResourceStop(string resourceName)
+        {
+            if (resourceName != GetCurrentResourceName()) return;
+            foreach(KeyValuePair<string, User> kvp in UserSessions)
+            {
+                try
+                {
+                    await kvp.Value.ActiveCharacter.Save();
+                }
+                catch
+                {
+                    // no point reporting the error, just try the next user before the server shuts down
+                    continue;
+                }
+            }
         }
 
         private void OnPlayerJoined([FromSource] Player player)
@@ -35,11 +53,12 @@ namespace Vorp.Core.Server.Managers
             }
         }
 
-        private void OnPlayerDropped([FromSource] Player player, string reason)
+        private async void OnPlayerDropped([FromSource] Player player, string reason)
         {
             Logger.Info($"Player '{player.Name}' dropped (Reason: {reason}).");
             if (!UserSessions.ContainsKey(player.Handle)) return;
             User user = UserSessions[player.Handle];
+            await user.ActiveCharacter.Save(); // save the characters information now, just to be sure
             // We do not remove the player straight away as other resources may request data when a player drops
             user.MarkPlayerHasDropped();
         }
