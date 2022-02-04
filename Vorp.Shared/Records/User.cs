@@ -173,8 +173,10 @@ namespace Vorp.Shared.Records
                     if (Characters.Count >= _serverConfigManager.UserConfig.Characters.Maximum) return false;
                     try
                     {
-                        // AddCharacter(firstname, lastname, skin, comps);
-                        return true;
+                        Character character = new Character(0, firstname, lastname);
+                        character.Skin = skin;
+                        character.Components = comps;
+                        return await character.Save();
                     }
                     catch (Exception e)
                     {
@@ -186,8 +188,14 @@ namespace Vorp.Shared.Records
                 {
                     try
                     {
-                        // DeleteCharacter(charid);
-                        return true;
+                        int activeCharacterId = ActiveCharacter.CharacterId;
+                        bool result = await ActiveCharacter.Delete();
+
+                        // if successful, remove the character from the servers memory
+                        if (result)
+                            Characters.Remove(activeCharacterId);
+
+                        return result;
                     }
                     catch (Exception e)
                     {
@@ -196,7 +204,7 @@ namespace Vorp.Shared.Records
                     }
 
                 }),
-                ["setUsedCharacter"] = new Func<int, Task<bool>>(async (charid) =>
+                ["setUsedCharacter"] = new Func<int, bool>((charid) =>
                 {
                     try
                     {

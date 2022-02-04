@@ -34,7 +34,8 @@ namespace Vorp.Shared.Records
 
         [Description("xp")]
         public int Experience { get; private set; } = 0;
-
+        
+        // inventory should not be a string right now, it should be the output of a class
         [Description("inventory")]
         public string Inventory { get; set; } = "{}";
 
@@ -289,11 +290,26 @@ namespace Vorp.Shared.Records
                     WHERE
                         `charIdentifier` = @characterId;";
 
-                return await DapperDatabase<int>.ExecuteAsync(query, dynamicParameters);
+                return await DapperDatabase<bool>.ExecuteAsync(query, dynamicParameters);
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetGroup");
+                Logger.Error(ex, "Save Character");
+                return false;
+            }
+        }
+
+        internal async Task<bool> Delete()
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("characterId", CharacterId);
+                return await DapperDatabase<bool>.ExecuteAsync($"DELETE FROM characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "Delete Character");
                 return false;
             }
         }
