@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Vorp.Core.Server.Database.Store;
 using Vorp.Core.Server.Web;
+using Vorp.Shared.Data;
 using Vorp.Shared.Models;
 using Vorp.Shared.Records;
 
@@ -28,6 +29,10 @@ namespace Vorp.Core.Server.Managers
             if (!UserSessions.ContainsKey(player.Handle)) return;
             User user = UserSessions[player.Handle];
             user.IsActive = true;
+            if (Instance.IsOneSyncEnabled)
+            {
+                player.State.Set(StateBagKey.PlayerName, player.Name, true);
+            }
         }
 
         private void OnPlayerDropped([FromSource] Player player, string reason)

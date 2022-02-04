@@ -11,10 +11,15 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\EventLogger.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\StateBagKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordAvatar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordMember.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\JsonBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Records\Character.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Records\User.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Data\" />
+    <Folder Include="$(MSBuildThisFileDirectory)Enums\" />
   </ItemGroup>
 </Project>
