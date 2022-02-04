@@ -48,7 +48,7 @@ namespace vorpcore_sv.Utils
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine($"SaveLastCoords: {ex.Message}");
             }
         }
 

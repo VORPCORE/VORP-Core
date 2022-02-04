@@ -36,7 +36,7 @@ namespace vorpcore_sv.Utils
                          }
                          catch (Exception e)
                          {
-                             Debug.WriteLine(e.Message);
+                             Debug.WriteLine($"addRpcCallback: {e.Message}");
                          }
                      }),
                     ["getUsers"] = new getUsersSource(getConnectedUsers),

@@ -176,7 +176,7 @@ namespace vorpcore_sv.Scripts
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine($"CheckConnected: {ex.Message}");
                 return false;
             }
         }
