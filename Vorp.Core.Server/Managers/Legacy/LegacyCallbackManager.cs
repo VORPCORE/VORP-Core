@@ -7,7 +7,7 @@ namespace Vorp.Core.Server.Managers.Legacy
     /// </summary>
     public class LegacyCallbackManager : Manager<LegacyCallbackManager>
     {
-        public static Dictionary<string, CallbackDelegate> Callbacks = new Dictionary<string, CallbackDelegate>();
+        public Dictionary<string, CallbackDelegate> Callbacks = new Dictionary<string, CallbackDelegate>();
 
         public override void Begin()
         {

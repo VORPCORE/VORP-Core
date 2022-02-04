@@ -11,6 +11,7 @@ namespace Vorp.Core.Server.Managers.Legacy
         public delegate Dictionary<string, Dictionary<string, dynamic>> AuxGetConnectedUsers();
 
         private ServerConfigManager _serverConfigManager => ServerConfigManager.GetModule();
+        private LegacyCallbackManager _callbackManager => LegacyCallbackManager.GetModule();
 
         public override void Begin()
         {
@@ -96,9 +97,17 @@ namespace Vorp.Core.Server.Managers.Legacy
                         }
                     })
                 },
-                { "getUsers", new AuxGetConnectedUsers(GetConnectedUsers) }
+                { "getUsers", new AuxGetConnectedUsers(GetConnectedUsers) },
+                { "addRpcCallback", new Action<string, CallbackDelegate>(OnAddRpcCallback) }
             };
             cb.Invoke(core);
+        }
+
+        private void OnAddRpcCallback(string name, CallbackDelegate cb)
+        {
+            if (_callbackManager.Callbacks.ContainsKey(name)) return;
+            _callbackManager.Callbacks.Add(name, cb);
+            Logger.Info($"Callback '{name}' has been registered.");
         }
 
         private Dictionary<string, Dictionary<string, dynamic>> GetConnectedUsers()
