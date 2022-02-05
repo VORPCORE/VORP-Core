@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Vorp.Core.Server.Commands;
 using Vorp.Core.Server.Database.Store;
 using Vorp.Core.Server.Web;
 using Vorp.Shared.Data;
@@ -50,6 +51,21 @@ namespace Vorp.Core.Server.Managers
             if (Instance.IsOneSyncEnabled)
             {
                 player.State.Set(StateBagKey.PlayerName, player.Name, true);
+            }
+
+            // add suggestions
+            foreach(KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
+            {
+                CommandContext commandContext = entry.Key;
+                List<Tuple<CommandInfo, ICommand>> tuples = entry.Value;
+                
+                if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(user.Group))
+                {
+                    foreach (Tuple<CommandInfo, ICommand> item in tuples)
+                    {
+                        player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
+                    }
+                }
             }
         }
 

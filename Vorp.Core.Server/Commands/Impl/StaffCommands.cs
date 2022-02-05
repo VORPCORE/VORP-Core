@@ -10,7 +10,7 @@ namespace Vorp.Core.Server.Commands.Impl
         public override bool IsRestricted { get; set; } = true;
         public override List<string> RequiredRoles { get; set; } = new List<string>() { "admin" };
 
-        [CommandInfo(new[] { "helloWorld" })]
+        [CommandInfo(new[] { "helloWorld" }, "Server will print Hello World in Console")]
         public class HelloWorld : ICommand
         {
             public void On(User user, Player player, List<string> arguments)
