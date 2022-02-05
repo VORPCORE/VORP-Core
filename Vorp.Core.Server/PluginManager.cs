@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Vorp.Core.Server.Commands;
+using Vorp.Core.Server.Commands.Impl;
 using Vorp.Core.Server.Events;
 using Vorp.Core.Server.Managers;
 using Vorp.Shared.Records;
@@ -93,6 +95,9 @@ namespace Vorp.Core.Server
 
                 method?.Invoke(manager.Value, null);
             }
+
+            var commands = new CommandFramework();
+            commands.Bind(typeof(StaffCommands));
 
             Logger.Info($"[Managers] Successfully loaded in {loaded} manager(s)!");
 
