@@ -12,6 +12,7 @@ namespace Vorp.Core.Server.Database
 {
     internal class DapperDatabase<T>
     {
+        // TODO: Use mysql connection from SQL Config
         private static string _connectionString => GetConvar("mysql_connection_string", "missing");
 
         public static async Task<List<T>> GetListAsync(string query, DynamicParameters args = null)
