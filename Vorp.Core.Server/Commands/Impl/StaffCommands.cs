@@ -11,7 +11,7 @@ namespace Vorp.Core.Server.Commands.Impl
         public override List<string> RequiredRoles { get; set; } = new List<string>() { "admin" };
 
         [CommandInfo(new[] { "helloWorld" })]
-        public class PlayerRevive : ICommand
+        public class HelloWorld : ICommand
         {
             public void On(User user, Player player, List<string> arguments)
             {
