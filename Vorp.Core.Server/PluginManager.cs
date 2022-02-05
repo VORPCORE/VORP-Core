@@ -29,6 +29,7 @@ namespace Vorp.Core.Server
         private ServerGateway _events;
         public static ConcurrentDictionary<string, User> UserSessions = new ConcurrentDictionary<string, User>();
         public bool IsOneSyncEnabled => GetConvar("onesync", "off") != "off";
+        public CommandFramework CommandFramework;
 
         public PluginManager()
         {
@@ -96,8 +97,8 @@ namespace Vorp.Core.Server
                 method?.Invoke(manager.Value, null);
             }
 
-            var commands = new CommandFramework();
-            commands.Bind(typeof(StaffCommands));
+            CommandFramework = new CommandFramework();
+            CommandFramework.Bind(typeof(StaffCommands));
 
             Logger.Info($"[Managers] Successfully loaded in {loaded} manager(s)!");
 
