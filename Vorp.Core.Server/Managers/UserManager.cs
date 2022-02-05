@@ -107,6 +107,8 @@ namespace Vorp.Core.Server.Managers
 
                             UserSessions[kvp.Key].ActiveCharacter.Coords = user.ActiveCharacter.Coords;
                         }
+                        await user.ActiveCharacter.Save();
+                        await user.Save();
                     }
                     
                         // if its been over two minutes since we last saw them, remove them
