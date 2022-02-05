@@ -47,7 +47,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnSetCharacterGroup(int serverId, string job)
         {
-            Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportSetCharacterJob'.");
+            Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'OnSetCharacterGroup'.");
             await ExportSetCharacterGroup(serverId, job);
         }
 
