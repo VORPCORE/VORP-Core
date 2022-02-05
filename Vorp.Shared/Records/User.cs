@@ -82,7 +82,11 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("group", Group);
             dynamicParameters.Add("warnings", Warnings);
             dynamicParameters.Add("banned", Banned);
-            return await DapperDatabase<bool>.ExecuteAsync("INSERT INTO users VALUES (@identifier, @group, @warnings, @banned);", dynamicParameters);
+
+            string query = @"INSERT INTO users VALUES (@identifier, @group, @warnings, @banned)
+                             ON DUPLICATE KEY UPDATE `group` = @group, `warnings` = @warnings, `banned` = @banned;";
+
+            return await DapperDatabase<bool>.ExecuteAsync(query, dynamicParameters);
         }
 
         // Server must be the location to change these settings, client only needs to read it
