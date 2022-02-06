@@ -1,0 +1,5 @@
+L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\Debug\netstandard2.0\Vorp.Core.Server.csproj.AssemblyReference.cache
+L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\Debug\netstandard2.0\Vorp.Core.Server.GeneratedMSBuildEditorConfig.editorconfig
+L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\Debug\netstandard2.0\Vorp.Core.Server.AssemblyInfoInputs.cache
+L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\Debug\netstandard2.0\Vorp.Core.Server.AssemblyInfo.cs
+L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\Debug\netstandard2.0\Vorp.Core.Server.csproj.CoreCompileInputs.cache

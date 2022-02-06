@@ -1,0 +1,5 @@
+L:\ws\fivem\VORP-Core\build\vorp_core\vorpcore_cl.net.dll
+L:\ws\fivem\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.csproj.AssemblyReference.cache
+L:\ws\fivem\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.csproj.CoreCompileInputs.cache
+L:\ws\fivem\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.csproj.CopyComplete
+L:\ws\fivem\VORP-Core\vorpcore_cl\obj\Debug\vorpcore_cl.net.dll
