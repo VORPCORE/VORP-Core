@@ -87,6 +87,7 @@
     <Compile Include="Events\ClientGateway.cs" />
     <Compile Include="Events\ServerId.cs" />
     <Compile Include="Managers\ClientConfigManager.cs" />
+    <Compile Include="Managers\GameEvents\GameEventManager.cs" />
     <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />
     <Compile Include="Managers\Legacy\LegacyInstanceManager.cs" />
     <Compile Include="Managers\Legacy\LegacyServerCallbackManager.cs" />
