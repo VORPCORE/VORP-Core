@@ -89,6 +89,7 @@
     <Compile Include="Managers\ClientConfigManager.cs" />
     <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />
     <Compile Include="Managers\Legacy\LegacyServerCallbackManager.cs" />
+    <Compile Include="Managers\Legacy\LegacyUiCoreManager.cs" />
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

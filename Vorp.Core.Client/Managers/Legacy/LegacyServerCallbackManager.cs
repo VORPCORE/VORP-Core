@@ -17,7 +17,7 @@ namespace Vorp.Core.Client.Managers.Legacy
             EventHandler.Add("vorp:ServerCallback", new Action<int, object>(OnServerCallback));
         }
 
-        private void OnServerCallback(int requestId, dynamic args)
+        void OnServerCallback(int requestId, dynamic args)
         {
             if (_callbackHandlers.ElementAt(requestId) != null)
             {
@@ -31,7 +31,7 @@ namespace Vorp.Core.Client.Managers.Legacy
 
         }
 
-        private void OnTriggerServerCallback(string name, CallbackDelegate ncb, object args)
+        void OnTriggerServerCallback(string name, CallbackDelegate ncb, object args)
         {
             if (!_shownWarning)
             {
