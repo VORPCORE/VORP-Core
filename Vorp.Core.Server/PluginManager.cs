@@ -26,14 +26,14 @@ namespace Vorp.Core.Server
         public Dictionary<Type, object> Managers { get; } = new Dictionary<Type, object>();
         public Dictionary<Type, List<MethodInfo>> TickHandlers { get; set; } = new Dictionary<Type, List<MethodInfo>>();
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
-        private ServerGateway _events;
+        public ServerGateway Events;
         public static ConcurrentDictionary<string, User> UserSessions = new ConcurrentDictionary<string, User>();
         public bool IsOneSyncEnabled => GetConvar("onesync", "off") != "off";
         public CommandFramework CommandFramework;
 
         public PluginManager()
         {
-            _events = new ServerGateway(this);
+            Events = new ServerGateway(this);
             Instance = this;
 
             Load();

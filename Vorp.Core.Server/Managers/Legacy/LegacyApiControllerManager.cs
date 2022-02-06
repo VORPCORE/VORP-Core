@@ -17,32 +17,32 @@ namespace Vorp.Core.Server.Managers.Legacy
         {
             Logger.Info($"[MANAGER] Legacy API Controller Manager Init");
 
-            EventRegistry.Add("vorp:getCharacter", new Action<int, CallbackDelegate>(OnGetCharacter));
+            Event("vorp:getCharacter", new Action<int, CallbackDelegate>(OnGetCharacter));
             ExportDictionary.Add("GetCharacter", new Func<int, Dictionary<string, dynamic>>(ExportGetCharacter));
 
-            EventRegistry.Add("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
+            Event("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
             ExportDictionary.Add("AddMoney", new Func<int, int, double, Task<bool>>(ExportAddMoney));
 
-            EventRegistry.Add("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoney));
+            Event("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoney));
             ExportDictionary.Add("RemoveMoney", new Func<int, int, double, Task<bool>>(ExportRemoveMoney));
 
-            EventRegistry.Add("vorp:addXp", new Action<int, int>(OnAddExperience));
+            Event("vorp:addXp", new Action<int, int>(OnAddExperience));
             ExportDictionary.Add("AddExperience", new Func<int, int, Task<bool>>(ExportAddExperience));
 
-            EventRegistry.Add("vorp:removeXp", new Action<int, int>(OnRemoveExperience));
+            Event("vorp:removeXp", new Action<int, int>(OnRemoveExperience));
             ExportDictionary.Add("RemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperience));
 
-            EventRegistry.Add("vorp:setJob", new Action<int, string>(OnSetJob));
+            Event("vorp:setJob", new Action<int, string>(OnSetJob));
             ExportDictionary.Add("SetJob", new Func<int, string, Task<bool>>(ExportSetJob));
 
-            EventRegistry.Add("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
+            Event("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
             ExportDictionary.Add("SetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroup));
 
             // Review these events
-            EventRegistry.Add("vorp:saveLastCoords", new Action<Player, Vector3, float>(OnSaveLastCoords));
-            EventRegistry.Add("vorp:ImDead", new Action<Player, bool>(OnPlayerIsDead));
+            Event("vorp:saveLastCoords", new Action<Player, Vector3, float>(OnSaveLastCoords));
+            Event("vorp:ImDead", new Action<Player, bool>(OnPlayerIsDead));
 
-            EventRegistry.Add("getCore", new Action<CallbackDelegate>(OnGetCore));
+            Event("getCore", new Action<CallbackDelegate>(OnGetCore));
         }
 
         // Sadly no server side native for IsEntityDead yet.

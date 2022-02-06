@@ -10,31 +10,31 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         public override void Begin()
         {
-            EventRegistry.Add("vorp:playerSpawn", new Action<Player>(OnPlayerSpawn));
+            Event("vorp:playerSpawn", new Action<Player>(OnPlayerSpawn));
 
-            EventRegistry.Add("vorp:getUser", new Action<int, CallbackDelegate>(OnGetUser));
+            Event("vorp:getUser", new Action<int, CallbackDelegate>(OnGetUser));
             ExportDictionary.Add("GetUser", new Func<int, Dictionary<string, dynamic>>(ExportGetUser));
 
-            EventRegistry.Add("vorp:getCharacter", new Action<int, CallbackDelegate>(OnGetActiveCharacter));
+            Event("vorp:getCharacter", new Action<int, CallbackDelegate>(OnGetActiveCharacter));
             ExportDictionary.Add("GetActiveCharacter", new Func<int, Dictionary<string, dynamic>>(ExportActiveGetCharacter));
             
             // This event is not secure
-            EventRegistry.Add("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
+            Event("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
             ExportDictionary.Add("ExportAddCurrency", new Func<int, int, double, Task<bool>>(ExportAddCurrency));
             // This event is not secure
-            EventRegistry.Add("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoney));
+            Event("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoney));
             ExportDictionary.Add("ExportRemoveCurrency", new Func<int, int, double, Task<bool>>(ExportRemoveCurrency));
             // This event is not secure
-            EventRegistry.Add("vorp:addXp", new Action<int, int>(OnAddExperience));
+            Event("vorp:addXp", new Action<int, int>(OnAddExperience));
             ExportDictionary.Add("ExportAddExperience", new Func<int, int, Task<bool>>(ExportAddExperience));
             // This event is not secure
-            EventRegistry.Add("vorp:removeXp", new Action<int, int>(OnRemoveExperience));
+            Event("vorp:removeXp", new Action<int, int>(OnRemoveExperience));
             ExportDictionary.Add("ExportRemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperience));
             // This event is not secure
-            EventRegistry.Add("vorp:setJob", new Action<int, string>(OnSetCharacterJob));
+            Event("vorp:setJob", new Action<int, string>(OnSetCharacterJob));
             ExportDictionary.Add("ExportSetCharacterJob", new Func<int, string, Task<bool>>(ExportSetCharacterJob));
             // This event is not secure
-            EventRegistry.Add("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
+            Event("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
             ExportDictionary.Add("ExportSetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroup));
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using Vorp.Core.Server.Events;
 using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server.Managers
@@ -14,8 +15,9 @@ namespace Vorp.Core.Server.Managers
         public PlayerList PlayersList => PluginManager.PlayersList;
         public ConcurrentDictionary<string, User> UserSessions => PluginManager.UserSessions;
 
-        public EventHandlerDictionary EventRegistry => Instance.EventRegistry;
+        public void Event(string name, Delegate @delegate) => Instance.Hook(name, @delegate);
         public ExportDictionary ExportDictionary => Instance.ExportDictionary;
+        public ServerGateway ServerGateway => Instance.Events;
 
         protected Manager()
         {

@@ -19,7 +19,7 @@ namespace Vorp.Core.Client
     {
         public static PluginManager Instance { get; private set; }
 
-        private ClientGateway _events;
+        public ClientGateway ClientGateway;
 
         public EventHandlerDictionary EventRegistry => EventHandlers;
         public ExportDictionary ExportDictionary => Exports;
@@ -30,7 +30,7 @@ namespace Vorp.Core.Client
         public PluginManager()
         {
             Instance = this;
-            _events = new ClientGateway(this);
+            ClientGateway = new ClientGateway(this);
 
             EventHandlers["onResourceStart"] += new Action<string>(OnResourceStart);
             EventHandlers["onResourceStop"] += new Action<string>(OnResourceStop);
@@ -120,6 +120,12 @@ namespace Vorp.Core.Client
             if (GetCurrentResourceName() != resourceName) return;
             // Tell server to save
 
+            int playerPedId = PlayerPedId();
+
+            Vector3 position = GetEntityCoords(playerPedId, false, false);
+            float heading = GetEntityHeading(playerPedId);
+
+            ClientGateway.Send("vorp:character:coords:save", position, heading);
         }
 
         public object LoadManager(Type type)

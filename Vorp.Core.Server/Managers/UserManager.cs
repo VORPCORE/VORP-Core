@@ -19,10 +19,10 @@ namespace Vorp.Core.Server.Managers
 
         public override void Begin()
         {
-            EventRegistry.Add("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnecting));
-            EventRegistry.Add("playerJoined", new Action<Player>(OnPlayerJoined));
-            EventRegistry.Add("playerDropped", new Action<Player, string>(OnPlayerDropped));
-            EventRegistry.Add("onResourceStop", new Action<string>(OnResourceStop));
+            Event("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnecting));
+            Event("playerJoined", new Action<Player>(OnPlayerJoined));
+            Event("playerDropped", new Action<Player, string>(OnPlayerDropped));
+            Event("onResourceStop", new Action<string>(OnResourceStop));
             lastTimeCleanupRan = GetGameTimer();
         }
 

@@ -12,8 +12,8 @@ namespace Vorp.Core.Server.Managers.Legacy
         public override void Begin()
         {
             Logger.Info($"[MANAGER] Legacy Callback Manager Init");
-            EventRegistry.Add("vorp:addNewCallBack", new Action<string, CallbackDelegate>(OnAddNewCallback));
-            EventRegistry.Add("vorp:TriggerServerCallback", new Action<Player, string, int, object>(OnTriggerServerCallback));
+            Event("vorp:addNewCallBack", new Action<string, CallbackDelegate>(OnAddNewCallback));
+            Event("vorp:TriggerServerCallback", new Action<Player, string, int, object>(OnTriggerServerCallback));
         }
 
         private void OnTriggerServerCallback([FromSource] Player source, string name, int requestId, object args)

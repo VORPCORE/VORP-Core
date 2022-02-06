@@ -1,6 +1,7 @@
 ﻿using Lusive.Events;
 using System.Collections.Generic;
 using System.Linq;
+using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server.Events
 {
@@ -10,6 +11,8 @@ namespace Vorp.Core.Server.Events
 
         public int Handle { get; set; }
         public string[] Identifiers { get; set; }
+
+        public User User => PluginManager.UserSessions[$"{Handle}"] ?? (User)default!;
 
         public ClientId(int handle)
         {
