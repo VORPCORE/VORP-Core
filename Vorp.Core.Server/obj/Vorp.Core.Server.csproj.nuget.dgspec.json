@@ -68,6 +68,7 @@
               "autoReferenced": true
             },
             "Newtonsoft.Json": {
+              "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "target": "Package",
               "version": "[12.0.2, )"
             }
