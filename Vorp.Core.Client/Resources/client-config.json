@@ -1,4 +1,5 @@
 {
+	"pvp": false,
 	"playerNames": {
 		"display": true,
 		"distance": 30.0

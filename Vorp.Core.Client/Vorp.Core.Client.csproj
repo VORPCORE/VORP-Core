@@ -104,6 +104,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="RedM\Enums\eControls.cs" />
+    <Compile Include="RedM\Enums\eRelationshipType.cs" />
     <Compile Include="RedM\Enums\eUIGamertagVisibility.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="TickHandler.cs" />

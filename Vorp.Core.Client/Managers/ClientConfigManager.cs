@@ -1,6 +1,7 @@
 ﻿using System;
 using Vorp.Core.Client.Environment;
 using Vorp.Core.Client.Environment.Config;
+using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Managers
 {
@@ -10,7 +11,13 @@ namespace Vorp.Core.Client.Managers
 
         public override void Begin()
         {
-
+            _configCache = GetConfig();
+            if (!_configCache.PvpEnabled)
+            {
+                NetworkSetFriendlyFireOption(true);
+                uint playerGroup = (uint)GetHashKey("PLAYER");
+                SetRelationshipBetweenGroups((int)eRelationshipType.Neutral, playerGroup, playerGroup);
+            }
         }
 
         private ClientConfig GetConfig()

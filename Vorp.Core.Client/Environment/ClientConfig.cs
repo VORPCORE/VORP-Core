@@ -6,6 +6,9 @@ namespace Vorp.Core.Client.Environment
     [DataContract]
     public class ClientConfig
     {
+        [DataMember(Name = "pvp")]
+        public bool PvpEnabled;
+
         [DataMember(Name = "playerNames")]
         public PlayerNames PlayerNames;
 
