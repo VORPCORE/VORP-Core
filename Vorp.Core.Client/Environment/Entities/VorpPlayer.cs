@@ -38,5 +38,7 @@ namespace Vorp.Core.Client.Environment.Entities
         public Vector3 Position => GetEntityCoords(PlayerPedId, false, false);
         public float Heading => GetEntityHeading(PlayerPedId);
         public bool IsDead => IsEntityDead(PlayerPedId);
+        public void EnableEagleeye(bool enable) => Function.Call((Hash)0xA63FCAD3A6FEC6D2, PlayerId, enable);
+        public void EnableCustomDeadeyeAbility(bool enable) => Function.Call((Hash)0x95EE1DEE1DCD9070, PlayerId, enable);
     }
 }
