@@ -86,6 +86,7 @@
     <Compile Include="Environment\Config\Discord\Asset.cs" />
     <Compile Include="Environment\Config\PlayerNames.cs" />
     <Compile Include="Environment\Entities\VorpPlayer.cs" />
+    <Compile Include="Environment\Entities\WorldPlayer.cs" />
     <Compile Include="Events\ClientGateway.cs" />
     <Compile Include="Events\ServerId.cs" />
     <Compile Include="Managers\ClientConfigManager.cs" />

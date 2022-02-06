@@ -10,7 +10,7 @@ namespace Vorp.Core.Client.Managers.GameWorld
     public class WorldPlayerManager : Manager<WorldPlayerManager>
     {
         ClientConfigManager ClientConfigManager => ClientConfigManager.GetModule();
-        Dictionary<int, VorpPlayer> playersInScope = new Dictionary<int, VorpPlayer>();
+        Dictionary<int, WorldPlayer> playersInScope = new Dictionary<int, WorldPlayer>();
         float ConfigDistance => ClientConfigManager.PlayerNameConfig.Distance;
 
         public override void Begin()
@@ -33,7 +33,7 @@ namespace Vorp.Core.Client.Managers.GameWorld
                     if (VorpAPI.Distance(playerCoords, targetCoords) < ConfigDistance)
                     {
                         int playerPedId = GetPlayerPed(activePlayerId);
-                        playersInScope[activePlayerId] = new VorpPlayer(activePlayerId, playerPedId);
+                        playersInScope[activePlayerId] = new WorldPlayer(activePlayerId, playerPedId);
                     }
                     else
                     {
