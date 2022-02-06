@@ -3,6 +3,12 @@ using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Environment.Entities
 {
+    /*
+     * TODO:
+     * Add interactions: Revive, Heal, Carry
+     * 
+     */
+
     public class WorldPlayer : VorpPlayer
     {
         public int GamerTag { get; private set; }
