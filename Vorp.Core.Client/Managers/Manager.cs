@@ -10,6 +10,7 @@
         }
 
         public PluginManager Instance { get; set; }
+        public EventHandlerDictionary EventHandler => Instance.EventRegistry;
 
         protected Manager()
         {

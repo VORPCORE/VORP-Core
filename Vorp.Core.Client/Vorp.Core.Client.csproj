@@ -88,6 +88,7 @@
     <Compile Include="Events\ServerId.cs" />
     <Compile Include="Managers\ClientConfigManager.cs" />
     <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />
+    <Compile Include="Managers\Legacy\LegacyServerCallbackManager.cs" />
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,7 +109,6 @@
     <Folder Include="Extensions\" />
     <Folder Include="Interface\" />
     <Folder Include="Managers\Interface\" />
-    <Folder Include="Managers\Legacy\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
