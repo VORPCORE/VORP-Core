@@ -13,3 +13,4 @@ L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\Vorp.Core.Server.cs
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\Vorp.Core.Server.csproj.CopyComplete
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\Vorp.Core.Server.net.dll
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\Vorp.Core.Server.net.pdb
+L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\Vorp.Core.Server.csproj.AssemblyReference.cache
