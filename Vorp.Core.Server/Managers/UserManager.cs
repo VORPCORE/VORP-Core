@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Vorp.Core.Server.Commands;
 using Vorp.Core.Server.Database.Store;
+using Vorp.Core.Server.Events;
 using Vorp.Core.Server.Web;
 using Vorp.Shared.Data;
 using Vorp.Shared.Models;
@@ -23,7 +24,31 @@ namespace Vorp.Core.Server.Managers
             Event("playerJoined", new Action<Player>(OnPlayerJoined));
             Event("playerDropped", new Action<Player, string>(OnPlayerDropped));
             Event("onResourceStop", new Action<string>(OnResourceStop));
+
+            ServerGateway.Mount("vorp:user:active", new Func<ClientId, int, bool>(OnUserIsActive));
+            ServerGateway.Mount("vorp:user:list:active", new Func<ClientId, int, List<dynamic>>(OnGetActiveUserList));
+
             lastTimeCleanupRan = GetGameTimer();
+        }
+
+        private List<dynamic> OnGetActiveUserList(ClientId source, int id)
+        {
+            List<dynamic> list = new List<dynamic>();
+            if (source.Handle != id) return list;
+            
+            foreach(Player player in PlayersList)
+            {
+                list.Add(new { ServerId = player.Handle, Name = player.Name });
+            }
+
+            return list;
+        }
+
+        private bool OnUserIsActive(ClientId source, int id)
+        {
+            if (source.Handle != id) return false;
+            source.User.IsActive = true;
+            return true;
         }
 
         private async void OnResourceStop(string resourceName)
