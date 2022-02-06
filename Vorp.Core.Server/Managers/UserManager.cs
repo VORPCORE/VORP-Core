@@ -134,7 +134,7 @@ namespace Vorp.Core.Server.Managers
 
             if (string.IsNullOrEmpty(steamId))
             {
-                DefferAndKick("NoSteam", denyWithReason, deferrals);
+                DefferAndKick("error_steam_not_found", denyWithReason, deferrals);
                 return;
             }
 
@@ -157,7 +157,7 @@ namespace Vorp.Core.Server.Managers
             bool isUserBanned = await UserStore.IsUserBanned(steamDatabaseIdentifier);
             if (isUserBanned)
             {
-                DefferAndKick("BannedUser", denyWithReason, deferrals);
+                DefferAndKick("user_is_banned", denyWithReason, deferrals);
                 return;
             }
 
@@ -167,7 +167,7 @@ namespace Vorp.Core.Server.Managers
                 bool isUserInWhitelist = await UserStore.IsUserInWhitelist(steamDatabaseIdentifier);
                 if (isUserInWhitelist) goto USER_CAN_ENTER; // skip over, goto is old, but handy to jump around
 
-                DefferAndKick("NoInWhitelist", denyWithReason, deferrals);
+                DefferAndKick("user_is_not_whitelisted", denyWithReason, deferrals);
                 return;
             }
 
@@ -182,17 +182,25 @@ namespace Vorp.Core.Server.Managers
                 bool isUserRoleCorrect = await _discord.CheckDiscordIdIsInGuild(player);
                 if (isUserRoleCorrect) goto USER_CAN_ENTER;
 
-                DefferAndKick("error_discord_not_whitelisted", denyWithReason, deferrals);
+                DefferAndKick("user_is_not_whitelisted", denyWithReason, deferrals);
                 return;
             }
 
         USER_CAN_ENTER:
-            deferrals.update(_srvCfg.GetTranslation("LoadingUser"));
+            deferrals.update(_srvCfg.GetTranslation("user_is_loading"));
             bool isCurrentlyConnected = Instance.IsUserActive(steamDatabaseIdentifier);
             if (isCurrentlyConnected)
             {
-                // should this fire an event at the player?! It honestly should, then they know to request a character list
+                // need to check some extras, so that if the SteamID matches a live player
+                // if some other information differs, it should drop them
                 User user = UserSessions[player.Handle];
+
+                if (user.LicenseIdentifier != license)
+                {
+                    DefferAndKick("error_user_with_matching_steam_already_connected", denyWithReason, deferrals);
+                    return;
+                }
+                // should this fire an event at the player?! It honestly should, then they know to request a character list
                 user.UpdateServerId(player.Handle); // update the serverId to be sure
                 deferrals.done();
             }
