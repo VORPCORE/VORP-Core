@@ -1,17 +1,9 @@
 {
-  "IsConnected": "🚫 Duplicated account connected (steam | rockstar)",
-  "NoSteam": "🚫 You have to have Steam open, please open Steam & restart RedM",
-  "NoInWhitelist": "🚫 You are not in the Whitelist",
-  "NoPermissions": "You don't have enough permissions",
-  "CheckingIdentifier": "Checking Identifiers",
-  "LoadingUser": "Loading User",
-  "BannedUser": "You Are Banned",
-  "TitleOnDead": "You have died!",
-  "SubTitleOnDead": "You will respawn in {0} seconds",
-  "SubTitlePressKey": "Press ~e~E~q~ to respawn",
-  "YouAreCarried": "You are being carried by a person",
-  "VoiceRangeChanged": "Voice chat range changed to {0} meters",
+  "user_is_loading": "Loading User",
+  "user_is_banned": "You are Banned",
+  "user_is_not_whitelisted": "🚫 You are not whitelisted to play on this server.",
+  "error_steam_not_found": "🚫 You have to have Steam open, please open Steam & restart RedM",
   "error_discord_not_authorised": "Discord identity was not found, please make sure RedM is authorised with Discord.",
-  "error_discord_not_whitelisted": "You are not whitelisted to play on this server.",
-  "error_creating_user": "An error occurred when trying to create your user, please contact server support."
+  "error_creating_user": "An error occurred when trying to create your user, please contact server support.",
+  "error_user_with_matching_steam_already_connected": "🚫 Duplicated account connected (steam | rockstar)"
 }
