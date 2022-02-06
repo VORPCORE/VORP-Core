@@ -92,6 +92,7 @@
     <Compile Include="Managers\ClientConfigManager.cs" />
     <Compile Include="Managers\GameEvents\GameEventManager.cs" />
     <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />
+    <Compile Include="Managers\Interface\GeneralUiManager.cs" />
     <Compile Include="Managers\Legacy\LegacyInstanceManager.cs" />
     <Compile Include="Managers\Legacy\LegacyServerCallbackManager.cs" />
     <Compile Include="Managers\Legacy\LegacyUiCoreManager.cs" />
@@ -116,7 +117,6 @@
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Interface\" />
-    <Folder Include="Managers\Interface\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
