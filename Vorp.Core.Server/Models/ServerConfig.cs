@@ -18,7 +18,8 @@ namespace Vorp.Core.Server.Models
         public string Language;
 
         [DataMember(Name = "whitelistType")]
-        public string WhitelistType {
+        public string WhitelistType
+        {
             get
             {
                 return _whitelistType;

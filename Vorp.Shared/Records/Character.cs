@@ -253,7 +253,7 @@ namespace Vorp.Shared.Records
                 // I hate that this is in this table, should be a UserID. SQL Refactor required
                 // TODO: Refactor SQL so users have a unique key that is NOT the Steam ID
                 // (framework should work without a steam requirement, this is why CFX keeps having issues, bloody steam!!!)
-                dynamicParameters.Add("identifier", SteamIdentifier); 
+                dynamicParameters.Add("identifier", SteamIdentifier);
                 if (CharacterId > 0) dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("group", Group);
                 dynamicParameters.Add("money", Cash);

@@ -29,7 +29,7 @@ namespace Vorp.Core.Server.Managers
         private async void OnResourceStop(string resourceName)
         {
             if (resourceName != GetCurrentResourceName()) return;
-            foreach(KeyValuePair<string, User> kvp in UserSessions)
+            foreach (KeyValuePair<string, User> kvp in UserSessions)
             {
                 try
                 {
@@ -54,11 +54,11 @@ namespace Vorp.Core.Server.Managers
             }
 
             // add suggestions
-            foreach(KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
+            foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
             {
                 CommandContext commandContext = entry.Key;
                 List<Tuple<CommandInfo, ICommand>> tuples = entry.Value;
-                
+
                 if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(user.Group))
                 {
                     foreach (Tuple<CommandInfo, ICommand> item in tuples)
@@ -88,7 +88,7 @@ namespace Vorp.Core.Server.Managers
                 Dictionary<string, User> users = new Dictionary<string, User>(UserSessions);
 
                 // loop each user in the active list
-                foreach(KeyValuePair<string, User> kvp in users)
+                foreach (KeyValuePair<string, User> kvp in users)
                 {
                     User user = kvp.Value;
                     if (user.ActiveCharacter != null)
@@ -110,8 +110,8 @@ namespace Vorp.Core.Server.Managers
                         await user.ActiveCharacter.Save();
                         await user.Save();
                     }
-                    
-                        // if its been over two minutes since we last saw them, remove them
+
+                    // if its been over two minutes since we last saw them, remove them
                     if ((GetGameTimer() - user.GameTimeWhenDropped) > TWO_MINUTES)
                     {
                         await user.ActiveCharacter.Save();
@@ -146,7 +146,7 @@ namespace Vorp.Core.Server.Managers
             // TODO: Finish ban feature
             List<string> playerTokens = new List<string>();
             int numberOfTokens = GetNumPlayerTokens(player.Handle);
-            for(int i = 0; i < numberOfTokens; i++)
+            for (int i = 0; i < numberOfTokens; i++)
             {
                 playerTokens.Add(GetPlayerToken(player.Handle, i));
             }

@@ -7,7 +7,7 @@ namespace Vorp.Core.Server.Models
     {
         [DataMember(Name = "maximum")]
         public int Maximum;
-        
+
         [DataMember(Name = "init")]
         public InitiatedCharacter Init;
     }

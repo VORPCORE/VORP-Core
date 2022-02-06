@@ -48,7 +48,7 @@ namespace Vorp.Core.Server.Database.Store
                 if (!saved)
                     return null;
             }
-            
+
             if (withCharacters)
                 await user.GetCharacters(); // Assign characters here
 

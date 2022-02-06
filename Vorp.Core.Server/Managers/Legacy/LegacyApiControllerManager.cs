@@ -113,7 +113,7 @@ namespace Vorp.Core.Server.Managers.Legacy
         private Dictionary<string, Dictionary<string, dynamic>> GetConnectedUsers()
         {
             Dictionary<string, Dictionary<string, dynamic>> users = new Dictionary<string, Dictionary<string, dynamic>>();
-            foreach(Player player in PlayersList)
+            foreach (Player player in PlayersList)
             {
                 if (!UserSessions.ContainsKey(player.Handle)) continue;
                 string steamIdent = $"steam:{player.Identifiers["steam"]}";

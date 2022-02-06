@@ -17,7 +17,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
             Event("vorp:getCharacter", new Action<int, CallbackDelegate>(OnGetActiveCharacter));
             ExportDictionary.Add("GetActiveCharacter", new Func<int, Dictionary<string, dynamic>>(ExportActiveGetCharacter));
-            
+
             // This event is not secure
             Event("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
             ExportDictionary.Add("ExportAddCurrency", new Func<int, int, double, Task<bool>>(ExportAddCurrency));

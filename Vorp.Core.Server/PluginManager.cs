@@ -166,7 +166,7 @@ namespace Vorp.Core.Server
 
         public bool IsUserActive(string steamIdentifier)
         {
-            foreach(KeyValuePair<string, User> kvp in UserSessions)
+            foreach (KeyValuePair<string, User> kvp in UserSessions)
             {
                 User user = kvp.Value;
                 if (user.SteamIdentifier == steamIdentifier)

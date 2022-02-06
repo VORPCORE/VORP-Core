@@ -1,18 +1,18 @@
 ﻿global using CitizenFX.Core;
 global using CitizenFX.Core.Native;
 global using Newtonsoft.Json;
+global using Vorp.Core.Client.RedM;
 global using Vorp.Diagnostics;
 global using Vorp.Shared.Diagnostics;
 global using static CitizenFX.Core.Native.API;
-global using Vorp.Core.Client.RedM;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using Vorp.Core.Client.Environment.Entities;
 using Vorp.Core.Client.Events;
 using Vorp.Core.Client.Managers;
-using Vorp.Core.Client.Environment.Entities;
 
 namespace Vorp.Core.Client
 {
