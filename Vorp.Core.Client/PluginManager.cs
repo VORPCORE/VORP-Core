@@ -4,6 +4,7 @@ global using Newtonsoft.Json;
 global using Vorp.Diagnostics;
 global using Vorp.Shared.Diagnostics;
 global using static CitizenFX.Core.Native.API;
+global using Vorp.Core.Client.RedM;
 using System;
 using System.Collections.Generic;
 using System.Linq;

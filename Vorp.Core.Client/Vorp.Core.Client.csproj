@@ -79,8 +79,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Discord\DiscordRichPresence.cs" />
+    <Compile Include="Environment\ClientConfig.cs" />
+    <Compile Include="Environment\Config\DiscordSettings.cs" />
+    <Compile Include="Environment\Config\Discord\Asset.cs" />
+    <Compile Include="Environment\Config\PlayerNames.cs" />
+    <Compile Include="Environment\Entities\VorpPlayer.cs" />
     <Compile Include="Events\ClientGateway.cs" />
     <Compile Include="Events\ServerId.cs" />
+    <Compile Include="Managers\ClientConfigManager.cs" />
+    <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -89,8 +96,10 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="RedM\Enums\eUIGamertagVisibility.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="TickHandler.cs" />
+    <Compile Include="RedM\VorpAPI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -98,7 +107,8 @@
   <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Interface\" />
-    <Folder Include="Utils\" />
+    <Folder Include="Managers\Interface\" />
+    <Folder Include="Managers\Legacy\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
