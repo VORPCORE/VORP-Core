@@ -34,7 +34,7 @@ namespace Vorp.Shared.Records
 
         [Description("xp")]
         public int Experience { get; private set; } = 0;
-        
+
         // inventory should not be a string right now, it should be the output of a class
         [Description("inventory")]
         public string Inventory { get; set; } = "{}";

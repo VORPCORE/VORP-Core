@@ -15,6 +15,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Legacy Projects", "Legacy P
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vorp.Core.Client", "Vorp.Core.Client\Vorp.Core.Client.csproj", "{590CC09F-3F68-4554-ABE1-BFDFAA65357E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B49AEED2-6379-490F-BB76-23564DE1E870}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Vorp.Shared\Vorp.Shared.projitems*{590cc09f-3f68-4554-abe1-bfdfaa65357e}*SharedItemsImports = 4

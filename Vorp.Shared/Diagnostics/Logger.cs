@@ -1,4 +1,6 @@
-﻿namespace Vorp.Shared.Diagnostics
+﻿using System;
+
+namespace Vorp.Shared.Diagnostics
 {
     public static class Logger
     {
@@ -6,7 +8,7 @@
         {
             Format($"[INFO] {msg}");
         }
-        
+
         public static void Success(string msg)
         {
             Format($"[SUCCESS] {msg}");

@@ -7,8 +7,8 @@ using Vorp.Core.Server.Managers;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Vorp.Shared.Models;
 using System.Threading.Tasks;
+using Vorp.Shared.Models;
 
 namespace Vorp.Shared.Records
 {
