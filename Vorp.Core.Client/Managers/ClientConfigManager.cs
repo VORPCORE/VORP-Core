@@ -12,6 +12,7 @@ namespace Vorp.Core.Client.Managers
         public override void Begin()
         {
             _configCache = GetConfig();
+
             if (!_configCache.PvpEnabled)
             {
                 NetworkSetFriendlyFireOption(true);
