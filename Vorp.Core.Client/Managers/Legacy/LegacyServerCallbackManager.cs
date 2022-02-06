@@ -13,8 +13,8 @@ namespace Vorp.Core.Client.Managers.Legacy
 
         public override void Begin()
         {
-            EventHandler.Add("vorp:ExecuteServerCallBack", new Action<string, CallbackDelegate, object>(OnTriggerServerCallback));
-            EventHandler.Add("vorp:ServerCallback", new Action<int, object>(OnServerCallback));
+            Event("vorp:ExecuteServerCallBack", new Action<string, CallbackDelegate, object>(OnTriggerServerCallback));
+            Event("vorp:ServerCallback", new Action<int, object>(OnServerCallback));
         }
 
         void OnServerCallback(int requestId, dynamic args)

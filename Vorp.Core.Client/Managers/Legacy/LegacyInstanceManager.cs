@@ -6,7 +6,7 @@ namespace Vorp.Core.Client.Managers.Legacy
     {
         public override void Begin()
         {
-            EventHandler.Add("vorp:setInstancePlayer", new Action<bool>(OnSetPlayerInstance));
+            Event("vorp:setInstancePlayer", new Action<bool>(OnSetPlayerInstance));
         }
 
         void OnSetPlayerInstance(bool instance)

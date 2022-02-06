@@ -1,4 +1,7 @@
-﻿namespace Vorp.Core.Client.Managers
+﻿using System;
+using Vorp.Core.Client.Events;
+
+namespace Vorp.Core.Client.Managers
 {
     public abstract class Manager<T> where T : Manager<T>, new()
     {
@@ -10,7 +13,8 @@
         }
 
         public PluginManager Instance { get; set; }
-        public EventHandlerDictionary EventHandler => Instance.EventRegistry;
+        public void Event(string eventName, Delegate @delegate) => Instance.Hook(eventName, @delegate);
+        public ClientGateway ClientGateway => Instance.ClientGateway;
 
         protected Manager()
         {

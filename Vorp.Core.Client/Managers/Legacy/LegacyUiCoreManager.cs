@@ -6,8 +6,8 @@ namespace Vorp.Core.Client.Managers.Legacy
     {
         public override void Begin()
         {
-            EventHandler.Add("vorp:updateUi", new Action<string>(OnUpdateUI));
-            EventHandler.Add("vorp:showUi", new Action<bool>(OnShowUI));
+            Event("vorp:updateUi", new Action<string>(OnUpdateUI));
+            Event("vorp:showUi", new Action<bool>(OnShowUI));
         }
 
         void OnUpdateUI(string stringJson)

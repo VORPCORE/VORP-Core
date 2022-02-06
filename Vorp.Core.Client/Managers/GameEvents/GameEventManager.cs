@@ -7,7 +7,7 @@ namespace Vorp.Core.Client.Managers.GameEvents
     {
         public override void Begin()
         {
-            EventHandler.Add("gameEventTriggered", new Action<string, List<dynamic>>(OnGameEventTriggered));
+            Event("gameEventTriggered", new Action<string, List<dynamic>>(OnGameEventTriggered));
         }
 
         void OnGameEventTriggered(string name, List<dynamic> args)
