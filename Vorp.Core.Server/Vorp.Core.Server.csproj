@@ -31,6 +31,10 @@
   <ItemGroup>
     <None Remove="Resources\Languages\En.json" />
     <None Remove="Resources\Languages\Es.json" />
+    <None Remove="Resources\Languages\Fr.json" />
+    <None Remove="Resources\Languages\It.json" />
+    <None Remove="Resources\Languages\Nl.json" />
+    <None Remove="Resources\Languages\Sv.json" />
     <None Remove="Resources\server-config.json" />
   </ItemGroup>
 
@@ -39,6 +43,18 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\Languages\Es.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Languages\Fr.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Languages\It.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Languages\Nl.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\Languages\Sv.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\server-config.json">
