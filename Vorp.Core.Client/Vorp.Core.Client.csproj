@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vorp.Core.Client</RootNamespace>
-    <AssemblyName>Vorp.Core.Client</AssemblyName>
+    <AssemblyName>Vorp.Core.Client.net</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -43,7 +43,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DevelopmentClient|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\DEVELOPMENT\</OutputPath>
+    <OutputPath>Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\client\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CLIENT;DEVELOPMENT_CLIENT;RDR3</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>

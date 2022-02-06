@@ -16,3 +16,6 @@ L:\ws\fivem\VORP-Core\Vorp.Core.Client\bin\DEVELOPMENT\Newtonsoft.Json.xml
 L:\ws\fivem\VORP-Core\Vorp.Core.Client\obj\DevelopmentClient\Vorp.Core.Client.csproj.CopyComplete
 L:\ws\fivem\VORP-Core\Vorp.Core.Client\obj\DevelopmentClient\Vorp.Core.Client.dll
 L:\ws\fivem\VORP-Core\Vorp.Core.Client\obj\DevelopmentClient\Vorp.Core.Client.pdb
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\client\Resources\client-config.json
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\client\Vorp.Core.Client.dll
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\client\Vorp.Core.Client.pdb

@@ -28,3 +28,10 @@ L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\netstandard2.0\Vorp
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Resources\server-config.json
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Resources\Languages\En.json
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Resources\Languages\Es.json
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\server\DevelopmentServer\netstandard2.0\Resources\server-config.json
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\server\DevelopmentServer\netstandard2.0\Resources\Languages\En.json
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\server\DevelopmentServer\netstandard2.0\Resources\Languages\Es.json
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\server\DevelopmentServer\netstandard2.0\Vorp.Core.Server.net.deps.json
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\server\DevelopmentServer\netstandard2.0\Vorp.Core.Server.net.dll
+Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\server\DevelopmentServer\netstandard2.0\Vorp.Core.Server.net.pdb
+L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\netstandard2.0\Vorp.Core.Server.csproj.AssemblyReference.cache
