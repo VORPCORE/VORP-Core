@@ -1,0 +1,9 @@
+{
+  "user_is_loading": "Laddar in användaren",
+  "user_is_banned": "Du är inte välkommen här!",
+  "user_is_not_whitelisted": "🚫 Du är inte med på VIP listan",
+  "error_steam_not_found": "🚫 Du har inte Steam igång! Starta Steam och starta om RedM",
+  "error_discord_not_authorised": "Discord identity was not found, please make sure RedM is authorised with Discord.",
+  "error_creating_user": "An error occurred when trying to create your user, please contact server support.",
+  "error_user_with_matching_steam_already_connected": "🚫 Duplicerade konton (steam | rockstar)"
+}

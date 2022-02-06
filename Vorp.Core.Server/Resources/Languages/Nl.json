@@ -1,0 +1,9 @@
+{
+  "user_is_loading": "Gebruiker laden",
+  "user_is_banned": "Je bent verbannen",
+  "user_is_not_whitelisted": "🚫 Je bent niet Whitelisted",
+  "error_steam_not_found": "🚫 Je moet Steam aand hebben staan, gelieve Steam te openen & Redm herstarten.",
+  "error_discord_not_authorised": "Discord identity was not found, please make sure RedM is authorised with Discord.",
+  "error_creating_user": "An error occurred when trying to create your user, please contact server support.",
+  "error_user_with_matching_steam_already_connected": "🚫 Dubbele account verbonden (steam | rockstar)"
+}

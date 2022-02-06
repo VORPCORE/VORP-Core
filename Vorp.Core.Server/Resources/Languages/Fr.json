@@ -1,0 +1,9 @@
+{
+  "user_is_loading": "Chargement de votre utilisateur",
+  "user_is_banned": "Vous êtes banni du serveur",
+  "user_is_not_whitelisted": "🚫 Vous n'êtes pas dans la Whitelist",
+  "error_steam_not_found": "🚫 Vous devez avoir Steam ouvert, veuillez ouvrir Steam et redémarrer RedM",
+  "error_discord_not_authorised": "Discord identity was not found, please make sure RedM is authorised with Discord.",
+  "error_creating_user": "An error occurred when trying to create your user, please contact server support.",
+  "error_user_with_matching_steam_already_connected": "🚫 Compte dupliqué connecté (steam | rockstar)"
+}
