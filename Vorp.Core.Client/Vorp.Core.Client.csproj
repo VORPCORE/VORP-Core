@@ -54,6 +54,7 @@
   <ItemGroup>
     <Reference Include="CitizenFX.Core">
       <HintPath>..\dependancies\RedM\CitizenFX.Core.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Events, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lusive.Events.1.2.0\lib\net472\Events.dll</HintPath>

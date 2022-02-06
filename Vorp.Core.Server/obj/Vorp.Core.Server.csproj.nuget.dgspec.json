@@ -41,6 +41,7 @@
           "targetAlias": "netstandard2.0",
           "dependencies": {
             "CitizenFX.Core.Server": {
+              "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "target": "Package",
               "version": "[1.0.5261, )"
             },

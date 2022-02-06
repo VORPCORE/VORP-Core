@@ -1,7 +1,6 @@
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Vorp.Core.Server.net.deps.json
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Vorp.Core.Server.net.dll
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Vorp.Core.Server.net.pdb
-L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\CitizenFX.Core.Server.dll
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Dapper.dll
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Events.dll
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Generator.dll
@@ -17,7 +16,6 @@ L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\Syst
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\System.Reflection.Emit.Lightweight.dll
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\bin\DevelopmentServer\netstandard2.0\System.Threading.Tasks.Extensions.dll
-L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\netstandard2.0\Vorp.Core.Server.csproj.AssemblyReference.cache
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\netstandard2.0\Vorp.Core.Server.Properties.Resources.resources
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\netstandard2.0\Vorp.Core.Server.csproj.GenerateResource.cache
 L:\ws\fivem\VORP-Core\Vorp.Core.Server\obj\DevelopmentServer\netstandard2.0\Vorp.Core.Server.GeneratedMSBuildEditorConfig.editorconfig

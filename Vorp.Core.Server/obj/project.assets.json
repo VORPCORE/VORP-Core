@@ -8,7 +8,7 @@
           "lib/netstandard20/CitizenFX.Core.Server.dll": {}
         },
         "runtime": {
-          "lib/netstandard20/CitizenFX.Core.Server.dll": {}
+          "lib/netstandard20/_._": {}
         }
       },
       "Dapper/2.0.123": {
@@ -1172,6 +1172,7 @@
         "targetAlias": "netstandard2.0",
         "dependencies": {
           "CitizenFX.Core.Server": {
+            "include": "Compile, Build, Native, ContentFiles, Analyzers, BuildTransitive",
             "target": "Package",
             "version": "[1.0.5261, )"
           },
