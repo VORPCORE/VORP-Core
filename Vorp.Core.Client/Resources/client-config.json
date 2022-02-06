@@ -2,7 +2,7 @@
 	"playerNames": {
 		"display": true,
 		"distance": 30.0
-	}
+	},
 	"discord": {
 		"appId": 0,
 		"asset": {
