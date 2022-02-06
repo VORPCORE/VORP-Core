@@ -12,15 +12,15 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Vorp.Core.Client.Events;
 using Vorp.Core.Client.Managers;
+using Vorp.Core.Client.Environment.Entities;
 
 namespace Vorp.Core.Client
 {
     public class PluginManager : BaseScript
     {
         public static PluginManager Instance { get; private set; }
-
         public ClientGateway ClientGateway;
-
+        public VorpPlayer LocalPlayer;
         public EventHandlerDictionary EventRegistry => EventHandlers;
         public ExportDictionary ExportDictionary => Exports;
         public Dictionary<Type, object> Managers { get; } = new Dictionary<Type, object>();
@@ -97,6 +97,8 @@ namespace Vorp.Core.Client
 
                 AttachTickHandlers(this);
 
+                LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
+
                 Logger.Info("Load method has been completed.");
             }
             catch (Exception ex)
@@ -120,10 +122,8 @@ namespace Vorp.Core.Client
             if (GetCurrentResourceName() != resourceName) return;
             // Tell server to save
 
-            int playerPedId = PlayerPedId();
-
-            Vector3 position = GetEntityCoords(playerPedId, false, false);
-            float heading = GetEntityHeading(playerPedId);
+            Vector3 position = LocalPlayer.Position;
+            float heading = LocalPlayer.Heading;
 
             ClientGateway.Send("vorp:character:coords:save", position, heading);
         }

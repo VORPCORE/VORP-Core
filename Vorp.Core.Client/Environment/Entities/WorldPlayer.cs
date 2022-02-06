@@ -3,9 +3,14 @@ using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Environment.Entities
 {
-    class WorldPlayer : VorpPlayer
+    public class WorldPlayer : VorpPlayer
     {
         public int GamerTag { get; private set; }
+
+        public override int PlayerPedId
+        {
+            get { return GetPlayerPed(PlayerId); }
+        }
 
         public WorldPlayer(int playerId, int playerPedId) : base(playerId, playerPedId)
         {
