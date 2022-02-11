@@ -4,6 +4,9 @@ namespace Vorp.Shared.Diagnostics
 {
     public static class Logger
     {
+        static bool IsWarningEnabled => GetConvarInt("vorp_console_warning", 0) == 1;
+        static bool IsDebugEnabled => GetConvarInt("vorp_console_debug", 0) == 1;
+
         public static void Info(string msg)
         {
             Format($"[INFO] {msg}");
@@ -16,11 +19,13 @@ namespace Vorp.Shared.Diagnostics
 
         public static void Warn(string msg)
         {
+            if (!IsWarningEnabled) return;
             Format($"[WARN] {msg}");
         }
 
         public static void Debug(string msg)
         {
+            if (!IsDebugEnabled) return;
             Format($"[DEBUG] {msg}");
         }
 
