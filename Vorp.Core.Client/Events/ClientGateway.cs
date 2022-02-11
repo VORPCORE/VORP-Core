@@ -20,7 +20,8 @@ namespace Vorp.Core.Client.Events
 
         public ClientGateway(PluginManager client)
         {
-            SnowflakeGenerator.Create(1);
+            short playerId = (short)PlayerId();
+            SnowflakeGenerator.Create(playerId);
 
             Logger = new EventLogger();
             Serialization = new BinarySerialization(Logger);
