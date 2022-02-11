@@ -1,0 +1,3 @@
+[submodule "vendor/fx-events"]
+	path = vendor/fx-events
+	url = https://github.com/frostylucas/fx-events.git
