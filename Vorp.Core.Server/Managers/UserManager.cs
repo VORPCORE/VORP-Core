@@ -179,6 +179,7 @@ namespace Vorp.Core.Server.Managers
 
             // Check to see if the user is banned before we do anything else.
             bool isUserBanned = await UserStore.IsUserBanned(steamDatabaseIdentifier);
+            await BaseScript.Delay(0);
             if (isUserBanned)
             {
                 DefferAndKick("user_is_banned", denyWithReason, deferrals);
@@ -189,6 +190,7 @@ namespace Vorp.Core.Server.Managers
             if (ServerConfiguration.IsWhitelistDatabase)
             {
                 bool isUserInWhitelist = await UserStore.IsUserInWhitelist(steamDatabaseIdentifier);
+                await BaseScript.Delay(0);
                 if (isUserInWhitelist) goto USER_CAN_ENTER; // skip over, goto is old, but handy to jump around
 
                 DefferAndKick("user_is_not_whitelisted", denyWithReason, deferrals);
@@ -233,6 +235,8 @@ namespace Vorp.Core.Server.Managers
             {
                 // either they are new, or already exist
                 User user = await UserStore.GetUser(player.Handle, steamId, license, true);
+                
+                await BaseScript.Delay(0);
 
                 if (user == null)
                 {
