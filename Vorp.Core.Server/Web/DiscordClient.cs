@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Vorp.Core.Server.Managers;
+using Vorp.Core.Server.Models;
 using Vorp.Core.Server.Web.Discord.Entity;
 using Vorp.Shared.Models;
 
@@ -28,7 +29,7 @@ namespace Vorp.Core.Server.Web
 
     public class DiscordClient : Manager<DiscordClient>
     {
-        static ServerConfigManager _srvCfg => ServerConfigManager.GetModule();
+        static ServerConfig _srvCfg => ServerConfiguration.Config();
         static string _discordUrl => _srvCfg.Discord.Url;
 
         static Request request = new Request();
@@ -73,14 +74,26 @@ namespace Vorp.Core.Server.Web
             await BaseScript.Delay(10000);
         }
 
-        private void UpdateWebhooks()
+        private async void UpdateWebhooks()
         {
-            Webhooks = new Dictionary<WebhookChannel, string>()
+            try
             {
-                { WebhookChannel.ServerPlayerLog, _srvCfg.Discord.Webhooks.ServerPlayerLog },
-                { WebhookChannel.ServerErrorLog, _srvCfg.Discord.Webhooks.ServerError },
-                { WebhookChannel.ServerDebugLog, _srvCfg.Discord.Webhooks.ServerDebug },
-            };
+                while (!Instance.IsServerReady)
+                {
+                    await BaseScript.Delay(1000);
+                }
+
+                Webhooks = new Dictionary<WebhookChannel, string>()
+                {
+                    { WebhookChannel.ServerPlayerLog, _srvCfg.Discord.Webhooks.ServerPlayerLog },
+                    { WebhookChannel.ServerErrorLog, _srvCfg.Discord.Webhooks.ServerError },
+                    { WebhookChannel.ServerDebugLog, _srvCfg.Discord.Webhooks.ServerDebug },
+                };
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public async Task<RequestResponse> DiscordWebsocket(string method, string url, string jsonData = "")

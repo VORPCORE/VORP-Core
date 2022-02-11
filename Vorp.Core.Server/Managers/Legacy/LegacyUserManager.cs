@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Vorp.Core.Server.Models;
 using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server.Managers.Legacy
 {
     public class LegacyUserManager : Manager<LegacyUserManager>
     {
-        ServerConfigManager _srvCfg => ServerConfigManager.GetModule();
+        ServerConfig _srvCfg => ServerConfiguration.Config();
 
         public override void Begin()
         {

@@ -4,6 +4,7 @@ using Lusive.Events.Exceptions;
 using Lusive.Events.Message;
 using Lusive.Events.Serialization;
 using Lusive.Events.Serialization.Implementations;
+using Lusive.Snowflake;
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
@@ -22,6 +23,8 @@ namespace Vorp.Core.Server.Events
 
         public ServerGateway(PluginManager script)
         {
+            SnowflakeGenerator.Create(1);
+
             Logger = new EventLogger();
             Serialization = new BinarySerialization(Logger);
             DelayDelegate = async delay => await BaseScript.Delay(delay);

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Vorp.Core.Server.Managers;
 
 namespace Vorp.Core.Server.Web.Discord.Entity
 {
@@ -32,7 +31,7 @@ namespace Vorp.Core.Server.Web.Discord.Entity
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Content-Type", "application/json");
 
-            string discordBotKey = ServerConfigManager.GetModule().Discord.BotKey;
+            string discordBotKey = ServerConfiguration.Config().Discord.BotKey;
 
             headers.Add("Authorization", $"Bot {discordBotKey}");
 

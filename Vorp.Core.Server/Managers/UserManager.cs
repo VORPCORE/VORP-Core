@@ -12,7 +12,6 @@ namespace Vorp.Core.Server.Managers
 {
     public class UserManager : Manager<UserManager>
     {
-        ServerConfigManager _srvCfg => ServerConfigManager.GetModule();
         DiscordClient _discord => DiscordClient.GetModule();
 
         long lastTimeCleanupRan = 0;
@@ -35,8 +34,8 @@ namespace Vorp.Core.Server.Managers
         {
             List<dynamic> list = new List<dynamic>();
             if (source.Handle != id) return list;
-            
-            foreach(Player player in PlayersList)
+
+            foreach (Player player in PlayersList)
             {
                 list.Add(new { ServerId = player.Handle, Name = player.Name });
             }
@@ -153,7 +152,7 @@ namespace Vorp.Core.Server.Managers
 
         private async void OnPlayerConnecting([FromSource] Player player, string name, CallbackDelegate denyWithReason, dynamic deferrals)
         {
-            deferrals.update(_srvCfg.GetTranslation("CheckingIdentifier"));
+            deferrals.update(ServerConfiguration.GetTranslation("CheckingIdentifier"));
 
             string steamId = player?.Identifiers["steam"] ?? string.Empty; // maybe...
 
@@ -187,7 +186,7 @@ namespace Vorp.Core.Server.Managers
             }
 
             // Database whitelisting, legacy support
-            if (_srvCfg.IsWhitelistDatabase)
+            if (ServerConfiguration.IsWhitelistDatabase)
             {
                 bool isUserInWhitelist = await UserStore.IsUserInWhitelist(steamDatabaseIdentifier);
                 if (isUserInWhitelist) goto USER_CAN_ENTER; // skip over, goto is old, but handy to jump around
@@ -197,7 +196,7 @@ namespace Vorp.Core.Server.Managers
             }
 
             // Discord Role Whitelisting
-            if (_srvCfg.IsWhitelistDiscord)
+            if (ServerConfiguration.IsWhitelistDiscord)
             {
                 if (string.IsNullOrEmpty(discordId))
                 {
@@ -212,7 +211,7 @@ namespace Vorp.Core.Server.Managers
             }
 
         USER_CAN_ENTER:
-            deferrals.update(_srvCfg.GetTranslation("user_is_loading"));
+            deferrals.update(ServerConfiguration.GetTranslation("user_is_loading"));
             bool isCurrentlyConnected = Instance.IsUserActive(steamDatabaseIdentifier);
             if (isCurrentlyConnected)
             {
@@ -248,7 +247,7 @@ namespace Vorp.Core.Server.Managers
 
         private void DefferAndKick(string languageKey, CallbackDelegate denyWithReason, dynamic deferrals)
         {
-            string message = _srvCfg.GetTranslation(languageKey);
+            string message = ServerConfiguration.GetTranslation(languageKey);
             deferrals.done(message);
             denyWithReason.Invoke(message);
         }

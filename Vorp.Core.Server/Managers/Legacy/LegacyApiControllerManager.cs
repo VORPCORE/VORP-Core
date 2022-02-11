@@ -9,8 +9,6 @@ namespace Vorp.Core.Server.Managers.Legacy
     {
         public delegate Dictionary<string, dynamic> AuxDelegate(int serverId);
         public delegate Dictionary<string, Dictionary<string, dynamic>> AuxGetConnectedUsers();
-
-        private ServerConfigManager _serverConfigManager => ServerConfigManager.GetModule();
         private LegacyCallbackManager _callbackManager => LegacyCallbackManager.GetModule();
 
         public override void Begin()
@@ -69,45 +67,60 @@ namespace Vorp.Core.Server.Managers.Legacy
             user.ActiveCharacter.Coords = jb.Build();
         }
 
-        private void OnGetCore(CallbackDelegate cb)
+        private async void OnGetCore(CallbackDelegate cb)
         {
-            Dictionary<string, dynamic> core = new Dictionary<string, dynamic>()
-            {
-                { "getUser", new AuxDelegate(ExportGetCharacter) },
-                { "maxCharacters", _serverConfigManager.UserConfig.Characters.Maximum },
-                { "sendLog", new Action<string, string>((msg, type) =>
-                    {
-                        switch (type)
-                        {
-                            case "error":
-                                Logger.Error(msg);
-                                break;
-                            case "warn":
-                                Logger.Warn(msg);
-                                break;
-                            case "info":
-                                Logger.Info(msg);
-                                break;
-                            case "success":
-                                Logger.Success(msg);
-                                break;
-                            default:
-                                Logger.Error($"Log Type '{type}' is unknown");
-                                break;
-                        }
-                    })
-                },
-                { "getUsers", new AuxGetConnectedUsers(GetConnectedUsers) },
-                { "addRpcCallback", new Action<string, CallbackDelegate>(OnAddRpcCallback) }
-            };
-            cb.Invoke(core);
-        }
+            ServerConfiguration.Config();
 
-        private void OnAddRpcCallback(string name, CallbackDelegate cb)
-        {
-            if (_callbackManager.Callbacks.ContainsKey(name)) return;
-            _callbackManager.Callbacks.Add(name, cb);
-            Logger.Info($"Callback '{name}' has been registered.");
+            while (!Instance.IsServerReady)
+            {
+                await BaseScript.Delay(100);
+            }
+
+            try
+            {
+                Logger.Warn($"Event 'getCore' is deprecated, please update your methods to use the exports.");
+                Logger.Warn($"This will be removed in the future, and the version will be stated when this happens.");
+                Dictionary<string, dynamic> Core = new Dictionary<string, dynamic>()
+                {
+                    { "getUser", new AuxDelegate(ExportGetCharacter) },
+                    { "maxCharacters", ServerConfiguration.MaximumCharacters },
+                    { "sendLog", new Action<string, string>((msg, type) =>
+                        {
+                            switch (type)
+                            {
+                                case "error":
+                                    Logger.Error(msg);
+                                    break;
+                                case "warn":
+                                    Logger.Warn(msg);
+                                    break;
+                                case "info":
+                                    Logger.Info(msg);
+                                    break;
+                                case "success":
+                                    Logger.Success(msg);
+                                    break;
+                                default:
+                                    Logger.Error($"Log Type '{type}' is unknown");
+                                    break;
+                            }
+                        })
+                    },
+                    { "getUsers", new AuxGetConnectedUsers(GetConnectedUsers) },
+                    { "addRpcCallback", new Action<string, CallbackDelegate>((name, cb) => {
+                            if (LegacyCallbackManager.CallbackManagerInstance.Callbacks.ContainsKey(name)) return;
+                            LegacyCallbackManager.CallbackManagerInstance.Callbacks.Add(name, cb);
+                        })
+                    }
+                };
+
+                if (Core is not null)
+                    cb.Invoke(Core);
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, $"OnGetCore Exception: {GetInvokingResource()}");
+            }
         }
 
         private Dictionary<string, Dictionary<string, dynamic>> GetConnectedUsers()

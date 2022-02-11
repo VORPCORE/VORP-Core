@@ -1,13 +1,13 @@
 ﻿using Dapper;
 using System.Threading.Tasks;
-using Vorp.Core.Server.Managers;
+using Vorp.Core.Server.Models;
 using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server.Database.Store
 {
     internal static class UserStore
     {
-        static ServerConfigManager _srvCfg => ServerConfigManager.GetModule();
+        static ServerConfig _srvCfg => ServerConfiguration.Config();
 
         public static async Task<int> GetCountOfUsers()
         {

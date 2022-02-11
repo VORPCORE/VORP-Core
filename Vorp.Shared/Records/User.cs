@@ -1,7 +1,8 @@
 ﻿#if SERVER
 using Dapper;
 using Vorp.Core.Server.Database;
-using Vorp.Core.Server.Managers;
+using Vorp.Core.Server;
+using Vorp.Core.Server.Models;
 #endif
 
 using System.Collections.Generic;
@@ -19,7 +20,7 @@ namespace Vorp.Shared.Records
         const string SQL_UPDATE_WARNING = "update users set `warnings` = @warningCount where `identifier` = @identifier;";
         const string SQL_GET_CHARACTERS = "select * from characters where `identifier` = @identifier";
 
-        ServerConfigManager _serverConfigManager => ServerConfigManager.GetModule();
+        ServerConfig _serverConfigManager => ServerConfiguration.Config();
 #endif
 
         #region Fields

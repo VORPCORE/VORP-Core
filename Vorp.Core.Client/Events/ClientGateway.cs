@@ -3,6 +3,7 @@ using Lusive.Events.Diagnostics;
 using Lusive.Events.Message;
 using Lusive.Events.Serialization;
 using Lusive.Events.Serialization.Implementations;
+using Lusive.Snowflake;
 using System;
 using System.Threading.Tasks;
 
@@ -19,6 +20,8 @@ namespace Vorp.Core.Client.Events
 
         public ClientGateway(PluginManager client)
         {
+            SnowflakeGenerator.Create(1);
+
             Logger = new EventLogger();
             Serialization = new BinarySerialization(Logger);
             DelayDelegate = async delay => await BaseScript.Delay(delay);
