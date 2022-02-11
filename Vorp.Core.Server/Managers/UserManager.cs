@@ -249,6 +249,9 @@ namespace Vorp.Core.Server.Managers
                 }
 
                 UserSessions.TryAdd(player.Handle, user);
+
+                Logger.Debug($"Number of Sessions: {UserSessions.Count}");
+
                 deferrals.done();
             }
         }
