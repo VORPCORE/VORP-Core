@@ -84,7 +84,7 @@ namespace Vorp.Core.Server.Database
             sb.Append("** SQL Exception **\n");
             sb.Append($"Query: {query}\n");
             sb.Append($"Exception Message: {exceptionMessage}\n");
-            sb.Append($"Time Elapsed: {elapsedMilliseconds}");
+            sb.Append($"Time Elapsed: {elapsedMilliseconds}ms");
             Logger.Error($"{sb}");
         }
 
