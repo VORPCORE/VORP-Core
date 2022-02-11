@@ -58,8 +58,8 @@ Global
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Client|Any CPU.Build.0 = Server|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Debug|Any CPU.ActiveCfg = Server|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Debug|Any CPU.Build.0 = Server|Any CPU
-		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.DevelopmentClient|Any CPU.ActiveCfg = DevelopmentServer|Any CPU
-		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.DevelopmentClient|Any CPU.Build.0 = DevelopmentServer|Any CPU
+		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.DevelopmentClient|Any CPU.ActiveCfg = Debug|Any CPU
+		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.DevelopmentClient|Any CPU.Build.0 = Debug|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Release|Any CPU.ActiveCfg = Server|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Release|Any CPU.Build.0 = Server|Any CPU
 		{6ED84E11-01D5-4A67-9BC8-DA394A7964E9}.Server|Any CPU.ActiveCfg = Server|Any CPU
