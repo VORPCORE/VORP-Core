@@ -47,6 +47,7 @@ namespace Vorp.Core.Server.Managers
         {
             if (source.Handle != id) return false;
             source.User.IsActive = true;
+            Logger.Success($"Player '{source.User.Player.Name}' is now Active!");
             return true;
         }
 
@@ -135,13 +136,16 @@ namespace Vorp.Core.Server.Managers
                         await user.Save();
                     }
 
-                    // if its been over two minutes since we last saw them, remove them
-                    if ((GetGameTimer() - user.GameTimeWhenDropped) > TWO_MINUTES)
+                    if (user.GameTimeWhenDropped > 0)
                     {
-                        await user.ActiveCharacter.Save();
-                        bool isEndpointClear = string.IsNullOrEmpty(user.Endpoint);
-                        if (isEndpointClear)
-                            UserSessions.TryRemove(kvp.Key, out User removedUser);
+                        // if its been over two minutes since we last saw them, remove them
+                        if ((GetGameTimer() - user.GameTimeWhenDropped) > TWO_MINUTES)
+                        {
+                            await user.ActiveCharacter.Save();
+                            bool isEndpointClear = string.IsNullOrEmpty(user.Endpoint);
+                            if (isEndpointClear)
+                                UserSessions.TryRemove(kvp.Key, out User removedUser);
+                        }
                     }
                 }
 
