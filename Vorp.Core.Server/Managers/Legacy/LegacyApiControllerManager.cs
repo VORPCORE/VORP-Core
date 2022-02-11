@@ -238,12 +238,12 @@ namespace Vorp.Core.Server.Managers.Legacy
             Player player = PlayersList[serverId];
             if (player == null)
             {
-                Logger.Error($"[LegacyApi] Player not found.");
+                Logger.Error($"[LegacyApi] Player '{serverId}' not found.");
                 return null;
             }
             if (!UserSessions.ContainsKey(strServerId))
             {
-                Logger.Error($"[LegacyApi] Player not found in Active Users.");
+                Logger.Error($"[LegacyApi] Player '{serverId}:{player.Name}' not found in Active Users.");
                 return null;
             }
             return UserSessions[strServerId];
