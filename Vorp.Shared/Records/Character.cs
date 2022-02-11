@@ -10,6 +10,36 @@ namespace Vorp.Shared.Records
 {
     public record Character(int CharacterId, string Firstname, string Lastname)
     {
+        public Character(string identifier, string steamname, int charidentifier, string group, double money, double gold,
+            double rol, int xp, string inventory, string job, string status, string meta, string firstname, string lastname, 
+            string skinPlayer, string compPlayer, int jobgrade, string coords, bool isdead, int clanid, int trust,
+            int supporter, string walk, string crafting, string info, double gunsmith) : this(charidentifier, firstname, lastname)
+        {
+            SteamIdentifier = identifier;
+            SteamName = steamname;
+            Group = group;
+            Cash = money;
+            Gold = gold;
+            RoleToken = rol;
+            Experience = xp;
+            Inventory = inventory;
+            Job = job;
+            Status = status;
+            Meta = meta;
+            Skin =  skinPlayer;
+            Components = compPlayer;
+            JobGrade = jobgrade;
+            Coords = coords;
+            IsDead = isdead;
+            ClanId = clanid;
+            Trust = trust;
+            Supporter = supporter;
+            Walk = walk;
+            Crafting = crafting;
+            Info = info;
+            GunSmith = gunsmith;
+        }
+
         #region Fields
         [Description("identifier")]
         public string SteamIdentifier { get; set; } = default!;
@@ -132,6 +162,7 @@ namespace Vorp.Shared.Records
                         Logger.Error($"Character.AdjustCurrency {currency} value is unknown");
                         return false;
                 }
+                await BaseScript.Delay(0);
                 return true;
             }
             catch (Exception ex)
@@ -150,6 +181,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("experience", amt);
                 Experience = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `xp` += @experience WHERE `charIdentifier` = @characterId; SELECT `xp` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                await BaseScript.Delay(0);
                 return true;
             }
             catch (Exception ex)
@@ -167,6 +199,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("job", job);
                 Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `job` = @job WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                await BaseScript.Delay(0);
                 return true;
             }
             catch (Exception ex)
@@ -184,6 +217,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("grade", grade);
                 Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `jobgrade` = @grade WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                await BaseScript.Delay(0);
                 return true;
             }
             catch (Exception ex)
@@ -202,6 +236,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("job", job);
                 dynamicParameters.Add("grade", grade);
                 Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `job` = @job, `jobgrade` = @grade WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                await BaseScript.Delay(0);
                 return true;
             }
             catch (Exception ex)
@@ -219,6 +254,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("group", group);
                 Group = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `group` = @group WHERE `charIdentifier` = @characterId; SELECT `group` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                await BaseScript.Delay(0);
                 return true;
             }
             catch (Exception ex)
@@ -236,6 +272,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("dead", isDead);
                 int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `isdead` = @dead WHERE `charIdentifier` = @characterId; SELECT `isdead` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                await BaseScript.Delay(0);
                 return result > 0; // if result is true, then user is dead
             }
             catch (Exception ex)

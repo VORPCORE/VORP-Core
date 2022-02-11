@@ -39,6 +39,8 @@ namespace Vorp.Shared.Records
 
         #endregion
 
+        public User() { }
+
 #if SERVER
         public Player Player { get; private set; }
         public string Endpoint => GetPlayerEndpoint(ServerId);
@@ -112,6 +114,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("identifier", SteamIdentifier);
             dynamicParameters.Add("group", group);
             bool changePersisted = await DapperDatabase<User>.ExecuteAsync(SQL_UPDATE_GROUP, dynamicParameters);
+            await BaseScript.Delay(0);
             if (changePersisted)
                 Group = group;
             return changePersisted;
@@ -123,6 +126,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("identifier", SteamIdentifier);
             dynamicParameters.Add("warningCount", Warnings);
             bool changePersisted = await DapperDatabase<User>.ExecuteAsync(SQL_UPDATE_WARNING, dynamicParameters);
+            await BaseScript.Delay(0);
             if (changePersisted)
                 Warnings = warnings;
             return changePersisted;
@@ -133,6 +137,7 @@ namespace Vorp.Shared.Records
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("identifier", SteamIdentifier);
             List<Character> characters = await DapperDatabase<Character>.GetListAsync(SQL_GET_CHARACTERS, dynamicParameters);
+            await BaseScript.Delay(0);
             foreach (Character character in characters)
                 Characters.Add(character.CharacterId, character);
         }
