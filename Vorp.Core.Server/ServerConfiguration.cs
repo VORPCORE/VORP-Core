@@ -50,7 +50,7 @@ namespace Vorp.Core.Server
 
         public static string GetTranslation(string key)
         {
-            if (_serverLanguage.ContainsKey(key))
+            if (!_serverLanguage.ContainsKey(key))
                 return $"Translation for '{key}' not found.";
 
             return _serverLanguage[key];

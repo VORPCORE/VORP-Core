@@ -1,4 +1,5 @@
 ﻿{
+  "user_checking_identifier": "Checking Identity",
   "user_is_loading": "Cargando tu usuario",
   "user_is_banned": "Estas baneado del servidor",
   "user_is_not_whitelisted": "🚫 Lo sentimos acutalmente no estas en la whitelist.",

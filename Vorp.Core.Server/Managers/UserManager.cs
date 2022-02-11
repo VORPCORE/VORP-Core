@@ -152,7 +152,7 @@ namespace Vorp.Core.Server.Managers
 
         private async void OnPlayerConnecting([FromSource] Player player, string name, CallbackDelegate denyWithReason, dynamic deferrals)
         {
-            deferrals.update(ServerConfiguration.GetTranslation("CheckingIdentifier"));
+            deferrals.update(ServerConfiguration.GetTranslation("user_checking_identifier"));
 
             string steamId = player?.Identifiers["steam"] ?? string.Empty; // maybe...
 
