@@ -62,6 +62,11 @@ namespace Vorp.Core.Client.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to {
+        ///	&quot;pvp&quot;: false,
+        ///	&quot;playerNames&quot;: {
+        ///		&quot;display&quot;: true,
+        ///		&quot;distance&quot;: 30.0
+        ///	},
         ///	&quot;discord&quot;: {
         ///		&quot;appId&quot;: 0,
         ///		&quot;asset&quot;: {

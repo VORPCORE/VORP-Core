@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Vorp.Core.Client</RootNamespace>
     <AssemblyName>Vorp.Core.Client.net</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
     <LangVersion>latest</LangVersion>
@@ -43,7 +43,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DevelopmentClient|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\client\</OutputPath>
+    <OutputPath>Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CLIENT;DEVELOPMENT_CLIENT;RDR3</DefineConstants>
     <DebugType>full</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -58,9 +58,11 @@
     </Reference>
     <Reference Include="Events, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lusive.Events.1.2.0\lib\net472\Events.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Generator, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lusive.Events.Generator.1.1.0\lib\netstandard2.0\Generator.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -68,6 +70,7 @@
     </Reference>
     <Reference Include="Snowflake, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lusive.Snowflake.1.1.1\lib\net472\Snowflake.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
