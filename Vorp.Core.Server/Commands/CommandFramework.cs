@@ -72,7 +72,7 @@ namespace Vorp.Core.Server.Commands
 
             if (context.IsRestricted && !context.RequiredRoles.Contains(user.Group))
             {
-                // ChatManager.OnServerMessage(player, "Restricted Command", "help");
+                player.TriggerEvent("chat:addMessage", "Restricted Command");
                 return;
             }
 
@@ -87,11 +87,11 @@ namespace Vorp.Core.Server.Commands
 
             if (arguments.Count < 1)
             {
-                // ChatManager.OnServerMessage(player, "Avaliable Commands:", "help");
+                player.TriggerEvent("chat:addMessage", "Avaliable Commands:");
 
                 foreach (var entry in registry)
                 {
-                    // ChatManager.OnServerMessage(player, $"/{alias} {string.Join(", ", entry.Item1.Aliases)}", "help");
+                    player.TriggerEvent("chat:addMessage", $"/{alias} {string.Join(", ", entry.Item1.Aliases)}");
                 }
 
                 return;
@@ -112,8 +112,8 @@ namespace Vorp.Core.Server.Commands
                 break;
             }
 
-            //if (!matched)
-            //    ChatManager.OnServerMessage(player, $"Command not found: {subcommand}", "help");
+            if (!matched)
+                player.TriggerEvent("chat:addMessage", $"Command not found: {subcommand}");
         }
     }
 }
