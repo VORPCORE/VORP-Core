@@ -6,5 +6,6 @@
   "error_steam_not_found": "Devi avere Steam aperto! Per favore, apri Steam e riavvia RedM",
   "error_discord_not_authorised": "Discord identity was not found, please make sure RedM is authorised with Discord.",
   "error_creating_user": "An error occurred when trying to create your user, please contact server support.",
-  "error_user_with_matching_steam_already_connected": "Questo account è già connesso (steam | rockstar)"
+  "error_user_with_matching_steam_already_connected": "Questo account è già connesso (steam | rockstar)",
+  "error_creating_user_session": "Error creating user session, please contact support."
 }

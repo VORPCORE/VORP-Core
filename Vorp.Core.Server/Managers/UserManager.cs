@@ -247,11 +247,14 @@ namespace Vorp.Core.Server.Managers
                     return;
                 }
 
-                UserSessions.TryAdd(player.Handle, user);
+                if (UserSessions.TryAdd(player.Handle, user))
+                {
+                    Logger.Debug($"Number of Sessions: {UserSessions.Count}");
+                    deferrals.done();
+                    return;
+                }
 
-                Logger.Debug($"Number of Sessions: {UserSessions.Count}");
-
-                deferrals.done();
+                DefferAndKick("error_creating_user_session", denyWithReason, deferrals);
             }
         }
 
