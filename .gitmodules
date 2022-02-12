@@ -1,3 +1,6 @@
 [submodule "vendor/fx-events"]
 	path = vendor/fx-events
 	url = https://github.com/frostylucas/fx-events.git
+[submodule "vendor/snowflake"]
+	path = vendor/snowflake
+	url = https://github.com/frostylucas/snowflake.git
