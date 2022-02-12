@@ -45,9 +45,32 @@ namespace Vorp.Core.Server.Managers
 
         private void OnUserIsActive(ClientId source, int id)
         {
-            if (source.Handle != id) return;
-            source.User.IsActive = true;
-            Logger.Success($"Player '{source.User.Player.Name}' is now Active!");
+            Player player = PlayersList[source.Handle];
+            if (player == null) return;
+
+            try
+            {
+                if (source.Handle != id) return;
+                if (source.User == null)
+                {
+                    Logger.Error($"User Sessions: {UserSessions.Count}");
+                    Logger.Error($"User Session Keys: {string.Join(",", UserSessions.Keys)}");
+                    Logger.Error($"Player '{source.Handle}' could not be found!");
+                    return;
+                }
+
+                source.User.IsActive = true;
+                
+                source.User.AddPlayer(player);
+
+                Logger.Success($"Player '{source.User.Player.Name}' is now Active!");
+            }
+            catch (Exception ex)
+            {
+                string msg = ServerConfiguration.GetTranslation("error_activating_user_session");
+                player.Drop(msg);
+                Logger.Error(ex, $"OnUserIsActive: {msg}");
+            }
         }
 
         private async void OnResourceStop(string resourceName)
@@ -231,6 +254,7 @@ namespace Vorp.Core.Server.Managers
                 }
                 // should this fire an event at the player?! It honestly should, then they know to request a character list
                 user.UpdateServerId(player.Handle); // update the serverId to be sure
+                Logger.Debug($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
                 deferrals.done();
             }
 
@@ -244,11 +268,13 @@ namespace Vorp.Core.Server.Managers
                 if (user == null)
                 {
                     DefferAndKick("error_creating_user", denyWithReason, deferrals);
+                    deferrals.done();
                     return;
                 }
 
-                if (UserSessions.TryAdd(player.Handle, user))
+                if (UserSessions.TryAdd(steamId, user))
                 {
+                    Logger.Debug($"Player: [{steamId}] {player.Name} has joined the server.");
                     Logger.Debug($"Number of Sessions: {UserSessions.Count}");
                     deferrals.done();
                     return;

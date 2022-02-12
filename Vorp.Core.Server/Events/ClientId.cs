@@ -11,8 +11,7 @@ namespace Vorp.Core.Server.Events
 
         public int Handle { get; set; }
         public string[] Identifiers { get; set; }
-
-        public User User => PluginManager.UserSessions[$"{Handle}"] ?? (User)default!;
+        public User User { get; private set; }
 
         public ClientId(int handle)
         {
@@ -23,6 +22,14 @@ namespace Vorp.Core.Server.Events
             for (var index = 0; index < GetNumPlayerIdentifiers(handle.ToString()); index++)
             {
                 holder.Add(GetPlayerIdentifier(handle.ToString(), index));
+            }
+
+            Player player = PluginManager.PlayersList[handle];
+            string steamId = player.Identifiers["steam"];
+
+            if (PluginManager.UserSessions.ContainsKey($"{steamId}"))
+            {
+                User = PluginManager.UserSessions[$"{steamId}"];
             }
 
             Identifiers = holder.ToArray();

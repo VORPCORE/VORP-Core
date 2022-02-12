@@ -43,6 +43,9 @@ namespace Vorp.Shared.Records
 
 #if SERVER
         public Player Player { get; private set; }
+
+        public void AddPlayer(Player player) => Player = player;
+
         public string Endpoint => GetPlayerEndpoint(ServerId);
 #endif
         public string ServerId { get; private set; }

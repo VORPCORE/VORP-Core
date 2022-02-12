@@ -7,5 +7,6 @@
   "error_discord_not_authorised": "Discord identity was not found, please make sure RedM is authorised with Discord.",
   "error_creating_user": "An error occurred when trying to create your user, please contact server support.",
   "error_user_with_matching_steam_already_connected": "🚫 Duplicated account connected (steam | rockstar)",
-  "error_creating_user_session": "Error creating user session, please contact support."
+  "error_creating_user_session": "Error creating user session, please contact support.",
+  "error_activating_user_session": "Error activating user session, please contact support."
 }
