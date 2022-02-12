@@ -168,19 +168,31 @@ namespace Vorp.Core.Server
 
         public bool IsUserActive(string steamIdentifier)
         {
-            foreach (KeyValuePair<string, User> kvp in UserSessions)
+            try
             {
-                User user = kvp.Value;
-                if (user.SteamIdentifier == steamIdentifier)
+                Dictionary<string, User> userDictionary = new Dictionary<string, User>(UserSessions);
+                foreach (KeyValuePair<string, User> kvp in userDictionary)
                 {
-                    // if the currently known user returns an endpoint with that server Id, then they are still connected.
-                    // if it returns nothing, then the server should allow the connection and pass their current data back
-                    // this should also skip any additional loading from the database
-                    return !string.IsNullOrEmpty(GetPlayerEndpoint(user.ServerId));
+                    User user = kvp.Value;
+                    
+                    if (user == null) return false;
+
+                    if (kvp.Key == steamIdentifier)
+                    {
+                        // if the currently known user returns an endpoint with that server Id, then they are still connected.
+                        // if it returns nothing, then the server should allow the connection and pass their current data back
+                        // this should also skip any additional loading from the database
+                        return !string.IsNullOrEmpty(GetPlayerEndpoint(user.CFXServerID));
+                    }
+                    return false;
                 }
                 return false;
             }
-            return false;
+            catch (Exception ex)
+            {
+                Logger.Error(ex, $"IsUserActive: {steamIdentifier}");
+                return false;
+            }
         }
     }
 }

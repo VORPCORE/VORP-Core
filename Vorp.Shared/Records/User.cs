@@ -18,7 +18,7 @@ namespace Vorp.Shared.Records
 #if SERVER
         const string SQL_UPDATE_GROUP = "update users set `group` = @group where `identifier` = @identifier;";
         const string SQL_UPDATE_WARNING = "update users set `warnings` = @warningCount where `identifier` = @identifier;";
-        const string SQL_GET_CHARACTERS = "select * from characters where `identifier` = @identifier";
+        const string SQL_GET_CHARACTERS = "select * from characters where `identifier` = @identifier;";
 
         ServerConfig _serverConfigManager => ServerConfiguration.Config();
 #endif
@@ -39,32 +39,38 @@ namespace Vorp.Shared.Records
 
         #endregion
 
-        public User() { }
+        public User(string identifier, string group, int warnings, sbyte banned)
+        {
+            SteamIdentifier = identifier;
+            Group = group;
+            Warnings = warnings;
+            Banned = banned == 1;
+        }
 
 #if SERVER
-        public Player Player { get; private set; }
+        [JsonIgnore] public Player Player { get; private set; }
 
         public void AddPlayer(Player player) => Player = player;
 
-        public string Endpoint => GetPlayerEndpoint(ServerId);
+        [JsonIgnore] public string Endpoint => GetPlayerEndpoint(CFXServerID);
 #endif
-        public string ServerId { get; private set; }
+        [JsonIgnore] public string CFXServerID { get; private set; }
         // DB Keys
-        public ulong DiscordIdentifier { get; private set; }
-        public string LicenseIdentifier { get; private set; }
+        [JsonIgnore] public ulong DiscordIdentifier { get; private set; }
+        [JsonIgnore] public string LicenseIdentifier { get; private set; }
 
         // Character Items
         public Dictionary<int, Character> Characters { get; private set; } = new Dictionary<int, Character>();
         public int NumberOfCharacters => Characters.Count;
         public Character ActiveCharacter => Characters.Select(x => x.Value).Where(x => x.IsActive).FirstOrDefault();
 
-        public User(string serverId,
+        public User(string cfxServerHandle,
                     string steamId,
                     string license,
                     string group,
                     int warnings)
         {
-            ServerId = serverId;
+            CFXServerID = cfxServerHandle;
             SteamIdentifier = steamId;
             LicenseIdentifier = license;
             Group = group;
@@ -140,7 +146,9 @@ namespace Vorp.Shared.Records
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("identifier", SteamIdentifier);
             List<Character> characters = await DapperDatabase<Character>.GetListAsync(SQL_GET_CHARACTERS, dynamicParameters);
+
             await BaseScript.Delay(0);
+
             foreach (Character character in characters)
                 Characters.Add(character.CharacterId, character);
         }
@@ -152,7 +160,7 @@ namespace Vorp.Shared.Records
                 ["getIdentifier"] = SteamIdentifier,
                 ["getGroup"] = Group,
                 ["getPlayerwarnings"] = Warnings,
-                ["source"] = ServerId,
+                ["source"] = CFXServerID,
                 ["setGroup"] = new Func<string, Task<bool>>(async (group) =>
                 {
                     try
@@ -178,7 +186,7 @@ namespace Vorp.Shared.Records
                         return false;
                     }
                 }),
-                ["getUsedCharacter"] = ActiveCharacter,
+                ["getUsedCharacter"] = ActiveCharacter ?? null,
                 ["getUserCharacters"] = Characters,
                 ["getNumOfCharacters"] = Characters.Count,
                 ["addCharacter"] = new Func<string, string, string, string, Task<bool>>(async (firstname, lastname, skin, comps) =>
@@ -235,12 +243,18 @@ namespace Vorp.Shared.Records
 
         internal void UpdateServerId(string handle)
         {
-            ServerId = handle;
+            CFXServerID = handle;
         }
 
         public Dictionary<string, dynamic> GetActiveCharacter()
         {
             Character activeChar = ActiveCharacter;
+
+            if (activeChar == null)
+            {
+                Logger.Error($"Player '{Player.Name}' does not current have an active character. {GetInvokingResource()}");
+                return null;
+            }
 
             return new Dictionary<string, dynamic>()
             {
@@ -311,7 +325,7 @@ namespace Vorp.Shared.Records
             jb.Add("goldquanty", activeChar.Gold);
             jb.Add("rolquanty", activeChar.RoleToken);
             jb.Add("xp", activeChar.Experience);
-            jb.Add("serverId", ServerId);
+            jb.Add("serverId", CFXServerID);
             Player.TriggerEvent("vorp:updateUi", $"{jb}");
         }
 #endif

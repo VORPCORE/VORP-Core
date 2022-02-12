@@ -234,19 +234,21 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private User GetUser(int serverId)
         {
-            string strServerId = $"{serverId}";
             Player player = PlayersList[serverId];
             if (player == null)
             {
                 Logger.Error($"[LegacyApi] Player '{serverId}' not found.");
                 return null;
             }
-            if (!UserSessions.ContainsKey(strServerId))
+
+            string steamId = player.Identifiers["steam"];
+
+            if (!UserSessions.ContainsKey(steamId))
             {
-                Logger.Error($"[LegacyApi] Player '{serverId}|{player.Name}' not found in Active Users.");
+                Logger.Error($"[LegacyApi] Player [{steamId}] '{player.Name}' not found in Active Users.");
                 return null;
             }
-            return UserSessions[strServerId];
+            return UserSessions[steamId];
         }
     }
 }

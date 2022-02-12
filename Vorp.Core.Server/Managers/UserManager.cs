@@ -60,10 +60,33 @@ namespace Vorp.Core.Server.Managers
                 }
 
                 source.User.IsActive = true;
-                
                 source.User.AddPlayer(player);
-
+                source.User.UpdateServerId(player.Handle);
                 Logger.Success($"Player [{source.User.SteamIdentifier}] '{source.User.Player.Name}' is now Active!");
+
+                // Legacy Methods to be removed
+                int numberOfCharacters = source.User.NumberOfCharacters;
+                Logger.Debug($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
+
+                if (numberOfCharacters <= 0)
+                {
+                    source.User.Player.TriggerEvent("vorp_CreateNewCharacter");
+                    Logger.Debug($"Player '{player.Name}' -> vorp_CreateNewCharacter");
+                }
+                else
+                {
+                    if (ServerConfiguration.MaximumCharacters == 1 && numberOfCharacters <= 1)
+                    {
+                        source.User.Player.TriggerEvent("vorp_SpawnUniqueCharacter");
+                        Logger.Debug($"Player '{player.Name}' -> vorp_SpawnUniqueCharacter");
+                    }
+                    else
+                    {
+                        source.User.Player.TriggerEvent("vorp_GoToSelectionMenu");
+                        Logger.Debug($"Player '{player.Name}' -> vorp_GoToSelectionMenu");
+                    }
+                }
+
             }
             catch (Exception ex)
             {
@@ -119,9 +142,13 @@ namespace Vorp.Core.Server.Managers
         private async void OnPlayerDropped([FromSource] Player player, string reason)
         {
             Logger.Info($"Player '{player.Name}' dropped (Reason: {reason}).");
-            if (!UserSessions.ContainsKey(player.Handle)) return;
-            User user = UserSessions[player.Handle];
-            await user.ActiveCharacter.Save(); // save the characters information now, just to be sure
+            string steamId = player.Identifiers["steam"];
+            if (!UserSessions.ContainsKey(steamId)) return;
+            User user = UserSessions[steamId];
+            
+            if (user.ActiveCharacter != null)
+                await user.ActiveCharacter.Save(); // save the characters information now, just to be sure
+
             // We do not remove the player straight away as other resources may request data when a player drops
             user.MarkPlayerHasDropped();
         }
@@ -131,44 +158,53 @@ namespace Vorp.Core.Server.Managers
         {
             if ((GetGameTimer() - lastTimeCleanupRan) > TWO_MINUTES)
             {
-                // copy the active user list so we don't run into any errors
-                Dictionary<string, User> users = new Dictionary<string, User>(UserSessions);
-
-                // loop each user in the active list
-                foreach (KeyValuePair<string, User> kvp in users)
+                try
                 {
-                    User user = kvp.Value;
-                    if (user.ActiveCharacter != null)
-                    {
-                        Player player = PlayersList[user.ServerId];
-                        if (player != null && Instance.IsOneSyncEnabled)
-                        {
-                            Vector3 playerPosition = player.Character.Position;
-                            float playerHeading = player.Character.Heading;
-                            JsonBuilder jb = new();
-                            jb.Add("x", playerPosition.X);
-                            jb.Add("y", playerPosition.Y);
-                            jb.Add("z", playerPosition.Z);
-                            jb.Add("heading", playerHeading);
-                            user.ActiveCharacter.Coords = $"{jb}";
+                    // copy the active user list so we don't run into any errors
+                    Dictionary<string, User> users = new Dictionary<string, User>(UserSessions);
 
-                            UserSessions[kvp.Key].ActiveCharacter.Coords = user.ActiveCharacter.Coords;
-                        }
-                        await user.ActiveCharacter.Save();
-                        await user.Save();
-                    }
-
-                    if (user.GameTimeWhenDropped > 0)
+                    // loop each user in the active list
+                    foreach (KeyValuePair<string, User> kvp in users)
                     {
-                        // if its been over two minutes since we last saw them, remove them
-                        if ((GetGameTimer() - user.GameTimeWhenDropped) > TWO_MINUTES)
+                        User user = kvp.Value;
+                        if (user.ActiveCharacter is not null)
                         {
+                            Player player = PlayersList[user.CFXServerID];
+                            if (player != null && Instance.IsOneSyncEnabled)
+                            {
+                                Vector3 playerPosition = player.Character.Position;
+                                float playerHeading = player.Character.Heading;
+                                JsonBuilder jb = new();
+                                jb.Add("x", playerPosition.X);
+                                jb.Add("y", playerPosition.Y);
+                                jb.Add("z", playerPosition.Z);
+                                jb.Add("heading", playerHeading);
+                                user.ActiveCharacter.Coords = $"{jb}";
+
+                                UserSessions[kvp.Key].ActiveCharacter.Coords = user.ActiveCharacter.Coords;
+                            }
                             await user.ActiveCharacter.Save();
-                            bool isEndpointClear = string.IsNullOrEmpty(user.Endpoint);
-                            if (isEndpointClear)
-                                UserSessions.TryRemove(kvp.Key, out User removedUser);
+                            await user.Save();
+                        }
+
+                        if (user.GameTimeWhenDropped > 0)
+                        {
+                            // if its been over two minutes since we last saw them, remove them
+                            if ((GetGameTimer() - user.GameTimeWhenDropped) > TWO_MINUTES)
+                            {
+                                if (user.ActiveCharacter is not null)
+                                    await user.ActiveCharacter.Save();
+
+                                bool isEndpointClear = string.IsNullOrEmpty(user.Endpoint);
+                                if (isEndpointClear)
+                                    UserSessions.TryRemove(kvp.Key, out User removedUser);
+                            }
                         }
                     }
+                }
+                catch(Exception ex)
+                {
+                    Logger.Error(ex, $"OnPlayerCleanUp");
                 }
 
                 lastTimeCleanupRan = GetGameTimer();
@@ -245,15 +281,15 @@ namespace Vorp.Core.Server.Managers
             {
                 // need to check some extras, so that if the SteamID matches a live player
                 // if some other information differs, it should drop them
-                User user = UserSessions[player.Handle];
+                User user = UserSessions[steamId];
 
-                if (user.LicenseIdentifier != license)
+                if (user.LicenseIdentifier == license)
                 {
                     DefferAndKick("error_user_with_matching_steam_already_connected", denyWithReason, deferrals);
                     return;
                 }
+
                 // should this fire an event at the player?! It honestly should, then they know to request a character list
-                user.UpdateServerId(player.Handle); // update the serverId to be sure
                 Logger.Debug($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
                 deferrals.done();
             }
@@ -261,7 +297,7 @@ namespace Vorp.Core.Server.Managers
             if (!isCurrentlyConnected)
             {
                 // either they are new, or already exist
-                User user = await UserStore.GetUser(player.Handle, steamId, license, true);
+                User user = await UserStore.GetUser(player.Handle, steamDatabaseIdentifier, license, true);
                 
                 await BaseScript.Delay(0);
 
@@ -271,16 +307,16 @@ namespace Vorp.Core.Server.Managers
                     deferrals.done();
                     return;
                 }
+                
+                UserSessions.AddOrUpdate(steamId, user, (key, oldValue) => oldValue = user);
+                
+                Logger.Debug($"Player: [{steamId}] {player.Name} is joining the server with {user.NumberOfCharacters} character(s).");
+                Logger.Debug($"Number of Sessions: {UserSessions.Count}");
+                deferrals.done();
+                return;
 
-                if (UserSessions.TryAdd(steamId, user))
-                {
-                    Logger.Debug($"Player: [{steamId}] {player.Name} has joined the server.");
-                    Logger.Debug($"Number of Sessions: {UserSessions.Count}");
-                    deferrals.done();
-                    return;
-                }
-
-                DefferAndKick("error_creating_user_session", denyWithReason, deferrals);
+                // review if needed
+                // DefferAndKick("error_creating_user_session", denyWithReason, deferrals);
             }
         }
 
