@@ -36,7 +36,6 @@ namespace Vorp.Core.Server
             return LoadConfiguration();
         }
         public static Discord Discord => Config().Discord;
-        public static SqlConfig SqlConfig => Config().SqlConfig;
         public static UserConfig UserConfig => Config().UserConfig;
 
         public static int MaximumCharacters => Config().UserConfig.Characters.Maximum;

@@ -36,9 +36,6 @@ namespace Vorp.Core.Server.Models
         [DataMember(Name = "discord")]
         public Discord Discord;
 
-        [DataMember(Name = "sql")]
-        public SqlConfig SqlConfig;
-
         [DataMember(Name = "users")]
         public UserConfig UserConfig;
     }
