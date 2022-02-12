@@ -65,25 +65,44 @@ namespace Vorp.Core.Server.Managers
                 Logger.Success($"Player [{source.User.SteamIdentifier}] '{source.User.Player.Name}' is now Active!");
 
                 // Legacy Methods to be removed
+                // Make this internal to VORP_CORE
                 int numberOfCharacters = source.User.NumberOfCharacters;
                 Logger.Debug($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
 
                 if (numberOfCharacters <= 0)
                 {
-                    source.User.Player.TriggerEvent("vorp_CreateNewCharacter");
-                    Logger.Debug($"Player '{player.Name}' -> vorp_CreateNewCharacter");
+                    player.TriggerEvent("vorpcharacter:createCharacter");
+                    Logger.Debug($"Player '{player.Name}' -> vorpcharacter:createCharacter");
                 }
                 else
                 {
+                    List<Dictionary<string, dynamic>> characters = new();
+
+                    foreach (KeyValuePair<int, Character> kvp in source.User.Characters)
+                    {
+                        Character character = kvp.Value;
+                        Dictionary<string, dynamic> characterDict = new Dictionary<string, dynamic>();
+                        characterDict.Add("charIdentifier", character.CharacterId);
+                        characterDict.Add("money", character.Cash);
+                        characterDict.Add("gold", character.Gold);
+                        characterDict.Add("firstname", character.Firstname);
+                        characterDict.Add("lastname", character.Lastname);
+                        characterDict.Add("skin", character.Skin);
+                        characterDict.Add("components", character.Components);
+                        characterDict.Add("coords", character.Coords);
+                        characterDict.Add("isDead", character.IsDead);
+                        characters.Add(characterDict);
+                    }
+
                     if (ServerConfiguration.MaximumCharacters == 1 && numberOfCharacters <= 1)
                     {
-                        source.User.Player.TriggerEvent("vorp_SpawnUniqueCharacter");
-                        Logger.Debug($"Player '{player.Name}' -> vorp_SpawnUniqueCharacter");
+                        player.TriggerEvent("vorpcharacter:spawnUniqueCharacter", source.Handle);
+                        Logger.Debug($"Player '{player.Name}' -> vorpcharacter:spawnUniqueCharacter");
                     }
                     else
                     {
-                        source.User.Player.TriggerEvent("vorp_GoToSelectionMenu");
-                        Logger.Debug($"Player '{player.Name}' -> vorp_GoToSelectionMenu");
+                        player.TriggerEvent("vorpcharacter:selectCharacter", characters);
+                        Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
                     }
                 }
 
