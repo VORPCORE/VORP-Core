@@ -98,7 +98,7 @@ namespace Vorp.Core.Client
                 AttachTickHandlers(this);
 
                 LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
-                ClientGateway.Send("vorp:user:active");
+                ClientGateway.Send("vorp:user:active", Session.ServerId);
 
                 Logger.Info("Load method has been completed.");
             }

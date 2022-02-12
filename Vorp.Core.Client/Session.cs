@@ -13,5 +13,7 @@ namespace Vorp.Core.Client
                 await BaseScript.Delay(1000);
             }
         }
+
+        public static int ServerId => GetPlayerServerId(PlayerId());
     }
 }

@@ -11,14 +11,14 @@ namespace Vorp.Core.Client.Managers
 
         public override void Begin()
         {
-            _configCache = GetConfig();
+            //_configCache = GetConfig();
 
-            if (!_configCache.PvpEnabled)
-            {
-                NetworkSetFriendlyFireOption(true);
-                uint playerGroup = (uint)GetHashKey("PLAYER");
-                SetRelationshipBetweenGroups((int)eRelationshipType.Neutral, playerGroup, playerGroup);
-            }
+            //if (!_configCache.PvpEnabled)
+            //{
+            //    NetworkSetFriendlyFireOption(true);
+            //    uint playerGroup = (uint)GetHashKey("PLAYER");
+            //    SetRelationshipBetweenGroups((int)eRelationshipType.Neutral, playerGroup, playerGroup);
+            //}
         }
 
         private ClientConfig GetConfig()

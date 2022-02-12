@@ -15,7 +15,6 @@ namespace Vorp.Core.Client.Managers.GameWorld
 
         }
 
-        [TickHandler(SessionWait = true)]
         private async Task OnWorldPlayer()
         {
             for (int activePlayerId = 0; activePlayerId < GetActivePlayers(); activePlayerId++)

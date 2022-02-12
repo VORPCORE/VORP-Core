@@ -8,13 +8,24 @@ using System.ComponentModel;
 
 namespace Vorp.Shared.Records
 {
-    public record Character(int CharacterId, string Firstname, string Lastname)
+    public class Character
     {
+        public Character(int charidentifier, string firstname, string lastname)
+        {
+            CharacterId = charidentifier;
+            Firstname = firstname;
+            Lastname = lastname;
+        }
+
         public Character(string identifier, string steamname, int charidentifier, string group, double money, double gold,
             double rol, int xp, string inventory, string job, string status, string meta, string firstname, string lastname, 
             string skinPlayer, string compPlayer, int jobgrade, string coords, bool isdead, int clanid, int trust,
-            int supporter, string walk, string crafting, string info, double gunsmith) : this(charidentifier, firstname, lastname)
+            int supporter, string walk, string crafting, string info, double gunsmith)
         {
+            CharacterId = charidentifier;
+            Firstname = firstname;
+            Lastname = lastname;
+
             SteamIdentifier = identifier;
             SteamName = steamname;
             Group = group;
@@ -48,7 +59,7 @@ namespace Vorp.Shared.Records
         public string SteamName { get; set; } = default!;
 
         [Description("charidentifier")]
-        public int CharacterId { get; private set; } = CharacterId;
+        public int CharacterId { get; private set; }
 
         [Description("group")]
         public string Group { get; private set; } = "user";
@@ -79,10 +90,10 @@ namespace Vorp.Shared.Records
         public string Meta { get; set; } = "{}";
 
         [Description("firstname")]
-        public string Firstname { get; private set; } = Firstname;
+        public string Firstname { get; private set; }
 
         [Description("lastname")]
-        public string Lastname { get; private set; } = Lastname;
+        public string Lastname { get; private set; }
 
         [Description("skinPlayer")]
         public string Skin { get; set; } = "{}";

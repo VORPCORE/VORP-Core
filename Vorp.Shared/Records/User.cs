@@ -13,7 +13,7 @@ using System.Linq;
 
 namespace Vorp.Shared.Records
 {
-    public record User
+    public class User
     {
 #if SERVER
         const string SQL_UPDATE_GROUP = "update users set `group` = @group where `identifier` = @identifier;";

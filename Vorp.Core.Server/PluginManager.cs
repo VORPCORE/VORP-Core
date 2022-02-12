@@ -33,9 +33,9 @@ namespace Vorp.Core.Server
         public bool IsServerReady = false;
 
         public PluginManager()
-        {
-            Events = new ServerGateway(this);
+        { 
             Instance = this;
+            Events = new ServerGateway(Instance);
 
             Load();
         }
@@ -47,7 +47,7 @@ namespace Vorp.Core.Server
 
         public static Player ToPlayer(int handle)
         {
-            return PluginManager.Instance.Players[handle];
+            return Instance.Players[handle];
         }
 
         private void Load()

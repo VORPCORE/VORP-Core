@@ -56,17 +56,9 @@
       <HintPath>..\dependancies\RedM\CitizenFX.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="Events, Version=1.2.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lusive.Events.1.2.0\lib\net472\Events.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Snowflake, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Lusive.Snowflake.1.1.1\lib\net472\Snowflake.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dependancies\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -111,9 +103,6 @@
     <Compile Include="RedM\VorpAPI.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Extensions\" />
     <Folder Include="Interface\" />
   </ItemGroup>
@@ -129,9 +118,13 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\vendor\fx-events\src\generator\Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false">
-      <Project>{9a9136c5-ab20-4de3-99a3-2cf251ee3d1d}</Project>
-      <Name>Generator</Name>
+    <ProjectReference Include="..\vendor\fx-events\src\events\Events.csproj">
+      <Project>{87af19bd-084d-4d37-8763-b25c0c2df459}</Project>
+      <Name>Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\vendor\snowflake\src\Snowflake.csproj">
+      <Project>{4c2c78cb-21b2-4ac4-95a0-4db8338db648}</Project>
+      <Name>Snowflake</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="..\Vorp.Shared\Vorp.Shared.projitems" Label="Shared" />
