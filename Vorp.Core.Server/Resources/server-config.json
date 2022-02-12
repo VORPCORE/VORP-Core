@@ -1,11 +1,6 @@
 {
   "language": "en",
   "whitelistType": "none",
-  "log": {
-    "debug": false,
-    "warn": false,
-    "error": false
-  },
   "discord": {
     "botKey": "",
     "botname": "VORP Discord",

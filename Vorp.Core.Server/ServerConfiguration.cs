@@ -35,9 +35,6 @@ namespace Vorp.Core.Server
         {
             return LoadConfiguration();
         }
-        public static bool Debug => Config().Log.Debug;
-        public static bool Warning => Config().Log.Warn;
-        public static bool Error => Config().Log.Error;
         public static Discord Discord => Config().Discord;
         public static SqlConfig SqlConfig => Config().SqlConfig;
         public static UserConfig UserConfig => Config().UserConfig;

@@ -33,9 +33,6 @@ namespace Vorp.Core.Server.Models
             }
         }
 
-        [DataMember(Name = "log")]
-        public Log Log;
-
         [DataMember(Name = "discord")]
         public Discord Discord;
 
