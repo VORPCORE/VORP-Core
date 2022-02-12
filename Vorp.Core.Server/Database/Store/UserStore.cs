@@ -29,28 +29,48 @@ namespace Vorp.Core.Server.Database.Store
             return await DapperDatabase<bool>.GetSingleAsync("SELECT TRUE FROM users WHERE `identifier` = @steam and `banned` = 1 LIMIT 1;", dynamicParameters);
         }
 
-        internal static async Task<User> GetUser(string serverId, string steamIdent, string license, bool withCharacters = false)
+        internal static async Task<User> GetUser(string cfxServerHandle, string steamIdent, string license, bool withCharacters = false)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("steam", steamIdent);
             User user = await DapperDatabase<User>.GetSingleAsync("SELECT * FROM users WHERE `identifier` = @steam LIMIT 1;", dynamicParameters);
+            
+            await BaseScript.Delay(0);
+
+            if (user is not null)
+            {
+                Logger.Debug($"User found with steamIdent [{steamIdent}]");
+            }
+
             if (user == null)
             {
-                user = new User(serverId, steamIdent, license, _srvCfg.UserConfig.NewUserGroup, 0);
+                Logger.Debug($"No user found with steamIdent [{steamIdent}]");
+                user = new User(cfxServerHandle, steamIdent, license, _srvCfg.UserConfig.NewUserGroup, 0);
 
                 // if they are the first user, then set them as an admin
-                bool isFirstUser = await GetCountOfUsers() == 0;
+                int countOfUsers = await GetCountOfUsers();
+                await BaseScript.Delay(0);
+                bool isFirstUser = countOfUsers == 0;
+
                 if (isFirstUser)
                     await user.SetGroup("admin", true);
 
                 bool saved = await user.Save();
+                await BaseScript.Delay(0);
+
+                if (saved)
+                    Logger.Debug($"Created a new user steamIdent [{steamIdent}]");
 
                 if (!saved)
                     return null;
             }
 
             if (withCharacters)
+            {
+                await BaseScript.Delay(1000);
                 await user.GetCharacters(); // Assign characters here
+                await BaseScript.Delay(0);
+            }
 
             return user;
         }
