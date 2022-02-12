@@ -63,7 +63,7 @@ namespace Vorp.Core.Server.Managers
                 
                 source.User.AddPlayer(player);
 
-                Logger.Success($"Player '{source.User.Player.Name}' is now Active!");
+                Logger.Success($"Player [{source.User.SteamIdentifier}] '{source.User.Player.Name}' is now Active!");
             }
             catch (Exception ex)
             {
