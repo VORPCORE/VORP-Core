@@ -84,6 +84,7 @@
     <Compile Include="Managers\GameEvents\GameEventManager.cs" />
     <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />
     <Compile Include="Managers\Interface\GeneralUiManager.cs" />
+    <Compile Include="Managers\Legacy\CfxEventsManager.cs" />
     <Compile Include="Managers\Legacy\LegacyInstanceManager.cs" />
     <Compile Include="Managers\Legacy\LegacyServerCallbackManager.cs" />
     <Compile Include="Managers\Legacy\LegacyUiCoreManager.cs" />

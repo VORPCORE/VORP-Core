@@ -98,7 +98,7 @@ namespace Vorp.Core.Client
                 AttachTickHandlers(this);
 
                 LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
-                ClientGateway.Send("vorp:user:active", Session.ServerId);
+                BaseScript.TriggerServerEvent("vorp:user:activate");
 
                 Logger.Info("Load method has been completed.");
             }
@@ -122,7 +122,6 @@ namespace Vorp.Core.Client
         {
             if (GetCurrentResourceName() != resourceName) return;
             // Tell server to save
-
             Vector3 position = LocalPlayer.Position;
             float heading = LocalPlayer.Heading;
 

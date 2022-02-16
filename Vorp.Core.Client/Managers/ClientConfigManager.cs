@@ -1,7 +1,6 @@
 ﻿using System;
 using Vorp.Core.Client.Environment;
 using Vorp.Core.Client.Environment.Config;
-using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Managers
 {
@@ -30,7 +29,8 @@ namespace Vorp.Core.Client.Managers
                 if (_configCache is not null)
                     return _configCache;
 
-                _configCache = JsonConvert.DeserializeObject<ClientConfig>(Properties.Resources.clientConfig);
+                string clientConfig = LoadResourceFile(GetCurrentResourceName(), $"/Resources/client-config.json");
+                _configCache = JsonConvert.DeserializeObject<ClientConfig>(clientConfig);
                 return _configCache;
             }
             catch (Exception ex)

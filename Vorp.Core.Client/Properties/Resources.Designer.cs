@@ -59,29 +59,5 @@ namespace Vorp.Core.Client.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to {
-        ///	&quot;pvp&quot;: false,
-        ///	&quot;playerNames&quot;: {
-        ///		&quot;display&quot;: true,
-        ///		&quot;distance&quot;: 30.0
-        ///	},
-        ///	&quot;discord&quot;: {
-        ///		&quot;appId&quot;: 0,
-        ///		&quot;asset&quot;: {
-        ///			&quot;title&quot;: &quot;A VORP RP Server&quot;,
-        ///			&quot;description&quot;: &quot;vorp.net&quot;,
-        ///			&quot;icon&quot;: &quot;vorp&quot;,
-        ///			&quot;iconText&quot;: &quot;A VORP RP Server&quot;
-        ///		}
-        ///	}
-        ///}.
-        /// </summary>
-        internal static string clientConfig {
-            get {
-                return ResourceManager.GetString("clientConfig", resourceCulture);
-            }
-        }
     }
 }
