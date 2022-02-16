@@ -80,7 +80,7 @@ namespace Vorp.Core.Server.Managers.Legacy
                 Logger.Warn($"This will be removed in the future, and the version will be stated when this happens.");
                 Dictionary<string, dynamic> Core = new Dictionary<string, dynamic>()
                 {
-                    { "getUser", new AuxDelegate(ExportGetCharacter) },
+                    { "getUser", new AuxDelegate(ExportGetUser) },
                     { "maxCharacters", ServerConfiguration.MaximumCharacters },
                     { "sendLog", new Action<string, string>((msg, type) =>
                         {
@@ -228,6 +228,14 @@ namespace Vorp.Core.Server.Managers.Legacy
             // return something that can be checked by the calling member
             if (user == null) return new Dictionary<string, dynamic>();
             return user.GetActiveCharacter();
+        }
+
+        private Dictionary<string, dynamic> ExportGetUser(int serverId)
+        {
+            User user = GetUser(serverId);
+            // return something that can be checked by the calling member
+            if (user == null) return new Dictionary<string, dynamic>();
+            return user.GetUser();
         }
 
         private User GetUser(int serverId)
