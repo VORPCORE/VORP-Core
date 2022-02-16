@@ -29,7 +29,7 @@ namespace Vorp.Core.Server.Web
 
     public class DiscordClient : Manager<DiscordClient>
     {
-        static ServerConfig _srvCfg => ServerConfiguration.Config();
+        static ServerConfig _srvCfg => ServerConfiguration.Config;
         static string _discordUrl => _srvCfg.Discord.Url;
 
         static Request request = new Request();

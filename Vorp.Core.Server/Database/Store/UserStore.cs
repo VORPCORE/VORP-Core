@@ -7,7 +7,7 @@ namespace Vorp.Core.Server.Database.Store
 {
     internal static class UserStore
     {
-        static ServerConfig _srvCfg => ServerConfiguration.Config();
+        static ServerConfig _srvCfg => ServerConfiguration.Config;
 
         public static async Task<int> GetCountOfUsers()
         {

@@ -20,7 +20,7 @@ namespace Vorp.Shared.Records
         const string SQL_UPDATE_WARNING = "update users set `warnings` = @warningCount where `identifier` = @identifier;";
         const string SQL_GET_CHARACTERS = "select * from characters where `identifier` = @identifier;";
 
-        ServerConfig _serverConfigManager => ServerConfiguration.Config();
+        ServerConfig _serverConfigManager => ServerConfiguration.Config;
 #endif
 
         #region Fields

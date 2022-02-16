@@ -50,7 +50,7 @@ namespace Vorp.Core.Server
             return Instance.Players[handle];
         }
 
-        private void Load()
+        private async void Load()
         {
             Logger.Info($"INIT");
 
@@ -103,8 +103,18 @@ namespace Vorp.Core.Server
 
             Logger.Info($"[Managers] Successfully loaded in {loaded} manager(s)!");
 
+            bool databaseTest = await Database.DapperDatabase<bool>.GetSingleAsync("select 1;");
+            if (databaseTest)
+            {
+                Logger.Success($"Database Connection Test Successful!");
+            }
+            else
+            {
+                Logger.Error($"Database Connection Test Failed!");
+            }
+
             IsServerReady = true;
-            Logger.Info($"LOAD COMPLETED");
+            Logger.Info($"VORP CORE - LOAD COMPLETED");
         }
 
         public object LoadManager(Type type)

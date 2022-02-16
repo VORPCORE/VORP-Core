@@ -7,7 +7,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 {
     public class LegacyUserManager : Manager<LegacyUserManager>
     {
-        ServerConfig _srvCfg => ServerConfiguration.Config();
+        ServerConfig _srvCfg => ServerConfiguration.Config;
 
         public override void Begin()
         {

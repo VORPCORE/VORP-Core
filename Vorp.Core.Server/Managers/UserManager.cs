@@ -20,65 +20,124 @@ namespace Vorp.Core.Server.Managers
         public override void Begin()
         {
             Event("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnecting));
-            Event("playerJoined", new Action<Player>(OnPlayerJoined));
+            Event("playerJoining", new Action<Player, string>(OnPlayerJoining));
             Event("playerDropped", new Action<Player, string>(OnPlayerDropped));
             Event("onResourceStop", new Action<string>(OnResourceStop));
 
-            ServerGateway.Mount("vorp:user:active", new Action<ClientId, int>(OnUserIsActive));
+            Event("vorp:user:activate", new Action<Player>(OnUserActivate));
+
+            ServerGateway.Mount("vorp:user:active", new Action<ClientId, int>(OnUserActive));
             ServerGateway.Mount("vorp:user:list:active", new Func<ClientId, int, Task<List<dynamic>>>(OnGetActiveUserList));
 
             lastTimeCleanupRan = GetGameTimer();
         }
 
-        private async Task<List<dynamic>> OnGetActiveUserList(ClientId source, int id)
+        private async void OnUserActivate([FromSource] Player player)
         {
-            List<dynamic> list = new List<dynamic>();
-            if (source.Handle != id) return list;
+            string steamId = player.Identifiers["steam"];
+            string license = player.Identifiers["license"];
 
-            foreach (Player player in PlayersList)
+            if (UserSessions.ContainsKey(steamId)) return;
+
+            User user = await UserStore.GetUser(player.Handle, $"steam:{steamId}", license, true);
+            UserSessions.TryAdd(steamId, user);
+            
+            user.IsActive = true;
+            user.AddPlayer(player);
+            user.UpdateServerId(player.Handle);
+
+            // Legacy Methods to be removed
+            // Make this internal to VORP_CORE
+            int numberOfCharacters = user.NumberOfCharacters;
+            Logger.Debug($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
+
+            if (numberOfCharacters <= 0)
             {
-                list.Add(new { ServerId = player.Handle, Name = player.Name });
+                BaseScript.TriggerClientEvent(player, "vorpcharacter:createCharacter");
+                Logger.Debug($"Player '{player.Name}' -> vorpcharacter:createCharacter");
+            }
+            else
+            {
+                List<Dictionary<string, dynamic>> characters = new();
+
+                foreach (KeyValuePair<int, Character> kvp in user.Characters)
+                {
+                    Character character = kvp.Value;
+                    Dictionary<string, dynamic> characterDict = new Dictionary<string, dynamic>();
+                    characterDict.Add("charIdentifier", character.CharacterId);
+                    characterDict.Add("money", character.Cash);
+                    characterDict.Add("gold", character.Gold);
+                    characterDict.Add("firstname", character.Firstname);
+                    characterDict.Add("lastname", character.Lastname);
+                    characterDict.Add("skin", character.Skin);
+                    characterDict.Add("components", character.Components);
+                    characterDict.Add("coords", character.Coords);
+                    characterDict.Add("isDead", character.IsDead);
+                    characters.Add(characterDict);
+                }
+
+                if (ServerConfiguration.MaximumCharacters == 1 && numberOfCharacters <= 1)
+                {
+                    BaseScript.TriggerClientEvent(player, "vorpcharacter:spawnUniqueCharacter");
+                    Logger.Debug($"Player '{player.Name}' -> vorpcharacter:spawnUniqueCharacter");
+                }
+                else
+                {
+                    BaseScript.TriggerEvent("vorpcharacter:selectCharacter", player.Handle, characters);
+                    Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
+                }
             }
 
-            return list;
+            Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
         }
 
-        private void OnUserIsActive(ClientId source, int id)
+        private async void OnUserActive(ClientId source, int serverHandle)
         {
             Player player = PlayersList[source.Handle];
             if (player == null) return;
-
+            BaseScript.TriggerEvent("vorpcharacter:testevent", player.Handle);
             try
             {
-                if (source.Handle != id) return;
-                if (source.User == null)
+                if (source.Handle != serverHandle) return;
+                if (source.User == null) return;
+
+                User user = source.User;
+
+                if (Instance.IsOneSyncEnabled)
                 {
-                    Logger.Error($"User Sessions: {UserSessions.Count}");
-                    Logger.Error($"User Session Keys: {string.Join(",", UserSessions.Keys)}");
-                    Logger.Error($"Player '{source.Handle}' could not be found!");
-                    return;
+                    player.State.Set(StateBagKey.PlayerName, player.Name, true);
                 }
 
-                source.User.IsActive = true;
-                source.User.AddPlayer(player);
-                source.User.UpdateServerId(player.Handle);
-                Logger.Success($"Player [{source.User.SteamIdentifier}] '{source.User.Player.Name}' is now Active!");
+                // add suggestions
+                foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
+                {
+                    CommandContext commandContext = entry.Key;
+                    List<Tuple<CommandInfo, ICommand>> tuples = entry.Value;
+
+                    if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(user.Group))
+                    {
+                        foreach (Tuple<CommandInfo, ICommand> item in tuples)
+                        {
+                            player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
+                        }
+                    }
+                }
 
                 // Legacy Methods to be removed
                 // Make this internal to VORP_CORE
-                int numberOfCharacters = source.User.NumberOfCharacters;
+                int numberOfCharacters = user.NumberOfCharacters;
                 Logger.Debug($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
 
                 if (numberOfCharacters <= 0)
                 {
-                    player.TriggerEvent("vorpcharacter:createCharacter");
+                    BaseScript.TriggerClientEvent(player, "vorpcharacter:createCharacter");
                     Logger.Debug($"Player '{player.Name}' -> vorpcharacter:createCharacter");
                 }
                 else
                 {
                     List<Dictionary<string, dynamic>> characters = new();
 
-                    foreach (KeyValuePair<int, Character> kvp in source.User.Characters)
+                    foreach (KeyValuePair<int, Character> kvp in user.Characters)
                     {
                         Character character = kvp.Value;
                         Dictionary<string, dynamic> characterDict = new Dictionary<string, dynamic>();
@@ -96,23 +155,35 @@ namespace Vorp.Core.Server.Managers
 
                     if (ServerConfiguration.MaximumCharacters == 1 && numberOfCharacters <= 1)
                     {
-                        player.TriggerEvent("vorpcharacter:spawnUniqueCharacter", source.Handle);
+                        BaseScript.TriggerClientEvent(player, "vorpcharacter:spawnUniqueCharacter");
                         Logger.Debug($"Player '{player.Name}' -> vorpcharacter:spawnUniqueCharacter");
                     }
                     else
                     {
-                        player.TriggerEvent("vorpcharacter:selectCharacter", characters);
+                        BaseScript.TriggerClientEvent(player, "vorpcharacter:selectCharacter", player.Handle, characters);
                         Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
                     }
                 }
 
+                Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
             }
             catch (Exception ex)
             {
-                string msg = ServerConfiguration.GetTranslation("error_activating_user_session");
-                player.Drop(msg);
-                Logger.Error(ex, $"OnUserIsActive: {msg}");
+                Logger.Error(ex, "OnUserActive");
             }
+        }
+
+        private async Task<List<dynamic>> OnGetActiveUserList(ClientId source, int id)
+        {
+            List<dynamic> list = new List<dynamic>();
+            if (source.Handle != id) return list;
+
+            foreach (Player player in PlayersList)
+            {
+                list.Add(new { ServerId = player.Handle, Name = player.Name });
+            }
+
+            return list;
         }
 
         private async void OnResourceStop(string resourceName)
@@ -132,30 +203,18 @@ namespace Vorp.Core.Server.Managers
             }
         }
 
-        private void OnPlayerJoined([FromSource] Player player)
+        private async void OnPlayerJoining([FromSource] Player player, string oldId)
         {
-            if (!UserSessions.ContainsKey(player.Handle)) return;
-            User user = UserSessions[player.Handle];
+            string steamId = player.Identifiers["steam"];
+
+            if (!UserSessions.ContainsKey(steamId)) return;
+            User user = UserSessions[steamId];
             user.IsActive = true;
-            if (Instance.IsOneSyncEnabled)
-            {
-                player.State.Set(StateBagKey.PlayerName, player.Name, true);
-            }
 
-            // add suggestions
-            foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
-            {
-                CommandContext commandContext = entry.Key;
-                List<Tuple<CommandInfo, ICommand>> tuples = entry.Value;
+            user.AddPlayer(player);
+            user.UpdateServerId(player.Handle);
 
-                if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(user.Group))
-                {
-                    foreach (Tuple<CommandInfo, ICommand> item in tuples)
-                    {
-                        player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
-                    }
-                }
-            }
+            Logger.Debug($"Player '{player.Name}' is joining.");
         }
 
         private async void OnPlayerDropped([FromSource] Player player, string reason)
@@ -329,7 +388,7 @@ namespace Vorp.Core.Server.Managers
                 
                 UserSessions.AddOrUpdate(steamId, user, (key, oldValue) => oldValue = user);
                 
-                Logger.Debug($"Player: [{steamId}] {player.Name} is joining the server with {user.NumberOfCharacters} character(s).");
+                Logger.Debug($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
                 Logger.Debug($"Number of Sessions: {UserSessions.Count}");
                 deferrals.done();
                 return;

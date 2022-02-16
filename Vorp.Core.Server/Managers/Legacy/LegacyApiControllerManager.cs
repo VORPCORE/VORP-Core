@@ -69,8 +69,6 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnGetCore(CallbackDelegate cb)
         {
-            ServerConfiguration.Config();
-
             while (!Instance.IsServerReady)
             {
                 await BaseScript.Delay(100);
