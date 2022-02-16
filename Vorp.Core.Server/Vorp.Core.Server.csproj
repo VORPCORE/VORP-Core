@@ -67,6 +67,7 @@
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="MySqlConnector" Version="2.1.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" ExcludeAssets="runtime" />
   </ItemGroup>
 
   <ItemGroup>
@@ -92,12 +93,6 @@
     <ProjectReference Include="..\vendor\fx-events\src\events\Events.csproj" />
     <ProjectReference Include="..\vendor\fx-events\src\generator\Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\vendor\snowflake\src\Snowflake.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\dependancies\Newtonsoft.Json.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
   <ItemGroup>
