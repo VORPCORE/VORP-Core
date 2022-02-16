@@ -17,6 +17,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
             Event("vorp:getCharacter", new Action<int, CallbackDelegate>(OnGetCharacter));
             ExportDictionary.Add("GetCharacter", new Func<int, Dictionary<string, dynamic>>(ExportGetCharacter));
+            ExportDictionary.Add("GetUser", new Func<int, Dictionary<string, dynamic>>(ExportGetUser));
 
             Event("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
             ExportDictionary.Add("AddMoney", new Func<int, int, double, Task<bool>>(ExportAddMoney));
