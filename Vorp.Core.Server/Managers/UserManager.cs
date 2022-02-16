@@ -137,7 +137,7 @@ namespace Vorp.Core.Server.Managers
                 }
                 else
                 {
-                    BaseScript.TriggerClientEvent(player, "vorpcharacter:selectCharacter", player.Handle, characters);
+                    BaseScript.TriggerClientEvent(player, "vorpcharacter:selectCharacter", characters);
                     Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
                 }
             }
