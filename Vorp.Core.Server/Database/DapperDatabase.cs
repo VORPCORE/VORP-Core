@@ -7,20 +7,44 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Vorp.Core.Server.Models;
 
 namespace Vorp.Core.Server.Database
 {
     internal class DapperDatabase<T>
     {
         // TODO: Use mysql connection from SQL Config
-        private static string _connectionString => GetConvar("mysql_connection_string", "missing");
+        private static string _connectionString;
+
+        private static string ConnectionString()
+        {
+            if (!string.IsNullOrEmpty(_connectionString))
+                return _connectionString;
+
+            DatabaseConfig databaseConfig = ServerConfiguration.Config.DatabaseConfig;
+
+            MySqlConnectionStringBuilder mySqlConnectionStringBuilder = new MySqlConnectionStringBuilder();
+            mySqlConnectionStringBuilder.ApplicationName = "VORP Core";
+
+            mySqlConnectionStringBuilder.Database = databaseConfig.Database;
+            mySqlConnectionStringBuilder.Server = databaseConfig.Server;
+            mySqlConnectionStringBuilder.Port = databaseConfig.Port;
+            mySqlConnectionStringBuilder.UserID = databaseConfig.Username;
+            mySqlConnectionStringBuilder.Password = databaseConfig.Password;
+
+            mySqlConnectionStringBuilder.MaximumPoolSize = databaseConfig.MaximumPoolSize;
+            mySqlConnectionStringBuilder.MinimumPoolSize = databaseConfig.MinimumPoolSize;
+            mySqlConnectionStringBuilder.ConnectionTimeout = databaseConfig.ConnectionTimeout;
+
+            return _connectionString = mySqlConnectionStringBuilder.ToString();
+        }
 
         public static async Task<List<T>> GetListAsync(string query, DynamicParameters args = null)
         {
             var watch = Stopwatch.StartNew();
             try
             {
-                using (var conn = new MySqlConnection(_connectionString))
+                using (var conn = new MySqlConnection(ConnectionString()))
                 {
                     return (await conn.QueryAsync<T>(query, args)).AsList();
                 }
@@ -41,7 +65,7 @@ namespace Vorp.Core.Server.Database
             var watch = Stopwatch.StartNew();
             try
             {
-                using (var conn = new MySqlConnection(_connectionString))
+                using (var conn = new MySqlConnection(ConnectionString()))
                 {
                     return (await conn.QueryAsync<T>(query, args)).FirstOrDefault();
                 }
@@ -62,7 +86,7 @@ namespace Vorp.Core.Server.Database
             var watch = Stopwatch.StartNew();
             try
             {
-                using (var conn = new MySqlConnection(_connectionString))
+                using (var conn = new MySqlConnection(ConnectionString()))
                 {
                     return (await conn.ExecuteAsync(query, args)) > 0;
                 }
