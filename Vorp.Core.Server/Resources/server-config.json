@@ -1,4 +1,10 @@
 {
+  "database": {
+    "server": "localhost",
+    "database": "vorpv2",
+    "username": "DATABASE_USERNAME",
+    "password": "DATABASE_PASSWORD"
+  },
   "language": "en",
   "whitelistType": "none",
   "discord": {
@@ -15,14 +21,6 @@
       "server-player-log": ""
     }
   },
-  "sql": {
-    "type": "mysql",
-    "username": "",
-    "password": "",
-    "database": "",
-    "server": "",
-    "port": 3306
-  },
   "users": {
     "newUserGroup": "user",
     "characters": {
@@ -37,5 +35,5 @@
         "group": "user"
       }
     }
-  }
+  } 
 }

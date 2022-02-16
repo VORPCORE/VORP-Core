@@ -15,7 +15,8 @@ namespace Vorp.Core.Server
                 if (_serverConfig is not null)
                     return _serverConfig;
 
-                _serverConfig = JsonConvert.DeserializeObject<ServerConfig>(Properties.Resources.serverConfig);
+                string serverConfigFile = LoadResourceFile(GetCurrentResourceName(), $"/server/Resources/server-config.json");
+                _serverConfig = JsonConvert.DeserializeObject<ServerConfig>(serverConfigFile);
                 string languagesFile = LoadResourceFile(GetCurrentResourceName(), $"/server/Resources/Languages/{_serverConfig.Language}.json");
                 _serverLanguage = JsonConvert.DeserializeObject<Dictionary<string, string>>(languagesFile);
                 Logger.Info($"Language '{_serverConfig.Language}.json' loaded!");
@@ -31,18 +32,16 @@ namespace Vorp.Core.Server
             }
         }
 
-        public static ServerConfig Config()
-        {
-            return LoadConfiguration();
-        }
-        public static Discord Discord => Config().Discord;
-        public static UserConfig UserConfig => Config().UserConfig;
+        public static ServerConfig Config => LoadConfiguration();
+        public static Discord Discord => Config.Discord;
+        public static UserConfig UserConfig => Config.UserConfig;
+        public static DatabaseConfig DatabaseConfig => Config.DatabaseConfig;
 
-        public static int MaximumCharacters => Config().UserConfig.Characters.Maximum;
+        public static int MaximumCharacters => Config.UserConfig.Characters.Maximum;
 
         // whitelists
-        public static bool IsWhitelistDatabase => Config().WhitelistType == "database";
-        public static bool IsWhitelistDiscord => Config().WhitelistType == "discord";
+        public static bool IsWhitelistDatabase => Config.WhitelistType == "database";
+        public static bool IsWhitelistDiscord => Config.WhitelistType == "discord";
 
         public static string GetTranslation(string key)
         {

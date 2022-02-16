@@ -14,6 +14,9 @@ namespace Vorp.Core.Server.Models
             "database"
         };
 
+        [DataMember(Name = "database")]
+        public DatabaseConfig DatabaseConfig;
+
         [DataMember(Name = "language")]
         public string Language;
 
