@@ -46,6 +46,60 @@ namespace Vorp.Core.Server.Managers
             user.AddPlayer(player);
             user.UpdateServerId(player.Handle);
 
+            SendPlayerChatSuggestions(player, user);
+            SendPlayerCharacters(player, user);
+
+            Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+        }
+
+        private async void OnUserActive(ClientId source, int serverHandle)
+        {
+            Player player = PlayersList[source.Handle];
+            if (player == null) return;
+            BaseScript.TriggerEvent("vorpcharacter:testevent", player.Handle);
+            try
+            {
+                if (source.Handle != serverHandle) return;
+                if (source.User == null) return;
+
+                User user = source.User;
+
+                if (Instance.IsOneSyncEnabled)
+                {
+                    player.State.Set(StateBagKey.PlayerName, player.Name, true);
+                }
+
+                // add suggestions
+                SendPlayerChatSuggestions(player, user);
+                SendPlayerCharacters(player, user);
+
+                Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "OnUserActive");
+            }
+        }
+
+        private void SendPlayerChatSuggestions(Player player, User user)
+        {
+            foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
+            {
+                CommandContext commandContext = entry.Key;
+                List<Tuple<CommandInfo, ICommand>> tuples = entry.Value;
+
+                if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(user.Group))
+                {
+                    foreach (Tuple<CommandInfo, ICommand> item in tuples)
+                    {
+                        player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
+                    }
+                }
+            }
+        }
+
+        void SendPlayerCharacters(Player player, User user)
+        {
             // Legacy Methods to be removed
             // Make this internal to VORP_CORE
             int numberOfCharacters = user.NumberOfCharacters;
@@ -83,93 +137,9 @@ namespace Vorp.Core.Server.Managers
                 }
                 else
                 {
-                    BaseScript.TriggerEvent("vorpcharacter:selectCharacter", player.Handle, characters);
+                    BaseScript.TriggerClientEvent(player, "vorpcharacter:selectCharacter", player.Handle, characters);
                     Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
                 }
-            }
-
-            Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
-        }
-
-        private async void OnUserActive(ClientId source, int serverHandle)
-        {
-            Player player = PlayersList[source.Handle];
-            if (player == null) return;
-            BaseScript.TriggerEvent("vorpcharacter:testevent", player.Handle);
-            try
-            {
-                if (source.Handle != serverHandle) return;
-                if (source.User == null) return;
-
-                User user = source.User;
-
-                if (Instance.IsOneSyncEnabled)
-                {
-                    player.State.Set(StateBagKey.PlayerName, player.Name, true);
-                }
-
-                // add suggestions
-                foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
-                {
-                    CommandContext commandContext = entry.Key;
-                    List<Tuple<CommandInfo, ICommand>> tuples = entry.Value;
-
-                    if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(user.Group))
-                    {
-                        foreach (Tuple<CommandInfo, ICommand> item in tuples)
-                        {
-                            player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
-                        }
-                    }
-                }
-
-                // Legacy Methods to be removed
-                // Make this internal to VORP_CORE
-                int numberOfCharacters = user.NumberOfCharacters;
-                Logger.Debug($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
-
-                if (numberOfCharacters <= 0)
-                {
-                    BaseScript.TriggerClientEvent(player, "vorpcharacter:createCharacter");
-                    Logger.Debug($"Player '{player.Name}' -> vorpcharacter:createCharacter");
-                }
-                else
-                {
-                    List<Dictionary<string, dynamic>> characters = new();
-
-                    foreach (KeyValuePair<int, Character> kvp in user.Characters)
-                    {
-                        Character character = kvp.Value;
-                        Dictionary<string, dynamic> characterDict = new Dictionary<string, dynamic>();
-                        characterDict.Add("charIdentifier", character.CharacterId);
-                        characterDict.Add("money", character.Cash);
-                        characterDict.Add("gold", character.Gold);
-                        characterDict.Add("firstname", character.Firstname);
-                        characterDict.Add("lastname", character.Lastname);
-                        characterDict.Add("skin", character.Skin);
-                        characterDict.Add("components", character.Components);
-                        characterDict.Add("coords", character.Coords);
-                        characterDict.Add("isDead", character.IsDead);
-                        characters.Add(characterDict);
-                    }
-
-                    if (ServerConfiguration.MaximumCharacters == 1 && numberOfCharacters <= 1)
-                    {
-                        BaseScript.TriggerClientEvent(player, "vorpcharacter:spawnUniqueCharacter");
-                        Logger.Debug($"Player '{player.Name}' -> vorpcharacter:spawnUniqueCharacter");
-                    }
-                    else
-                    {
-                        BaseScript.TriggerClientEvent(player, "vorpcharacter:selectCharacter", player.Handle, characters);
-                        Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
-                    }
-                }
-
-                Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
-            }
-            catch (Exception ex)
-            {
-                Logger.Error(ex, "OnUserActive");
             }
         }
 
