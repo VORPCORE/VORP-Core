@@ -252,7 +252,7 @@ namespace Vorp.Shared.Records
 
             if (activeChar == null)
             {
-                Logger.Error($"Player '{Player.Name}' does not current have an active character. {GetInvokingResource()}");
+                Logger.Error($"[{GetInvokingResource()}] Player '{Player.Name}' does not current have an active character.");
                 return null;
             }
 
@@ -284,8 +284,8 @@ namespace Vorp.Shared.Records
                 { "setGold", new Action<double>(gold => activeChar.SetGold(gold)) },
                 { "setRol", new Action<double>(roleToken => activeChar.SetRoleToken(roleToken)) },
                 { "setXp", new Action<int>(experience => activeChar.SetExperience(experience)) },
-                { "setFirstname", new Action<string>(firstname => Logger.Error($"Method 'setFirstname' Deprecated, please inform us if you us this, and why.")) },
-                { "setLastname", new Action<string>(firstlastnamename => Logger.Error($"Method 'setLastname' Deprecated, please inform us if you us this, and why.")) },
+                { "setFirstname", new Action<string>(firstname => Logger.Error($"[{GetInvokingResource()}] Method 'setFirstname' Deprecated, please inform us if you us this, and why.")) },
+                { "setLastname", new Action<string>(firstlastnamename => Logger.Error($"[{GetInvokingResource()}] Method 'setLastname' Deprecated, please inform us if you us this, and why.")) },
                 { "updateSkin", new Action<string>(skin => activeChar.Skin = skin) },
                 { "updateComps", new Action<string>(comp => activeChar.Components = comp) },
                 { "addCurrency", new Action<int, double>(async (currency, amount) =>
