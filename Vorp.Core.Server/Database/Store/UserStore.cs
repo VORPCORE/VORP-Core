@@ -21,6 +21,20 @@ namespace Vorp.Core.Server.Database.Store
             return await DapperDatabase<bool>.GetSingleAsync("SELECT TRUE FROM whitelist WHERE `identifier` = @steam LIMIT 1;", dynamicParameters);
         }
 
+        public static async Task<bool> AddUserToWhitelist(string steamIdent)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("steam", steamIdent);
+            return await DapperDatabase<bool>.ExecuteAsync("INSERT INTO whitelist (`identifier`) VALUES (@steam);", dynamicParameters);
+        }
+
+        public static async Task<bool> RemoveUserFromWhitelist(string steamIdent)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("steam", steamIdent);
+            return await DapperDatabase<bool>.ExecuteAsync("DELETE FROM whitelist WHERE `identifier` = @steam;", dynamicParameters);
+        }
+
         // still use this, though txAdmin does it any way
         public static async Task<bool> IsUserBanned(string steamIdent)
         {

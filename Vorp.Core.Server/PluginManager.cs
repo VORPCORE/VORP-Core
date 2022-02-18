@@ -50,6 +50,15 @@ namespace Vorp.Core.Server
             return Instance.Players[handle];
         }
 
+        public static User ToUser(int handle)
+        {
+            Player player = Instance.Players[handle];
+            if (player is null) return null;
+            string steamId = player.Identifiers["steam"];
+            if (!UserSessions.ContainsKey(steamId)) return null;
+            return UserSessions[steamId];
+        }
+
         private async void Load()
         {
             Logger.Info($"INIT");
@@ -99,7 +108,7 @@ namespace Vorp.Core.Server
             }
 
             CommandFramework = new CommandFramework();
-            CommandFramework.Bind(typeof(StaffCommands));
+            CommandFramework.Bind(typeof(AdminCommands));
 
             Logger.Info($"[Managers] Successfully loaded in {loaded} manager(s)!");
 
