@@ -95,6 +95,13 @@ namespace Vorp.Core.Server.Managers
                         player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
                     }
                 }
+                else
+                {
+                    foreach (Tuple<CommandInfo, ICommand> item in tuples)
+                    {
+                        player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
+                    }
+                }
             }
         }
 
