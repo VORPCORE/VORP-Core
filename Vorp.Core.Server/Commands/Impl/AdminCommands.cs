@@ -70,7 +70,13 @@ namespace Vorp.Core.Server.Commands.Impl
                 if (targetUser is null) return;
 
                 string job = arguments[1];
-                bool result = await targetUser.ActiveCharacter.SetJobAndGrade(job, jobGrade);
+                bool result = false;
+                
+                if (arguments.Count == 3)
+                   result = await targetUser.ActiveCharacter.SetJobAndGrade(job, jobGrade);
+
+                if (arguments.Count == 2)
+                    result = await targetUser.ActiveCharacter.SetJob(job);
             }
         }
 
@@ -105,6 +111,8 @@ namespace Vorp.Core.Server.Commands.Impl
                         // Need notification of type unknown
                         break;
                 }
+
+                targetUser.UpdateUI();
             }
         }
 
@@ -144,6 +152,11 @@ namespace Vorp.Core.Server.Commands.Impl
                 if (!double.TryParse(arguments[3], out amount)) return;
 
                 bool result = await targetUser.ActiveCharacter.AdjustCurrency(increase, currencyType, amount);
+
+                if (result)
+                {
+                    targetUser.UpdateUI();
+                }
             }
         }
 
