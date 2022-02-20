@@ -80,6 +80,8 @@
     <Compile Include="Environment\Entities\WorldPlayer.cs" />
     <Compile Include="Events\ClientGateway.cs" />
     <Compile Include="Events\ServerId.cs" />
+    <Compile Include="Managers\CharacterManagement\CharacterManager.cs" />
+    <Compile Include="Managers\CharacterManagement\InventoryManager.cs" />
     <Compile Include="Managers\ClientConfigManager.cs" />
     <Compile Include="Managers\GameEvents\GameEventManager.cs" />
     <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />
@@ -89,6 +91,7 @@
     <Compile Include="Managers\Legacy\LegacyServerCallbackManager.cs" />
     <Compile Include="Managers\Legacy\LegacyUiCoreManager.cs" />
     <Compile Include="Managers\Manager.cs" />
+    <Compile Include="Managers\UserManager.cs" />
     <Compile Include="PluginManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
