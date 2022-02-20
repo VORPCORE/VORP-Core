@@ -12,7 +12,7 @@ namespace Vorp.Core.Client
             {
                 if (NetworkIsPlayerActive(PlayerId())) break;
 
-                await BaseScript.Delay(1000);
+                await BaseScript.Delay(500);
             }
             IsLoaded = true;
         }

@@ -6,12 +6,48 @@ using System.Threading.Tasks;
 
 using Lusive.Events.Attributes;
 using System.ComponentModel;
+using System.IO;
 
 namespace Vorp.Shared.Records
 {
     [Serialization]
     public partial class Character
     {
+        public Character(BinaryReader binaryReader)
+        {
+            SteamIdentifier = binaryReader.ReadString();
+            SteamName = binaryReader.ReadString();
+            CharacterId = binaryReader.ReadInt32();
+            Group = binaryReader.ReadString();
+            Cash = binaryReader.ReadDouble();
+            Gold = binaryReader.ReadDouble();
+            RoleToken = binaryReader.ReadDouble();
+            Experience = binaryReader.ReadInt32();
+            Inventory = binaryReader.ReadString();
+            Job = binaryReader.ReadString();
+            Status = binaryReader.ReadString();
+            Meta = binaryReader.ReadString();
+            Firstname = binaryReader.ReadString();
+            Lastname = binaryReader.ReadString();
+            Skin = binaryReader.ReadString();
+            Components = binaryReader.ReadString();
+            JobGrade = binaryReader.ReadInt32();
+            Coords = binaryReader.ReadString();
+            IsDead = binaryReader.ReadBoolean();
+            ClanId = binaryReader.ReadInt32();
+            Trust = binaryReader.ReadInt32();
+            Supporter = binaryReader.ReadInt32();
+            Walk = binaryReader.ReadString();
+            Crafting = binaryReader.ReadString();
+            Info = binaryReader.ReadString();
+            GunSmith = binaryReader.ReadDouble();
+        }
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+
         public Character(int charidentifier, string firstname, string lastname)
         {
             CharacterId = charidentifier;
