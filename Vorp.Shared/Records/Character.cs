@@ -5,9 +5,11 @@ using System.Threading.Tasks;
 #endif
 
 using System.ComponentModel;
+using Lusive.Events.Attributes;
 
 namespace Vorp.Shared.Records
 {
+    [Serialization]
     public class Character
     {
         public Character(int charidentifier, string firstname, string lastname)
@@ -142,7 +144,7 @@ namespace Vorp.Shared.Records
         #region Methods
 
 #if SERVER
-        // TODO: Move all SQL into procedures
+        // TODO: Move all SQL into procedures? or EF after refactor?
         internal async Task<bool> AdjustCurrency(bool increase, int currency, double amount)
         {
             try

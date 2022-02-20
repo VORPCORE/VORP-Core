@@ -10,9 +10,11 @@ using Vorp.Shared.Models;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Lusive.Events.Attributes;
 
 namespace Vorp.Shared.Records
 {
+    [Serialization]
     public class User
     {
 #if SERVER
