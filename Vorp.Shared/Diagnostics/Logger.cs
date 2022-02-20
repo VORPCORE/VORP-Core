@@ -41,7 +41,7 @@ namespace Vorp.Shared.Diagnostics
 
         static void Format(string msg)
         {
-            CitizenFX.Core.Debug.WriteLine($"[VORP-CORE] {msg}");
+            CitizenFX.Core.Debug.WriteLine($"{msg}");
         }
     }
 }
