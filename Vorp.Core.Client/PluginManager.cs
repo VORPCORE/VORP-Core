@@ -38,7 +38,7 @@ namespace Vorp.Core.Client
             OnLoad();
         }
 
-        void OnLoad()
+        async void OnLoad()
         {
             try
             {
@@ -97,6 +97,9 @@ namespace Vorp.Core.Client
 
                 AttachTickHandlers(this);
 
+                await Session.Loading();
+
+                ClientGateway.Send("vorp:user:active", Session.ServerId);
                 LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
                 BaseScript.TriggerServerEvent("vorp:user:activate");
 
