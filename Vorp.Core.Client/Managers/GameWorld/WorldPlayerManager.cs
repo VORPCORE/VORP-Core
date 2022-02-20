@@ -41,6 +41,8 @@ namespace Vorp.Core.Client.Managers.GameWorld
                     DisposePlayer(activePlayerId);
                 }
             }
+
+            await BaseScript.Delay(500);
         }
 
         void DisposePlayer(int activePlayerId)
