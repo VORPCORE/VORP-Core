@@ -15,7 +15,7 @@ using Lusive.Events.Attributes;
 namespace Vorp.Shared.Records
 {
     [Serialization]
-    public class User
+    public partial class User
     {
 #if SERVER
         const string SQL_UPDATE_GROUP = "update users set `group` = @group where `identifier` = @identifier;";
@@ -29,13 +29,11 @@ namespace Vorp.Shared.Records
 
         [Description("identifier")]
         public string SteamIdentifier { get; private set; }
-
+        public string Name { get; private set; }
         [Description("group")]
         public string Group { get; private set; }
-
         [Description("warnings")]
         public int Warnings { get; private set; }
-
         [Description("banned")]
         public bool Banned { get; private set; }
 
@@ -49,10 +47,34 @@ namespace Vorp.Shared.Records
             Banned = banned == 1;
         }
 
+        public User(string identifier, string name, string group, int warnings, sbyte banned)
+        {
+            SteamIdentifier = identifier;
+            Group = group;
+            Warnings = warnings;
+            Banned = banned == 1;
+        }
+
+        public User(string cfxServerHandle,
+                    string name,
+                    string steamId,
+                    string license,
+                    string group,
+                    int warnings)
+        {
+            CFXServerID = cfxServerHandle;
+            Name = name;
+            SteamIdentifier = steamId;
+            LicenseIdentifier = license;
+            Group = group;
+            Warnings = warnings;
+        }
+
 #if SERVER
-        [JsonIgnore] public Player Player { get; private set; }
+        [JsonIgnore] [Ignore] public Player Player { get; private set; }
 
         public void AddPlayer(Player player) => Player = player;
+        public void SetName(string name) => Name = name;
 
         [JsonIgnore] public string Endpoint => GetPlayerEndpoint(CFXServerID);
 #endif
@@ -65,19 +87,6 @@ namespace Vorp.Shared.Records
         public Dictionary<int, Character> Characters { get; private set; } = new Dictionary<int, Character>();
         public int NumberOfCharacters => Characters.Count;
         public Character ActiveCharacter => Characters.Select(x => x.Value).Where(x => x.IsActive).FirstOrDefault();
-
-        public User(string cfxServerHandle,
-                    string steamId,
-                    string license,
-                    string group,
-                    int warnings)
-        {
-            CFXServerID = cfxServerHandle;
-            SteamIdentifier = steamId;
-            LicenseIdentifier = license;
-            Group = group;
-            Warnings = warnings;
-        }
 
 #if SERVER
         public long GameTimeWhenDropped { get; private set; }
@@ -145,6 +154,8 @@ namespace Vorp.Shared.Records
 
         public async Task GetCharacters()
         {
+            Logger.Debug($"Requesting characters for '{SteamIdentifier}' '{Name}'");
+
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("identifier", SteamIdentifier);
             List<Character> characters = await DapperDatabase<Character>.GetListAsync(SQL_GET_CHARACTERS, dynamicParameters);
@@ -331,5 +342,10 @@ namespace Vorp.Shared.Records
             Player.TriggerEvent("vorp:updateUi", $"{jb}");
         }
 #endif
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

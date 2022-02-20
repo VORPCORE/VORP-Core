@@ -46,6 +46,8 @@ namespace Vorp.Core.Server.Database
             {
                 using (var conn = new MySqlConnection(ConnectionString()))
                 {
+                    SetupTypeMap();
+
                     return (await conn.QueryAsync<T>(query, args)).AsList();
                 }
             }
@@ -67,6 +69,7 @@ namespace Vorp.Core.Server.Database
             {
                 using (var conn = new MySqlConnection(ConnectionString()))
                 {
+                    SetupTypeMap();
                     return (await conn.QueryAsync<T>(query, args)).FirstOrDefault();
                 }
             }
@@ -110,6 +113,13 @@ namespace Vorp.Core.Server.Database
             sb.Append($"Exception Message: {exceptionMessage}\n");
             sb.Append($"Time Elapsed: {elapsedMilliseconds}ms");
             Logger.Error($"{sb}");
+        }
+
+        private static void SetupTypeMap()
+        {
+            var map = new CustomPropertyTypeMap(typeof(T), (type, columnName) =>
+                                type.GetProperties().FirstOrDefault(prop => GetDescriptionFromAttribute(prop) == columnName.ToLower()));
+            SqlMapper.SetTypeMap(typeof(T), map);
         }
 
         public static string GetDescriptionFromAttribute(MemberInfo member)

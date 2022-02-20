@@ -83,7 +83,7 @@ namespace Vorp.Core.Server.Commands.Impl
         [CommandInfo(new[] { "setMoney" }, "This will allow setting players currency. /admin setMoney <playerId> <cash/gold/rol> <amount>")]
         public class SetMoneyCommand : ICommand
         {
-            public async void On(User user, Player player, List<string> arguments)
+            public void On(User user, Player player, List<string> arguments)
             {
                 if (arguments.Count < 3) return;
 

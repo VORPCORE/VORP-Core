@@ -39,7 +39,7 @@ namespace Vorp.Core.Server.Managers
 
             if (UserSessions.ContainsKey(steamId)) return;
 
-            User user = await UserStore.GetUser(player.Handle, $"steam:{steamId}", license, true);
+            User user = await UserStore.GetUser(player.Handle, player.Name, $"steam:{steamId}", license, true);
             UserSessions.TryAdd(steamId, user);
             
             user.IsActive = true;
@@ -356,7 +356,7 @@ namespace Vorp.Core.Server.Managers
             if (!isCurrentlyConnected)
             {
                 // either they are new, or already exist
-                User user = await UserStore.GetUser(player.Handle, steamDatabaseIdentifier, license, true);
+                User user = await UserStore.GetUser(player.Handle, player.Name, steamDatabaseIdentifier, license, true);
                 
                 await BaseScript.Delay(0);
 

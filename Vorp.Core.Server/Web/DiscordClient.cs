@@ -35,9 +35,7 @@ namespace Vorp.Core.Server.Web
         static Request request = new Request();
         public Dictionary<WebhookChannel, string> Webhooks = new Dictionary<WebhookChannel, string>();
         static long lastUpdate = GetGameTimer();
-        static string DATE_FORMAT = "yyyy-MM-dd HH:mm";
         static bool IsDelayRunnning = false;
-        static long DelayMillis = 0;
 
         private static Regex _compiledUnicodeRegex = new Regex(@"[^\u0000-\u007F]", RegexOptions.Compiled);
 

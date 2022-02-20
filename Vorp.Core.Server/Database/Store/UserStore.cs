@@ -43,23 +43,24 @@ namespace Vorp.Core.Server.Database.Store
             return await DapperDatabase<bool>.GetSingleAsync("SELECT TRUE FROM users WHERE `identifier` = @steam and `banned` = 1 LIMIT 1;", dynamicParameters);
         }
 
-        internal static async Task<User> GetUser(string cfxServerHandle, string steamIdent, string license, bool withCharacters = false)
+        internal static async Task<User> GetUser(string cfxServerHandle, string cfxName, string steamIdent, string license, bool withCharacters = false)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("steam", steamIdent);
             User user = await DapperDatabase<User>.GetSingleAsync("SELECT * FROM users WHERE `identifier` = @steam LIMIT 1;", dynamicParameters);
-            
+
             await BaseScript.Delay(0);
 
             if (user is not null)
             {
-                Logger.Debug($"User found with steamIdent [{steamIdent}]");
+                Logger.Debug($"User found with steamIdent [{user.SteamIdentifier}]");
+                user.SetName(cfxName);
             }
 
             if (user == null)
             {
                 Logger.Debug($"No user found with steamIdent [{steamIdent}]");
-                user = new User(cfxServerHandle, steamIdent, license, _srvCfg.UserConfig.NewUserGroup, 0);
+                user = new User(cfxServerHandle, cfxName, steamIdent, license, _srvCfg.UserConfig.NewUserGroup, 0);
 
                 // if they are the first user, then set them as an admin
                 int countOfUsers = await GetCountOfUsers();
@@ -73,7 +74,7 @@ namespace Vorp.Core.Server.Database.Store
                 await BaseScript.Delay(0);
 
                 if (saved)
-                    Logger.Debug($"Created a new user steamIdent [{steamIdent}]");
+                    Logger.Debug($"Created a new user steamIdent [{user.SteamIdentifier}]");
 
                 if (!saved)
                     return null;
