@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\JsonBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Records\Character.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Records\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="$(MSBuildThisFileDirectory)Data\" />
