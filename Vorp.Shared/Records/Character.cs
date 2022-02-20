@@ -13,6 +13,13 @@ namespace Vorp.Shared.Records
     [Serialization]
     public partial class Character
     {
+        public Character(int charidentifier, string firstname, string lastname)
+        {
+            CharacterId = charidentifier;
+            Firstname = firstname;
+            Lastname = lastname;
+        }
+
         public Character(BinaryReader binaryReader)
         {
             SteamIdentifier = binaryReader.ReadString();
@@ -41,52 +48,6 @@ namespace Vorp.Shared.Records
             Crafting = binaryReader.ReadString();
             Info = binaryReader.ReadString();
             GunSmith = binaryReader.ReadDouble();
-        }
-
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
-
-        public Character(int charidentifier, string firstname, string lastname)
-        {
-            CharacterId = charidentifier;
-            Firstname = firstname;
-            Lastname = lastname;
-        }
-
-        public Character(string identifier, string steamname, int charidentifier, string group, double money, double gold,
-            double rol, int xp, string inventory, string job, string status, string meta, string firstname, string lastname, 
-            string skinPlayer, string compPlayer, int jobgrade, string coords, bool isdead, int clanid, int trust,
-            int supporter, string walk, string crafting, string info, double gunsmith)
-        {
-            CharacterId = charidentifier;
-            Firstname = firstname;
-            Lastname = lastname;
-
-            SteamIdentifier = identifier;
-            SteamName = steamname;
-            Group = group;
-            Cash = money;
-            Gold = gold;
-            RoleToken = rol;
-            Experience = xp;
-            Inventory = inventory;
-            Job = job;
-            Status = status;
-            Meta = meta;
-            Skin =  skinPlayer;
-            Components = compPlayer;
-            JobGrade = jobgrade;
-            Coords = coords;
-            IsDead = isdead;
-            ClanId = clanid;
-            Trust = trust;
-            Supporter = supporter;
-            Walk = walk;
-            Crafting = crafting;
-            Info = info;
-            GunSmith = gunsmith;
         }
 
         #region Fields
