@@ -18,5 +18,17 @@ namespace Vorp.Core.Client.RedM
         {
             return Vdist(start.X, start.Y, start.Z, end.X, end.Y, end.Z);
         }
+
+        //public unsafe static void DisplayLeftNotification(int duration)
+        //{
+        //    int* struct1 = stackalloc int[1];
+        //    struct1[0] = duration;
+
+        //    int* struct2 = stackalloc int[5];
+
+        //    //Function.Call((Hash)Hash.)
+
+        //    //API.N_0x26e87218390e6729(struct1, struct2, 1, 1);
+        //}
     }
 }
