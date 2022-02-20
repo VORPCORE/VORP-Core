@@ -140,6 +140,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             cb.Invoke(ExportGetUser(serverId));
         }
 
+        // TODO: REplace with internal methods
         private void OnPlayerSpawn([FromSource] Player player)
         {
             if (!UserSessions.ContainsKey(player.Handle))
