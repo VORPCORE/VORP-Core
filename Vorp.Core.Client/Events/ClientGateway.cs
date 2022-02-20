@@ -15,9 +15,9 @@ namespace Vorp.Core.Client.Events
 
         protected sealed override IEventLogger Logger { get; }
         protected override ISerialization Serialization { get; }
-
+#nullable enable
         private string? _signature;
-
+#nullable disable
         public ClientGateway(PluginManager client)
         {
             short playerId = (short)GetPlayerServerId(PlayerId());
