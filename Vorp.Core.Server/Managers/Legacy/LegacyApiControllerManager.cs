@@ -109,6 +109,7 @@ namespace Vorp.Core.Server.Managers.Legacy
                     { "addRpcCallback", new Action<string, CallbackDelegate>((name, cb) => {
                             if (LegacyCallbackManager.CallbackManagerInstance.Callbacks.ContainsKey(name)) return;
                             LegacyCallbackManager.CallbackManagerInstance.Callbacks.Add(name, cb);
+                            Logger.Debug($"Added RPC Callback for {GetInvokingResource()}, Event '{name}'");
                         })
                     }
                 };
