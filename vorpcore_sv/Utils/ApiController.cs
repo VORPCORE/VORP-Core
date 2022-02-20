@@ -84,7 +84,9 @@ namespace vorpcore_sv.Utils
                 PlayerList pl = vorpcore_sv.PlayerList;
                 p = pl[handle];
             }
+#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
                 Debug.WriteLine("Server Handle Not Found");
                 p = null;

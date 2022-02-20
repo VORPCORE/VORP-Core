@@ -52,7 +52,7 @@ namespace Vorp.Core.Server.Managers
             Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
         }
 
-        private async void OnUserActive(ClientId source, int serverHandle)
+        private void OnUserActive(ClientId source, int serverHandle)
         {
             Player player = PlayersList[source.Handle];
             if (player == null) return;
@@ -152,7 +152,9 @@ namespace Vorp.Core.Server.Managers
             //}
         }
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task<List<dynamic>> OnGetActiveUserList(ClientId source, int id)
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             List<dynamic> list = new List<dynamic>();
             if (source.Handle != id) return list;
@@ -182,7 +184,7 @@ namespace Vorp.Core.Server.Managers
             }
         }
 
-        private async void OnPlayerJoining([FromSource] Player player, string oldId)
+        private void OnPlayerJoining([FromSource] Player player, string oldId)
         {
             string steamId = player.Identifiers["steam"];
 

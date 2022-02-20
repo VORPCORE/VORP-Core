@@ -11,7 +11,9 @@ namespace Vorp.Core.Client.Managers.Interface
         }
 
         [TickHandler(SessionWait = true)]
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
         private async Task OnDisableHud()
+#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
             API.DisableControlAction(0, (uint)eControls.HudSpecial, true);
             API.DisableControlAction(0, (uint)eControls.RevealHud, true);
