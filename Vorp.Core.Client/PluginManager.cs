@@ -38,7 +38,7 @@ namespace Vorp.Core.Client
             OnLoad();
         }
 
-        async Task OnLoad()
+        void OnLoad()
         {
             try
             {
