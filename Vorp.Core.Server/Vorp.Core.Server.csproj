@@ -97,7 +97,7 @@
 
   <ItemGroup>
     <None Update="Resources\server-config.json">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
 
