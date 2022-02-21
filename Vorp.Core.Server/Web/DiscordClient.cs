@@ -195,7 +195,7 @@ namespace Vorp.Core.Server.Web
 
             IsMember = discordMember.JoinedAt.HasValue;
             await BaseScript.Delay(0);
-            Logger.Success($"DiscordClient : {player.Name} is a member of the Discord Guild.");
+            Logger.Trace($"DiscordClient : {player.Name} is a member of the Discord Guild.");
 
             return IsMember;
         }

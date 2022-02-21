@@ -15,7 +15,7 @@ namespace Vorp.Core.Server.Commands.Impl
         {
             public void On(User user, Player player, List<string> arguments)
             {
-                Logger.Success($"Hello World");
+                Logger.Trace($"Hello World");
             }
         }
 

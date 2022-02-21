@@ -115,7 +115,7 @@ namespace Vorp.Core.Server
             bool databaseTest = await Database.DapperDatabase<bool>.GetSingleAsync("select 1;");
             if (databaseTest)
             {
-                Logger.Success($"Database Connection Test Successful!");
+                Logger.Trace($"Database Connection Test Successful!");
             }
             else
             {

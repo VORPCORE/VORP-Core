@@ -23,10 +23,10 @@ namespace Vorp.Shared.Diagnostics
                 Format($"[INFO] {msg}");
         }
 
-        public static void Success(string msg)
+        public static void Trace(string msg)
         {
             if (ShowOutput("trace"))
-                Format($"[SUCCESS] {msg}");
+                Format($"[TRACE] {msg}");
         }
 
         public static void Warn(string msg)

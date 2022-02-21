@@ -97,7 +97,7 @@ namespace Vorp.Core.Server.Managers.Legacy
                                     Logger.Info(msg);
                                     break;
                                 case "success":
-                                    Logger.Success(msg);
+                                    Logger.Trace(msg);
                                     break;
                                 default:
                                     Logger.Error($"Log Type '{type}' is unknown");
