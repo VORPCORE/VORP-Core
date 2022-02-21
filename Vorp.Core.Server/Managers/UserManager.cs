@@ -49,14 +49,14 @@ namespace Vorp.Core.Server.Managers
             SendPlayerChatSuggestions(player, user);
             SendPlayerCharacters(player, user);
 
-            Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+            Logger.Trace($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
         }
 
         private void OnUserActive(ClientId source, int serverHandle)
         {
             Player player = PlayersList[source.Handle];
             if (player == null) return;
-            BaseScript.TriggerEvent("vorpcharacter:testevent", player.Handle);
+
             try
             {
                 if (source.Handle != serverHandle) return;
@@ -73,7 +73,7 @@ namespace Vorp.Core.Server.Managers
                 SendPlayerChatSuggestions(player, user);
                 SendPlayerCharacters(player, user);
 
-                Logger.Debug($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+                Logger.Trace($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace Vorp.Core.Server.Managers
             // Legacy Methods to be removed
             // Make this internal to VORP_CORE
             int numberOfCharacters = user.NumberOfCharacters;
-            Logger.Debug($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
+            Logger.Trace($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
 
             ServerGateway.Send(player, "vorp:character:list", user.Characters, ServerConfiguration.MaximumCharacters);
 
@@ -195,12 +195,12 @@ namespace Vorp.Core.Server.Managers
             user.AddPlayer(player);
             user.UpdateServerId(player.Handle);
 
-            Logger.Debug($"Player '{player.Name}' is joining.");
+            Logger.Trace($"Player '{player.Name}' is joining.");
         }
 
         private async void OnPlayerDropped([FromSource] Player player, string reason)
         {
-            Logger.Info($"Player '{player.Name}' dropped (Reason: {reason}).");
+            Logger.Trace($"Player '{player.Name}' dropped (Reason: {reason}).");
             string steamId = player.Identifiers["steam"];
             if (!UserSessions.ContainsKey(steamId)) return;
             User user = UserSessions[steamId];
@@ -349,7 +349,7 @@ namespace Vorp.Core.Server.Managers
                 }
 
                 // should this fire an event at the player?! It honestly should, then they know to request a character list
-                Logger.Debug($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
+                Logger.Trace($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
                 deferrals.done();
             }
 
@@ -369,8 +369,8 @@ namespace Vorp.Core.Server.Managers
                 
                 UserSessions.AddOrUpdate(steamId, user, (key, oldValue) => oldValue = user);
                 
-                Logger.Debug($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
-                Logger.Debug($"Number of Sessions: {UserSessions.Count}");
+                Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
+                Logger.Trace($"Number of Sessions: {UserSessions.Count}");
                 deferrals.done();
                 return;
 
