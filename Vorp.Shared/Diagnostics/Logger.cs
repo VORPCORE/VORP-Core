@@ -4,39 +4,53 @@ namespace Vorp.Shared.Diagnostics
 {
     public static class Logger
     {
-        static bool IsWarningEnabled => GetConvarInt("vorp_console_warning", 0) == 1;
-        static bool IsDebugEnabled => GetConvarInt("vorp_console_debug", 0) == 1;
+#if Client
+        static string _loggingLevel = GetConvar2("", "none");
+#elif SERVER
+        static string _loggingLevel = GetConvar("vorp_logging_level", "none");
+#endif
+
+        static bool ShowOutput(string level)
+        {
+            string lowercase = level.ToLower();
+            if (lowercase == "all") return true;
+            return (lowercase == _loggingLevel);
+        }
 
         public static void Info(string msg)
         {
-            Format($"[INFO] {msg}");
+            if (ShowOutput("info"))
+                Format($"[INFO] {msg}");
         }
 
         public static void Success(string msg)
         {
-            Format($"[SUCCESS] {msg}");
+            if (ShowOutput("trace"))
+                Format($"[SUCCESS] {msg}");
         }
 
         public static void Warn(string msg)
         {
-            if (!IsWarningEnabled) return;
-            Format($"[WARN] {msg}");
+            if (ShowOutput("warn"))
+                Format($"[WARN] {msg}");
         }
 
         public static void Debug(string msg)
         {
-            if (!IsDebugEnabled) return;
-            Format($"[DEBUG] {msg}");
+            if (ShowOutput("debug"))
+                Format($"[DEBUG] {msg}");
         }
 
         public static void Error(string msg)
         {
-            Format($"[ERROR] {msg}");
+            if (ShowOutput("error"))
+                Format($"[ERROR] {msg}");
         }
 
         public static void Error(Exception ex, string msg)
         {
-            Format($"[ERROR] {msg}\r\n{ex}");
+            if (ShowOutput("error"))
+                Format($"[ERROR] {msg}\r\n{ex}");
         }
 
         static void Format(string msg)
