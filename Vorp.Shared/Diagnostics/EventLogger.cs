@@ -10,6 +10,7 @@ namespace Vorp.Diagnostics
 #elif SERVER
         static string _loggingLevel = GetConvar("vorp_logging_level", "none");
 #endif
+
         static bool ShowOutput(string level)
         {
             string lowercase = _loggingLevel.ToLower();
