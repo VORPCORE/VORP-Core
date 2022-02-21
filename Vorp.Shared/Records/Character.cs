@@ -20,7 +20,7 @@ namespace Vorp.Shared.Records
             Lastname = lastname;
         }
 
-        public Character(BinaryReader binaryReader)
+        public Character(BinaryReader binaryReader, bool buildMe = false)
         {
             SteamIdentifier = binaryReader.ReadString();
             SteamName = binaryReader.ReadString();
