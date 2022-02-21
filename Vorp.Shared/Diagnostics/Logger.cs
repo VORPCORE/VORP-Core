@@ -4,7 +4,7 @@ namespace Vorp.Shared.Diagnostics
 {
     public static class Logger
     {
-#if Client
+#if CLIENT
         static string _loggingLevel = GetConvar2("", "none");
 #elif SERVER
         static string _loggingLevel = GetConvar("vorp_logging_level", "none");
