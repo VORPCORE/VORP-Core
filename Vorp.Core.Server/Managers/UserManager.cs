@@ -112,7 +112,7 @@ namespace Vorp.Core.Server.Managers
             int numberOfCharacters = user.NumberOfCharacters;
             Logger.Debug($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
 
-            ServerGateway.Send(player, "vorp:character:list", user.Characters);
+            ServerGateway.Send(player, "vorp:character:list", user.Characters, ServerConfiguration.MaximumCharacters);
 
             //if (numberOfCharacters <= 0)
             //{

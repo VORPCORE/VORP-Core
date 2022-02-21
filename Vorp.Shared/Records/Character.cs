@@ -20,6 +20,38 @@ namespace Vorp.Shared.Records
             Lastname = lastname;
         }
 
+        // I DON'T KNOW WHY, I DON'T WANT TO KNOW WHY, BUT, IF YOU CAN FIX IT, MAY THE GENERATOR SEE IN YOUR FAVOUR!
+#if CLIENT
+        public Character(BinaryReader binaryReader)
+        {
+            SteamIdentifier = binaryReader.ReadString();
+            SteamName = binaryReader.ReadString();
+            CharacterId = binaryReader.ReadInt32();
+            Group = binaryReader.ReadString();
+            Cash = binaryReader.ReadDouble();
+            Gold = binaryReader.ReadDouble();
+            RoleToken = binaryReader.ReadDouble();
+            Experience = binaryReader.ReadInt32();
+            Inventory = binaryReader.ReadString();
+            Job = binaryReader.ReadString();
+            Status = binaryReader.ReadString();
+            Meta = binaryReader.ReadString();
+            Firstname = binaryReader.ReadString();
+            Lastname = binaryReader.ReadString();
+            Skin = binaryReader.ReadString();
+            Components = binaryReader.ReadString();
+            JobGrade = binaryReader.ReadInt32();
+            Coords = binaryReader.ReadString();
+            IsDead = binaryReader.ReadBoolean();
+            ClanId = binaryReader.ReadInt32();
+            Trust = binaryReader.ReadInt32();
+            Supporter = binaryReader.ReadInt32();
+            Walk = binaryReader.ReadString();
+            Crafting = binaryReader.ReadString();
+            Info = binaryReader.ReadString();
+            GunSmith = binaryReader.ReadDouble();
+        }
+#elif SERVER
         public Character(BinaryReader binaryReader, bool buildMe = false)
         {
             SteamIdentifier = binaryReader.ReadString();
@@ -49,6 +81,7 @@ namespace Vorp.Shared.Records
             Info = binaryReader.ReadString();
             GunSmith = binaryReader.ReadDouble();
         }
+#endif
 
         #region Fields
         [Description("identifier")]
@@ -105,15 +138,15 @@ namespace Vorp.Shared.Records
         [Description("gunsmith")]
         public double GunSmith { get; private set; } = 0.00;
 
-        #endregion
+#endregion
 
-        #region Properties
+#region Properties
 
         public bool IsActive { get; set; } = false;
 
-        #endregion
+#endregion
 
-        #region Methods
+#region Methods
 
 #if SERVER
         // TODO: Move all SQL into procedures? or EF after refactor?
@@ -358,6 +391,6 @@ namespace Vorp.Shared.Records
 
 #endif
 
-        #endregion
+#endregion
     }
 }
