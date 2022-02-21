@@ -5,14 +5,14 @@ namespace Vorp.Shared.Diagnostics
     public static class Logger
     {
 #if CLIENT
-        static string _loggingLevel = GetConvar2("", "none");
+        static string _loggingLevel = GetConvar2("vorp_logging_level", "none");
 #elif SERVER
         static string _loggingLevel = GetConvar("vorp_logging_level", "none");
 #endif
 
         static bool ShowOutput(string level)
         {
-            string lowercase = level.ToLower();
+            string lowercase = _loggingLevel.ToLower();
             if (lowercase == "all") return true;
             return (lowercase == _loggingLevel);
         }
