@@ -114,7 +114,7 @@ namespace Vorp.Core.Client.RedM
 			}
 		}
 		/// <summary>
-		/// Gets the matrix of this <see cref="Camera"/>.
+		/// Gets the matrix of this <see cref="Camera"/>. CURRENTLY DOESN'T WORK
 		/// </summary>
 		public Matrix Matrix
 		{
