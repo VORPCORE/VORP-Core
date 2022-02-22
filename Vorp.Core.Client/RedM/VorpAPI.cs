@@ -1,4 +1,5 @@
-﻿using Vorp.Core.Client.RedM.Enums;
+﻿using System.Drawing;
+using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.RedM
 {
@@ -19,16 +20,77 @@ namespace Vorp.Core.Client.RedM
             return Vdist(start.X, start.Y, start.Z, end.X, end.Y, end.Z);
         }
 
-        //public unsafe static void DisplayLeftNotification(int duration)
-        //{
-        //    int* struct1 = stackalloc int[1];
-        //    struct1[0] = duration;
+        public static Camera CreateCameraWithParams(Vector3 position, Vector3 rotation, float fov)
+        {
+            int handle = CreateCamWithParams("DEFAULT_SCRIPTED_CAMERA", position.X, position.Y, position.Z, rotation.X, rotation.Y, rotation.Z, fov, true, 2);
+            return new Camera(handle);
+        }
 
-        //    int* struct2 = stackalloc int[5];
+        public static Camera RenderingCamera
+        {
+            get
+            {
+                return new Camera(API.GetRenderingCam());
+            }
+            set
+            {
+                if (value == null)
+                {
+                    API.RenderScriptCams(false, false, 3000, true, false, 0);
+                }
+                else
+                {
+                    value.IsActive = true;
+                    API.RenderScriptCams(true, false, 3000, true, false, 0);
+                }
+            }
+        }
 
-        //    //Function.Call((Hash)Hash.)
+        public static void DrawText(string text, Vector2 pos, float scale = 1f)
+        {
+            DrawText(text, x: pos.X, y: pos.Y, fontsize: scale);
+        }
 
-        //    //API.N_0x26e87218390e6729(struct1, struct2, 1, 1);
-        //}
+        public static void DrawText(string text, int font = 1, float x = 0, float y = 0, float fontscale = 1, float fontsize = 1, int r = 255, int g = 255, int b = 255, int alpha = 255, bool textcentred = false, bool shadow = false)
+        {
+            long str = Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", text);
+            Function.Call(Hash.SET_TEXT_SCALE, fontscale, fontsize);
+            Function.Call(Hash._SET_TEXT_COLOR, r, g, b, alpha);
+            Function.Call(Hash.SET_TEXT_CENTRE, textcentred);
+            if (shadow) { Function.Call(Hash.SET_TEXT_DROPSHADOW, 1, 0, 0, 255); }
+            Function.Call(Hash.SET_TEXT_FONT_FOR_CURRENT_COMMAND, font);
+            Function.Call(Hash._DISPLAY_TEXT, str, x, y);
+        }
+
+        /// <summary>
+        /// Doesn't work, currently is throwing an error
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="subTitle"></param>
+        /// <param name="duration"></param>
+        public unsafe static void DisplayLeftNotification(string title, string subTitle, int duration = 10000)
+        {
+            try
+            {
+                int* struct1 = stackalloc int[1];
+                struct1[0] = duration;
+
+                long longTitle = Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", title);
+                long longSubTitle = Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", subTitle);
+
+                long* struct2 = stackalloc long[4];
+                struct2[0] = longTitle;
+                struct2[1] = longSubTitle;
+                struct2[2] = GetHashKey("HUD_TOASTS");
+                struct2[3] = GetHashKey("toast_mp_status_change");
+
+                Function.Call((Hash)0x26e87218390e6729, struct1, struct2, 1, 1);
+                Logger.Trace($"DisplayLeftNotification: {title}/{subTitle}");
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, $"DisplayLeftNotification");
+            }
+        }
     }
 }

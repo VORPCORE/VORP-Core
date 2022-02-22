@@ -3,8 +3,8 @@
     enum eControls : uint
     {
         NextCamera = 0x7F8D09B8,
-        LookLr = 0xA987235F,
-        LookUd = 0xD2047988,
+        LookLeftRight = 0xA987235F,
+        LookUpDown = 0xD2047988,
         LookUpOnly = 0xC0651D40,
         LookDownOnly = 0x8ED92E16,
         LookLeftOnly = 0x08F8BC6D,
@@ -42,8 +42,8 @@
         SpecialAbilitySecondary = 0x6328239B,
         SecondarySpecialAbilitySecondary = 0x811F4A1A,
         SpecialAbilityAction = 0x1ECA87D4,
-        MoveLr = 0x4D8FB4C1,
-        MoveUd = 0xFDA83190,
+        MoveLeftRight = 0x4D8FB4C1,
+        MoveUpDown = 0xFDA83190,
         MoveUpOnly = 0x8FD015D8,
         MoveDownOnly = 0xD27782E3,
         MoveLeftOnly = 0x7065027D,
