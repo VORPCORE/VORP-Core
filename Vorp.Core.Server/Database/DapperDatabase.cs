@@ -13,7 +13,6 @@ namespace Vorp.Core.Server.Database
 {
     internal class DapperDatabase<T>
     {
-        // TODO: Use mysql connection from SQL Config
         private static string _connectionString;
 
         private static string ConnectionString()
