@@ -13,6 +13,8 @@ using System.Reflection;
 using Vorp.Core.Client.Environment.Entities;
 using Vorp.Core.Client.Events;
 using Vorp.Core.Client.Managers;
+using Vorp.Core.Client.Commands;
+using Vorp.Core.Client.Commands.Impl;
 
 namespace Vorp.Core.Client
 {
@@ -26,6 +28,7 @@ namespace Vorp.Core.Client
         public Dictionary<Type, object> Managers { get; } = new Dictionary<Type, object>();
         public Dictionary<Type, List<MethodInfo>> TickHandlers { get; set; } = new Dictionary<Type, List<MethodInfo>>();
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
+        public CommandFramework CommandFramework;
 
         public PluginManager()
         {
@@ -97,11 +100,14 @@ namespace Vorp.Core.Client
 
                 AttachTickHandlers(this);
 
+                CommandFramework = new CommandFramework();
+                CommandFramework.Bind(typeof(AdminCommands));
+
                 await Session.Loading();
 
                 ClientGateway.Send("vorp:user:active", Session.ServerId);
-                LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
                 BaseScript.TriggerServerEvent("vorp:user:activate");
+                LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
 
                 Logger.Info("Load method has been completed.");
             }

@@ -1,4 +1,6 @@
-﻿using Vorp.Core.Client.Managers;
+﻿using System.Windows.Input;
+using Vorp.Core.Client.Commands;
+using Vorp.Core.Client.Managers;
 
 namespace Vorp.Core.Client.Environment.Entities
 {
@@ -38,6 +40,40 @@ namespace Vorp.Core.Client.Environment.Entities
             PlayerPedId = playerPedId;
             PlayerName = GetPlayerName(playerId);
             Logger.Trace($"New Player Created: {playerId}/{playerPedId}: {PlayerName}");
+            RequestServerInformation();
+
+            pluginManager.ClientGateway.Mount("vorp:user:group:client", new Action<string>(group => {
+                Group = group;
+                Logger.Trace($"Group updated to: {Group}");
+
+                foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, Commands.ICommand>>> entry in pluginManager.CommandFramework.Registry)
+                {
+                    CommandContext commandContext = entry.Key;
+                    List<Tuple<CommandInfo, Commands.ICommand>> tuples = entry.Value;
+
+                    if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(Group))
+                    {
+                        foreach (Tuple<CommandInfo, Commands.ICommand> item in tuples)
+                        {
+                            BaseScript.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
+                        }
+                    }
+                    else
+                    {
+                        foreach (Tuple<CommandInfo, Commands.ICommand> item in tuples)
+                        {
+                            BaseScript.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
+                        }
+                    }
+                }
+            }));
+        }
+
+        async void RequestServerInformation()
+        {
+            string group = await pluginManager.ClientGateway.Get<string>("vorp:user:group", ServerId);
+            Logger.Trace($"Server returned group '{group}'");
+            Group = group;
         }
 
         public bool IsPositionFrozen
@@ -71,6 +107,20 @@ namespace Vorp.Core.Client.Environment.Entities
         }
 
         public bool IsDead => IsEntityDead(PlayerPedId);
+
+        protected string _group { get; private set; }
+        public string Group
+        {
+            set
+            {
+                _group = value;
+            }
+            get
+            {
+                return _group;
+            }
+        }
+
         public void EnableEagleeye(bool enable) => Function.Call((Hash)0xA63FCAD3A6FEC6D2, PlayerId, enable);
         public void EnableCustomDeadeyeAbility(bool enable) => Function.Call((Hash)0x95EE1DEE1DCD9070, PlayerId, enable);
     }

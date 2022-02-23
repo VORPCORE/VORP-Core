@@ -17,6 +17,8 @@ namespace Vorp.Core.Server.Managers
         long lastTimeCleanupRan = 0;
         const int TWO_MINUTES = (1000 * 60) * 2;
 
+        string DEFAULT_GROUP = ServerConfiguration.UserConfig.NewUserGroup;
+
         public override void Begin()
         {
             Event("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnecting));
@@ -26,10 +28,31 @@ namespace Vorp.Core.Server.Managers
 
             Event("vorp:user:activate", new Action<Player>(OnUserActivate));
 
-            ServerGateway.Mount("vorp:user:active", new Action<ClientId, int>(OnUserActive));
+            ServerGateway.Mount("vorp:user:active", new Func<ClientId, int, Task<string>>(OnUserActive));
             ServerGateway.Mount("vorp:user:list:active", new Func<ClientId, int, Task<List<dynamic>>>(OnGetActiveUserList));
+            ServerGateway.Mount("vorp:user:group", new Func<ClientId, int, Task<string>>(OnGetUsersGroup));
 
             lastTimeCleanupRan = GetGameTimer();
+        }
+
+        private async Task<string> OnGetUsersGroup(ClientId source, int serverHandle)
+        {
+            Player player = PlayersList[source.Handle];
+            if (player == null) return DEFAULT_GROUP;
+
+            try
+            {
+                if (source.Handle != serverHandle) return DEFAULT_GROUP;
+                if (source.User == null) return DEFAULT_GROUP;
+
+                User user = source.User;
+                return user.Group;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "OnGetUsersGroup");
+                return DEFAULT_GROUP;
+            }
         }
 
         private async void OnUserActivate([FromSource] Player player)
@@ -49,18 +72,19 @@ namespace Vorp.Core.Server.Managers
             SendPlayerChatSuggestions(player, user);
             SendPlayerCharacters(player, user);
 
-            Logger.Trace($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+            Logger.Trace($"{user.Group.ToUpper()} [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+            ServerGateway.Send(player, "vorp:user:group:client", user.Group);
         }
 
-        private void OnUserActive(ClientId source, int serverHandle)
+        private async Task<string> OnUserActive(ClientId source, int serverHandle)
         {
             Player player = PlayersList[source.Handle];
-            if (player == null) return;
+            if (player == null) return "failed";
 
             try
             {
-                if (source.Handle != serverHandle) return;
-                if (source.User == null) return;
+                if (source.Handle != serverHandle) return "failed";
+                if (source.User == null) return "failed";
 
                 User user = source.User;
 
@@ -73,11 +97,14 @@ namespace Vorp.Core.Server.Managers
                 SendPlayerChatSuggestions(player, user);
                 SendPlayerCharacters(player, user);
 
-                Logger.Trace($"Player [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+                Logger.Trace($"{user.Group.ToUpper()} [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+
+                return user.Group;
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "OnUserActive");
+                return "failed";
             }
         }
 
