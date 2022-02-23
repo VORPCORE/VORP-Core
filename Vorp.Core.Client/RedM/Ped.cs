@@ -26,7 +26,7 @@ namespace Vorp.Core.Client.RedM
             UpdatePedVariation();
         }
 
-        public void ApplyShopItemToPed(uint componentHash, bool immediately = true, bool isMultiplayer = true, bool p4 = true)
+        public void ApplyShopItemToPed(uint componentHash, bool immediately = true, bool isMultiplayer = true, bool p4 = false)
         {
             Function.Call((Hash)0xD3A7B003ED343FD9, Handle, componentHash, immediately, isMultiplayer, p4);
             UpdatePedVariation();
@@ -34,7 +34,7 @@ namespace Vorp.Core.Client.RedM
         
         public void ApplyShopItemToPed(PedComponent component)
         {
-            ApplyShopItemToPed(component.Value, p4: !IsMale);
+            ApplyShopItemToPed(component.Value);
             UpdatePedVariation();
         }
         

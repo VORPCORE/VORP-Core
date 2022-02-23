@@ -6,6 +6,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 {
     public class CharacterManager : Manager<CharacterManager>
     {
+        public bool IsInCharacterSelection = false;
         string _modelHashFemale = "mp_female";
         string _modelHashMale = "mp_male";
         Ped _pedMale;
@@ -28,6 +29,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             ClientGateway.Mount("vorp:character:list", new Action<Dictionary<int, Character>, int>(async (characters, maxCharcters) =>
             {
+                IsInCharacterSelection = true;
                 Logger.Trace($"Received {characters.Count} characters from the server, max {maxCharcters} allowed.");
 
                 await Screen.FadeOut(500);
@@ -35,16 +37,17 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 DisplayHud(false);
                 DisplayRadar(false);
 
+                await LoadImaps();
+                Instance.LocalPlayer.Position = new Vector3(-563.1345f, -3775.811f, 237.60f);
+                Instance.LocalPlayer.Ped.IsPositionFrozen = true;
+
+                await BaseScript.Delay(100);
+
                 CreateCameras();
                 await BaseScript.Delay(100);
                 CameraMain.IsActive = true;
                 SetCamera(CameraState.Main, CameraMain);
                 RenderScriptCams(true, true, 2000, true, true, 0);
-                await LoadImaps();
-
-                Logger.Trace($"All IMAPs loaded");
-
-                Instance.LocalPlayer.Position = new Vector3(-563.1345f, -3775.811f, 237.60f);
 
                 await CreateSelections();
 
@@ -69,6 +72,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             await GetImap(-1699673416);
             await GetImap(1679934574);
             await GetImap(183712523);
+            Logger.Trace($"All IMAPs loaded");
         }
 
         async Task CreateSelections()
