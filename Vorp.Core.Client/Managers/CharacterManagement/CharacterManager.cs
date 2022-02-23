@@ -63,29 +63,42 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         {
             try
             {
-                _pedMale = await VorpAPI.CreatePed(_modelHashMale, new Vector3(-558.52f, -3775.6f, 237.7f), 93.2f);
-                _pedFemale = await VorpAPI.CreatePed(_modelHashFemale, new Vector3(-558.43f, -3776.65f, 237.7f), 93.2f);
-
-                _pedMale.IsPositionFrozen = true;
-                _pedFemale.IsPositionFrozen = true;
-
-                SetEntityInvincible(_pedMale.Handle, true);
-                SetEntityInvincible(_pedFemale.Handle, true);
-
-                _pedMale.ApplyDefaultSkinSettings();
-                _pedMale.RandomComponentVariation();
-                _pedMale.RandomiseClothing();
-                _pedMale.UpdatePedVariation();
-
-                _pedFemale.ApplyDefaultSkinSettings();
-                _pedFemale.RandomComponentVariation();
-                _pedMale.RandomiseClothing();
-                _pedFemale.UpdatePedVariation();
+                await CreateMalePed();
+                await CreateFemalePed();
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, $"CreateSelections");
             }
+        }
+
+        async Task CreateMalePed()
+        {
+            _pedMale = await VorpAPI.CreatePed(_modelHashMale, new Vector3(-558.52f, -3775.6f, 237.7f), 93.2f);
+            _pedMale.ApplyDefaultSkinSettings();
+            _pedMale.IsPositionFrozen = true;
+            SetEntityInvincible(_pedMale.Handle, true);
+            RandomiseClothing(_pedMale);
+        }
+
+        async Task CreateFemalePed()
+        {
+            _pedFemale = await VorpAPI.CreatePed(_modelHashFemale, new Vector3(-558.43f, -3776.65f, 237.7f), 93.2f);
+            _pedFemale.ApplyDefaultSkinSettings();
+            _pedFemale.IsPositionFrozen = true;
+            SetEntityInvincible(_pedFemale.Handle, true);
+            RandomiseClothing(_pedFemale);
+        }
+
+        void RandomiseClothing(Ped ped)
+        {
+            // I DO NOT KNOW WHY, I DO NOT WANT TO KNOW WHY
+            // BUT I SUMISE, THAT IT IS DUE TO THE NATIVE NOT WORKING IN THE FIRST CALL
+            // SO WE CALL IT TWICE
+            ped.RandomiseClothing();
+            ped.UpdatePedVariation();
+            ped.RandomiseClothing();
+            ped.UpdatePedVariation();
         }
 
         async Task GetImap(int hash)

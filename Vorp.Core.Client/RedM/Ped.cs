@@ -5,28 +5,36 @@ namespace Vorp.Core.Client.RedM
 {
     public class Ped : Entity
     {
+        private VorpPedComponents _vorpPedComponents;
+
         public Ped(int handle) : base(handle)
         {
 
         }
 
+        public bool IsMale => IsPedMale(Handle);
         public void SetPedOutfitPreset(int preset) => Function.Call((Hash)0x77FF8D35EEC6BBC4, Handle, preset, 0);
         public bool IsPedReadyToRender => Function.Call<bool>((Hash)0xA0BC8FAED8CFEB3C, Handle);
-        public void RandomComponentVariation() => Function.Call(Hash.SET_PED_RANDOM_COMPONENT_VARIATION, Handle, 1);
+        public void RandomOutfitVariation()
+        {
+            Function.Call((Hash)0x283978A15512B2FE, Handle, true);
+        }
 
-        public async void BodyComponent(PedComponent component)
+        public void BodyComponent(PedComponent component)
         {
             Function.Call((Hash)0x1902C4CFCC5BE57C, Handle, component.Value);
-            await BaseScript.Delay(0);
             UpdatePedVariation();
         }
 
-        public void ApplyShopItemToPed(uint componentHash, bool immediately = true, bool isMultiplayer = true, bool p4 = true) => Function.Call((Hash)0xD3A7B003ED343FD9, Handle, componentHash, immediately, isMultiplayer, p4);
-        
-        public async void ApplyShopItemToPed(PedComponent component, bool immediately = true, bool isMultiplayer = true, bool p4 = true)
+        public void ApplyShopItemToPed(uint componentHash, bool immediately = true, bool isMultiplayer = true, bool p4 = true)
         {
-            Function.Call((Hash)0xD3A7B003ED343FD9, Handle, component.Value, immediately, isMultiplayer, p4);
-            await BaseScript.Delay(0);
+            Function.Call((Hash)0xD3A7B003ED343FD9, Handle, componentHash, immediately, isMultiplayer, p4);
+            UpdatePedVariation();
+        }
+        
+        public void ApplyShopItemToPed(PedComponent component)
+        {
+            ApplyShopItemToPed(component.Value, p4: !IsMale);
             UpdatePedVariation();
         }
         
@@ -34,8 +42,6 @@ namespace Vorp.Core.Client.RedM
 
         public async void ApplyDefaultSkinSettings()
         {
-            SetPedOutfitPreset(1);
-
             while (!IsPedReadyToRender)
             {
                 await BaseScript.Delay(0);
@@ -44,20 +50,20 @@ namespace Vorp.Core.Client.RedM
             Function.Call((Hash)0x0BFA1BD465CDFEFD, Handle);
 
             uint compEyes = 612262189;
-            uint compBody = 0xA0BE4A7B;
             uint compHead = 0x206061DB;
+            uint compBody = 0xA0BE4A7B;
             uint compLegs = 0x84BAA309;
 
             if (!IsPedMale(Handle))
             {
                 compEyes = 928002221;
-                compBody = 0x76ACA91E;
                 compHead = 0x489AFE52;
+                compBody = 0x76ACA91E;
                 compLegs = 0x11A244CC;
             }
 
-            ApplyShopItemToPed(compHead);
             ApplyShopItemToPed(compEyes);
+            ApplyShopItemToPed(compHead);
             ApplyShopItemToPed(compBody);
             ApplyShopItemToPed(compLegs);
 
@@ -67,7 +73,7 @@ namespace Vorp.Core.Client.RedM
             UpdatePedVariation();
         }
 
-        public void UpdatePedVariation() => Function.Call((Hash)0xCC8CA3E88256E58F, Handle, false, true, true, true, false);
+        public void UpdatePedVariation(bool p1 = false, bool p5 = false) => Function.Call((Hash)0xCC8CA3E88256E58F, Handle, p1, true, true, true, p5);
 
         public void SetComponent(PedComponent component)
         {
@@ -95,27 +101,33 @@ namespace Vorp.Core.Client.RedM
                 0x04446738,
             };
 
-            bool isMale = IsPedMale(Handle);
             int rand = VorpAPI.Random.Next(1, 5);
 
-            VorpPedComponents vorpCompoents = new VorpPedComponents();
-            vorpCompoents.Shirt.Value = isMale ? ShirtMale[rand] : ShirtFemale[rand];
-            BodyComponent(vorpCompoents.Shirt);
+            VorpPedComponents vorpComponents = new VorpPedComponents();
+            vorpComponents.Shirt.Value = IsMale ? ShirtMale[rand] : ShirtFemale[rand];
+            SetComponent(vorpComponents.Shirt);
+            UpdatePedVariation(true);
 
-            if (IsPedMale(Handle))
+            if (IsMale)
             {
-                vorpCompoents.Pant.Value = 0x010051C7;
-                SetComponent(vorpCompoents.Pant);
+                vorpComponents.Pant.Value = 0x010051C7;
+                SetComponent(vorpComponents.Pant);
+                UpdatePedVariation(true);
             }
 
-            if (!IsPedMale(Handle))
+            if (!IsMale)
             {
-                vorpCompoents.Skirt.Value = 4726031;
-                SetComponent(vorpCompoents.Skirt);
+                vorpComponents.Skirt.Value = 180955894;
+                SetComponent(vorpComponents.Skirt);
+                UpdatePedVariation(true);
             }
 
-            vorpCompoents.Boots.Value = isMale ? (uint)0x38B4CA64 : 0x019ADA9E;
-            SetComponent(vorpCompoents.Boots);
+            vorpComponents.Boots.Value = IsMale ? 0x9F3252BB : 0x019ADA9E;
+            SetComponent(vorpComponents.Boots);
+            UpdatePedVariation(true);
+
+            _vorpPedComponents = vorpComponents;
+            Logger.Trace($"Sex: {IsMale} / Comps: {vorpComponents.Shirt.Value}");
         }
     }
 }

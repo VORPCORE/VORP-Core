@@ -20,6 +20,11 @@ namespace Vorp.Shared.Models
         }
 
         public uint Value;
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 
     public class VorpPedComponents
@@ -58,6 +63,11 @@ namespace Vorp.Shared.Models
         public PedComponent Accessories = new PedComponent(ePedComponent.Accessories);
         public PedComponent Satchels = new PedComponent(ePedComponent.Satchels);
         public PedComponent CoatClosed = new PedComponent(ePedComponent.CoatClosed);
+
+        public override string ToString()
+        {
+            return JsonConvert.SerializeObject(Shirt);
+        }
     }
 
     public class PedComponents
