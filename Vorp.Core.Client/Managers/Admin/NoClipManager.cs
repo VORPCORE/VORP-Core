@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Vorp.Core.Client.Environment.Entities;
+using Vorp.Core.Client.Interface;
 using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Managers.Admin
@@ -45,23 +46,22 @@ namespace Vorp.Core.Client.Managers.Admin
 
         public override void Begin() // Should make this an admin control
         {
-#if DEVELOPMENT_CLIENT
-            Instance.AttachTickHandler(OnNoClipControlTick);
-#endif
+
+        }
+
+        public void Toggle()
+        {
+            IsEnabled = !IsEnabled;
+            Player = PluginManager.Instance.LocalPlayer;
+
+            if (IsEnabled)
+                Instance.AttachTickHandler(OnNoClipControlTick);
         }
 
         private async Task OnNoClipControlTick()
         {
             try
             {
-
-                if (IsControlJustPressed(0, (uint)eControls.FrontendRight)) // F1
-                {
-                    IsEnabled = !IsEnabled;
-                    Player = PluginManager.Instance.LocalPlayer;
-                    Logger.Trace($"Camera Enabled: {IsEnabled}");
-                }
-
                 if (!IsEnabled)
                 {
                     if (CurrentCamera is not null)
@@ -93,6 +93,8 @@ namespace Vorp.Core.Client.Managers.Admin
                         DisplayRadar(true);
 
                         await BaseScript.Delay(100);
+
+                        Instance.DetachTickHandler(OnNoClipControlTick);
                     }
                     return;
                 }
@@ -115,6 +117,9 @@ namespace Vorp.Core.Client.Managers.Admin
 
                     Instance.AttachTickHandler(OnNoClipCheckRotationTick);
                 }
+
+                VorpAPI.DrawText($"{CurrentCamera.Position}", new Vector2(0f, 0.025f), 0.3f);
+                VorpAPI.DrawText($"{CurrentCamera.Rotation}", new Vector2(0f, 0.05f), 0.3f);
 
                 // Speed Control
                 if (IsDisabledControlPressed(0, (uint)eControls.SelectPrevWeapon))

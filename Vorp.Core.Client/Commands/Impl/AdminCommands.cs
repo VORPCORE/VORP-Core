@@ -1,4 +1,5 @@
 ﻿using Vorp.Core.Client.Environment.Entities;
+using Vorp.Core.Client.Managers.Admin;
 
 namespace Vorp.Core.Client.Commands.Impl
 {
@@ -15,6 +16,15 @@ namespace Vorp.Core.Client.Commands.Impl
             public void On(VorpPlayer player, List<string> arguments)
             {
                 Logger.Trace($"Pong");
+            }
+        }
+
+        [CommandInfo(new[] { "noclip", "nc" }, "Will toggle noclip.")]
+        public class NoClipToggle : ICommand
+        {
+            public void On(VorpPlayer player, List<string> arguments)
+            {
+                NoClipManager.GetModule().Toggle();
             }
         }
 

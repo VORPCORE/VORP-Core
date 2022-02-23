@@ -68,7 +68,8 @@ namespace Vorp.Core.Client.RedM
 
         public override void Delete()
         {
-            API.DestroyCam(Handle, false);
+			API.SetCamActive(Handle, false);
+			API.DestroyCam(Handle, false);
         }
 
         public override bool Exists()
