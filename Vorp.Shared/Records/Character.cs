@@ -141,9 +141,7 @@ namespace Vorp.Shared.Records
 #endregion
 
 #region Properties
-
         public bool IsActive { get; set; } = false;
-
 #endregion
 
 #region Methods

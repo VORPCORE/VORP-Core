@@ -86,5 +86,13 @@
 				SetEntityHeading(Handle, value);
 			}
 		}
+
+		public bool IsPositionFrozen
+		{
+			get => Function.Call<bool>((Hash)0x083D497D57B7400F, Handle);
+			set => FreezeEntityPosition(Handle, value);
+		}
+
+		
 	}
 }

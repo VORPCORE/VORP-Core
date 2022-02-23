@@ -10,7 +10,7 @@ namespace Vorp.Core.Client
         {
             while (true)
             {
-                if (NetworkIsPlayerActive(PlayerId())) break;
+                if (NetworkIsSessionStarted()) break;
 
                 await BaseScript.Delay(500);
             }

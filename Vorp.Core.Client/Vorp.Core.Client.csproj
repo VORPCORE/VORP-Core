@@ -86,6 +86,7 @@
     <Compile Include="Events\ClientGateway.cs" />
     <Compile Include="Events\ServerId.cs" />
     <Compile Include="Extensions\GeneralExtension.cs" />
+    <Compile Include="Interface\Screen.cs" />
     <Compile Include="Managers\Admin\KeyCodeManager.cs" />
     <Compile Include="Managers\Admin\NoClipManager.cs" />
     <Compile Include="Managers\CharacterManagement\CharacterManager.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="RedM\Enums\eControls.cs" />
     <Compile Include="RedM\Enums\eRelationshipType.cs" />
     <Compile Include="RedM\Enums\eUIGamertagVisibility.cs" />
+    <Compile Include="RedM\Ped.cs" />
     <Compile Include="RedM\PoolObject.cs" />
     <Compile Include="Session.cs" />
     <Compile Include="TickHandler.cs" />

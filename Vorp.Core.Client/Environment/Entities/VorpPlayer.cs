@@ -1,5 +1,6 @@
 ﻿using System.Windows.Input;
 using Vorp.Core.Client.Commands;
+using Vorp.Core.Client.Interface;
 using Vorp.Core.Client.Managers;
 
 namespace Vorp.Core.Client.Environment.Entities
@@ -69,17 +70,28 @@ namespace Vorp.Core.Client.Environment.Entities
             }));
         }
 
+        internal async Task Teleport(Vector3 pos)
+        {
+            await Screen.FadeOut(500);
+            float groundZ = pos.Z;
+            Vector3 norm = pos;
+
+            IsPositionFrozen = true;
+            
+            if (API.GetGroundZAndNormalFor_3dCoord(pos.X, pos.Y, pos.Z, ref groundZ, ref norm))
+                norm = new Vector3(pos.X, pos.Y, groundZ);
+
+            Position = norm;
+            IsPositionFrozen = false;
+
+            await Screen.FadeIn(500);
+        }
+
         async void RequestServerInformation()
         {
             string group = await pluginManager.ClientGateway.Get<string>("vorp:user:group", ServerId);
             Logger.Trace($"Server returned group '{group}'");
             Group = group;
-        }
-
-        public bool IsPositionFrozen
-        {
-            get => Function.Call<bool>((Hash)0x083D497D57B7400F, PlayerPedId);
-            set => FreezeEntityPosition(PlayerPedId, value);
         }
 
         public bool IsCollisionEnabled

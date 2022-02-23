@@ -5,6 +5,8 @@ namespace Vorp.Core.Client.RedM
 {
     internal class VorpAPI
     {
+        public static Random Random = new Random();
+
         public static void SetMpGamerTagVisibility(int gamerTagId, eUIGamertagVisibility visibility)
         {
             Function.Call((Hash)0x93171DDDAB274EB8, gamerTagId, (int)visibility);
@@ -91,6 +93,31 @@ namespace Vorp.Core.Client.RedM
             {
                 Logger.Error(ex, $"DisplayLeftNotification");
             }
+        }
+
+        public static async Task RequestModel(uint hash)
+        {
+            if (Function.Call<bool>(Hash.IS_MODEL_VALID, hash))
+            {
+                Function.Call(Hash.REQUEST_MODEL, hash);
+                while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, hash))
+                {
+                    await BaseScript.Delay(100);
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"Model {hash} is not valid!");
+            }
+        }
+
+        public static async Task<Ped> CreatePed(string model, Vector3 position, float heading)
+        {
+            uint modelMale = (uint)GetHashKey(model);
+
+            await VorpAPI.RequestModel(modelMale);
+
+            return new Ped(API.CreatePed(modelMale, position.X, position.Y, position.Z, heading, false, true, true, true));
         }
     }
 }
