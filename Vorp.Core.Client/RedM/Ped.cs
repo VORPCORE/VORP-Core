@@ -13,8 +13,23 @@ namespace Vorp.Core.Client.RedM
         public void SetPedOutfitPreset(int preset) => Function.Call((Hash)0x77FF8D35EEC6BBC4, Handle, preset, 0);
         public bool IsPedReadyToRender => Function.Call<bool>((Hash)0xA0BC8FAED8CFEB3C, Handle);
         public void RandomComponentVariation() => Function.Call(Hash.SET_PED_RANDOM_COMPONENT_VARIATION, Handle, 1);
+
+        public async void BodyComponent(PedComponent component)
+        {
+            Function.Call((Hash)0x1902C4CFCC5BE57C, Handle, component.Value);
+            await BaseScript.Delay(0);
+            UpdatePedVariation();
+        }
+
         public void ApplyShopItemToPed(uint componentHash, bool immediately = true, bool isMultiplayer = true, bool p4 = true) => Function.Call((Hash)0xD3A7B003ED343FD9, Handle, componentHash, immediately, isMultiplayer, p4);
-        public void ApplyShopItemToPed(PedComponent component, bool immediately = true, bool isMultiplayer = true, bool p4 = true) => Function.Call((Hash)0xD3A7B003ED343FD9, Handle, component.Value, immediately, isMultiplayer, p4);
+        
+        public async void ApplyShopItemToPed(PedComponent component, bool immediately = true, bool isMultiplayer = true, bool p4 = true)
+        {
+            Function.Call((Hash)0xD3A7B003ED343FD9, Handle, component.Value, immediately, isMultiplayer, p4);
+            await BaseScript.Delay(0);
+            UpdatePedVariation();
+        }
+        
         public void RemoveTagFromMetaPed(uint component, int p2 = 0) => Function.Call((Hash)0xD710A5007C2AC539, Handle, component, p2);
 
         public async void ApplyDefaultSkinSettings()
@@ -62,56 +77,45 @@ namespace Vorp.Core.Client.RedM
 
         public void RandomiseClothing()
         {
-            VorpPedComponents vorpCompoents = new VorpPedComponents();
-            vorpCompoents.Hat.Value = 0;
-            vorpCompoents.EyeWear.Value = 0;
-            vorpCompoents.Mask.Value = 0;
-            vorpCompoents.NeckWear.Value = 0;
-            vorpCompoents.NeckTies.Value = 0;
-            vorpCompoents.Shirt.Value = VorpAPI.Random.Next(1, 5);
-            vorpCompoents.Suspender.Value = 0;
-            vorpCompoents.Vest.Value = 0;
-            vorpCompoents.Coat.Value = 0;
-            vorpCompoents.Poncho.Value = 0;
-            vorpCompoents.Cloak.Value = 0;
-            vorpCompoents.Glove.Value = 0;
-            vorpCompoents.RingRh.Value = 0;
-            vorpCompoents.RingLh.Value = 0;
-            vorpCompoents.Bracelet.Value = 0;
-            vorpCompoents.Gunbelt.Value = 0;
-            vorpCompoents.Belt.Value = 0;
-            vorpCompoents.Buckle.Value = 0;
-            vorpCompoents.Holster.Value = 0;
-            
-            if (IsPedMale(Handle))
-                vorpCompoents.Pant.Value = VorpAPI.Random.Next(1, 5);
-
-            if (!IsPedMale(Handle)) 
-                vorpCompoents.Skirt.Value = VorpAPI.Random.Next(1, 5);
-
-            vorpCompoents.Bow.Value = 0;
-            vorpCompoents.Armor.Value = 0;
-            vorpCompoents.Teeth.Value = 0;
-            vorpCompoents.Chap.Value = 0;
-            vorpCompoents.Boots.Value = VorpAPI.Random.Next(1, 5);
-            vorpCompoents.Spurs.Value = 0;
-            vorpCompoents.Spats.Value = 0;
-            vorpCompoents.GunbeltAccs.Value = 0;
-            vorpCompoents.Gauntlets.Value = 0;
-            vorpCompoents.Loadouts.Value = 0;
-            vorpCompoents.Accessories.Value = 0;
-            vorpCompoents.Satchels.Value = 0;
-            vorpCompoents.CoatClosed.Value = 0;
-
-            Type type = vorpCompoents.GetType();
-            PropertyInfo[] properties = type.GetProperties();
-
-            foreach(PropertyInfo property in properties)
+            List<uint> ShirtMale = new()
             {
-                Logger.Trace($"Property: {property.Name}");
-                var prop = property.GetValue(vorpCompoents, null);
-                SetComponent((PedComponent)prop);
+                0x00215112,
+                0x015BDA7D,
+                0x021A1A7A,
+                0x04F54118,
+                0x0567DD7D,
+            };
+
+            List<uint> ShirtFemale = new()
+            {
+                0x004869A5,
+                0x007CDF56,
+                0x01C0A6E7,
+                0x03671B0A,
+                0x04446738,
+            };
+
+            bool isMale = IsPedMale(Handle);
+            int rand = VorpAPI.Random.Next(1, 5);
+
+            VorpPedComponents vorpCompoents = new VorpPedComponents();
+            vorpCompoents.Shirt.Value = isMale ? ShirtMale[rand] : ShirtFemale[rand];
+            BodyComponent(vorpCompoents.Shirt);
+
+            if (IsPedMale(Handle))
+            {
+                vorpCompoents.Pant.Value = 0x010051C7;
+                SetComponent(vorpCompoents.Pant);
             }
+
+            if (!IsPedMale(Handle))
+            {
+                vorpCompoents.Skirt.Value = 4726031;
+                SetComponent(vorpCompoents.Skirt);
+            }
+
+            vorpCompoents.Boots.Value = isMale ? (uint)0x38B4CA64 : 0x019ADA9E;
+            SetComponent(vorpCompoents.Boots);
         }
     }
 }

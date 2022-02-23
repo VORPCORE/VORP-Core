@@ -19,7 +19,7 @@ namespace Vorp.Shared.Models
             }
         }
 
-        public long Value;
+        public uint Value;
     }
 
     public class VorpPedComponents

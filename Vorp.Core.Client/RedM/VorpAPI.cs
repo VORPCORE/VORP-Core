@@ -117,7 +117,12 @@ namespace Vorp.Core.Client.RedM
 
             await VorpAPI.RequestModel(modelMale);
 
-            return new Ped(API.CreatePed(modelMale, position.X, position.Y, position.Z, heading, false, true, true, true));
+            float groundZ = position.Z;
+            Vector3 norm = position;
+            if (API.GetGroundZAndNormalFor_3dCoord(position.X, position.Y, position.Z, ref groundZ, ref norm))
+                norm = new Vector3(position.X, position.Y, groundZ);
+
+            return new Ped(API.CreatePed(modelMale, norm.X, norm.Y, norm.Z, heading, false, true, true, true));
         }
     }
 }
