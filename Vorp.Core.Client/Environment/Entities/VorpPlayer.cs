@@ -15,6 +15,21 @@ namespace Vorp.Core.Client.Environment.Entities
         public int PlayerId { get; private set; }
         public int ServerId { get; private set; }
 
+        Ped _pedCache;
+        public Ped Ped
+        {
+            get
+            {
+                if (_pedCache == null)
+                    _pedCache = new Ped(PlayerPedId);
+
+                if (_pedCache.Handle != PlayerPedId)
+                    _pedCache = new Ped(PlayerPedId);
+
+                return _pedCache;
+            }
+        }
+
         public virtual int PlayerPedId
         {
             get
