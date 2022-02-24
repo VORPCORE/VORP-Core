@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Vorp.Core.Client.RedM.Enums;
+﻿using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Environment.Entities
 {

@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using Vorp.Shared.Models;
+﻿using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.RedM
 {
@@ -31,13 +30,13 @@ namespace Vorp.Core.Client.RedM
             Function.Call((Hash)0xD3A7B003ED343FD9, Handle, componentHash, immediately, isMultiplayer, p4);
             UpdatePedVariation();
         }
-        
+
         public void ApplyShopItemToPed(PedComponent component)
         {
             ApplyShopItemToPed(component.Value);
             UpdatePedVariation();
         }
-        
+
         public void RemoveTagFromMetaPed(uint component, int p2 = 0) => Function.Call((Hash)0xD710A5007C2AC539, Handle, component, p2);
 
         public async void ApplyDefaultSkinSettings()

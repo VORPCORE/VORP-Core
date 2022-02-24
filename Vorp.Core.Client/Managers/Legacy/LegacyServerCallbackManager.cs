@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Vorp.Core.Client.Managers.Legacy
+﻿namespace Vorp.Core.Client.Managers.Legacy
 {
     public class LegacyServerCallbackManager : Manager<LegacyServerCallbackManager>
     {

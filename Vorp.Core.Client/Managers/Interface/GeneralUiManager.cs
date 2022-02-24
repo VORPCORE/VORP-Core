@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using Vorp.Core.Client.RedM.Enums;
+﻿using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Managers.Interface
 {
@@ -7,7 +6,7 @@ namespace Vorp.Core.Client.Managers.Interface
     {
         public override void Begin()
         {
-            
+
         }
 
         [TickHandler(SessionWait = true)]

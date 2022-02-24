@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Vorp.Core.Client.Environment.Entities;
-using Vorp.Core.Client.Interface;
+﻿using Vorp.Core.Client.Environment.Entities;
 using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Managers.Admin

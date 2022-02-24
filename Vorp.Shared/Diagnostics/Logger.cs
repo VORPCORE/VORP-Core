@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vorp.Shared.Diagnostics
+﻿namespace Vorp.Shared.Diagnostics
 {
     public static class Logger
     {

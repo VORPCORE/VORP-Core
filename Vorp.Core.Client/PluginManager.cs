@@ -1,22 +1,21 @@
 ﻿global using CitizenFX.Core;
 global using CitizenFX.Core.Native;
 global using Newtonsoft.Json;
-global using Vorp.Core.Client.RedM;
-global using Vorp.Diagnostics;
-global using Vorp.Shared.Diagnostics;
-global using static CitizenFX.Core.Native.API;
 global using System;
 global using System.Collections.Generic;
 global using System.Linq;
 global using System.Threading.Tasks;
+global using Vorp.Core.Client.RedM;
+global using Vorp.Diagnostics;
+global using Vorp.Shared.Diagnostics;
+global using static CitizenFX.Core.Native.API;
 using System.Reflection;
-using Vorp.Core.Client.Environment.Entities;
-using Vorp.Core.Client.Events;
-using Vorp.Core.Client.Managers;
 using Vorp.Core.Client.Commands;
 using Vorp.Core.Client.Commands.Impl;
-using Vorp.Core.Client.Managers.CharacterManagement;
+using Vorp.Core.Client.Environment.Entities;
+using Vorp.Core.Client.Events;
 using Vorp.Core.Client.Interface;
+using Vorp.Core.Client.Managers;
 
 namespace Vorp.Core.Client
 {
@@ -107,9 +106,9 @@ namespace Vorp.Core.Client
 
                 await Screen.FadeOut(500);
                 await Session.Loading();
-                
+
                 // Need to find a better way, currently having to wait 5s before saying we're active
-                await BaseScript.Delay(5000); 
+                await BaseScript.Delay(5000);
 
                 ClientGateway.Send("vorp:user:active", Session.ServerId);
                 BaseScript.TriggerServerEvent("vorp:user:activate");

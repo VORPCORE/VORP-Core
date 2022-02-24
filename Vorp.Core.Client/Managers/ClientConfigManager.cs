@@ -1,5 +1,4 @@
-﻿using System;
-using Vorp.Core.Client.Environment;
+﻿using Vorp.Core.Client.Environment;
 using Vorp.Core.Client.Environment.Config;
 
 namespace Vorp.Core.Client.Managers

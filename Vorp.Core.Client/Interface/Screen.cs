@@ -5,7 +5,7 @@
         public static async Task FadeOut(int duration)
         {
             DoScreenFadeOut(duration);
-            while(IsScreenFadingOut())
+            while (IsScreenFadingOut())
             {
                 await BaseScript.Delay(100);
             }

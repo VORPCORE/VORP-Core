@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vorp.Shared.Models
+﻿namespace Vorp.Shared.Models
 {
     public partial class DiscordMember
     {

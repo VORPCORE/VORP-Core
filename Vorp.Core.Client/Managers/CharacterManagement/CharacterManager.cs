@@ -175,7 +175,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             if (state == CameraState.SelectMale)
                 activeCamera = CameraMale;
             if (state == CameraState.SelectFemale)
-                activeCamera= CameraFemale;
+                activeCamera = CameraFemale;
 
             if (previousCamera != activeCamera)
             {

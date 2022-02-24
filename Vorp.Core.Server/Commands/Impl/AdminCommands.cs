@@ -35,7 +35,7 @@ namespace Vorp.Core.Server.Commands.Impl
                 string type = arguments[1];
                 bool result = false;
 
-                switch(type)
+                switch (type)
                 {
                     case "user":
                         result = await targetUser.SetGroup(arguments[2]);
@@ -71,9 +71,9 @@ namespace Vorp.Core.Server.Commands.Impl
 
                 string job = arguments[1];
                 bool result = false;
-                
+
                 if (arguments.Count == 3)
-                   result = await targetUser.ActiveCharacter.SetJobAndGrade(job, jobGrade);
+                    result = await targetUser.ActiveCharacter.SetJobAndGrade(job, jobGrade);
 
                 if (arguments.Count == 2)
                     result = await targetUser.ActiveCharacter.SetJob(job);
@@ -96,7 +96,7 @@ namespace Vorp.Core.Server.Commands.Impl
                 User targetUser = PluginManager.ToUser(targetId);
                 if (targetUser is null) return;
 
-                switch(arguments[1])
+                switch (arguments[1])
                 {
                     case "cash":
                         targetUser.ActiveCharacter.SetCash(amount);

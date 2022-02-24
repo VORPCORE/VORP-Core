@@ -33,7 +33,7 @@ namespace Vorp.Core.Server
         public bool IsServerReady = false;
 
         public PluginManager()
-        { 
+        {
             Instance = this;
             Events = new ServerGateway(Instance);
 
@@ -193,7 +193,7 @@ namespace Vorp.Core.Server
                 foreach (KeyValuePair<string, User> kvp in userDictionary)
                 {
                     User user = kvp.Value;
-                    
+
                     if (user == null) return false;
 
                     if (kvp.Key == steamIdentifier)

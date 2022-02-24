@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Vorp.Core.Client.Managers.GameEvents
+﻿namespace Vorp.Core.Client.Managers.GameEvents
 {
     public class GameEventManager : Manager<GameEventManager>
     {

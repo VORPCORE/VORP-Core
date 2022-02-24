@@ -64,7 +64,7 @@ namespace Vorp.Core.Server.Managers
 
             User user = await UserStore.GetUser(player.Handle, player.Name, $"steam:{steamId}", license, true);
             UserSessions.TryAdd(steamId, user);
-            
+
             user.IsActive = true;
             user.AddPlayer(player);
             user.UpdateServerId(player.Handle);
@@ -231,7 +231,7 @@ namespace Vorp.Core.Server.Managers
             string steamId = player.Identifiers["steam"];
             if (!UserSessions.ContainsKey(steamId)) return;
             User user = UserSessions[steamId];
-            
+
             if (user.ActiveCharacter != null)
                 await user.ActiveCharacter.Save(); // save the characters information now, just to be sure
 
@@ -288,7 +288,7 @@ namespace Vorp.Core.Server.Managers
                         }
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Logger.Error(ex, $"OnPlayerCleanUp");
                 }
@@ -384,7 +384,7 @@ namespace Vorp.Core.Server.Managers
             {
                 // either they are new, or already exist
                 User user = await UserStore.GetUser(player.Handle, player.Name, steamDatabaseIdentifier, license, true);
-                
+
                 await BaseScript.Delay(0);
 
                 if (user == null)
@@ -393,9 +393,9 @@ namespace Vorp.Core.Server.Managers
                     deferrals.done();
                     return;
                 }
-                
+
                 UserSessions.AddOrUpdate(steamId, user, (key, oldValue) => oldValue = user);
-                
+
                 Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
                 Logger.Trace($"Number of Sessions: {UserSessions.Count}");
                 deferrals.done();

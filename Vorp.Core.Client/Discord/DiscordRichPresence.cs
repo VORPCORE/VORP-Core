@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vorp.Core.Client.Discord
+﻿namespace Vorp.Core.Client.Discord
 {
     internal class DiscordRichPresence
     {

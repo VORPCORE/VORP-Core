@@ -28,6 +28,6 @@ namespace Vorp.Core.Server.Models
 
         [DataMember(Name = "connectionTimeout")]
         public uint ConnectionTimeout { get; set; } = 5;
-        
+
     }
 }

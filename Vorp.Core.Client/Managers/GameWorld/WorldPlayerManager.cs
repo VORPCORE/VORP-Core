@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using Vorp.Core.Client.Environment.Entities;
+﻿using Vorp.Core.Client.Environment.Entities;
 
 namespace Vorp.Core.Client.Managers.GameWorld
 {

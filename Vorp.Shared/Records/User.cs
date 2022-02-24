@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Vorp.Shared.Models;
 #endif
 
+using Lusive.Events.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using Lusive.Events.Attributes;
 
 namespace Vorp.Shared.Records
 {

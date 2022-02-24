@@ -138,13 +138,13 @@ namespace Vorp.Shared.Records
         [Description("gunsmith")]
         public double GunSmith { get; private set; } = 0.00;
 
-#endregion
+        #endregion
 
-#region Properties
+        #region Properties
         public bool IsActive { get; set; } = false;
-#endregion
+        #endregion
 
-#region Methods
+        #region Methods
 
 #if SERVER
         // TODO: Move all SQL into procedures? or EF after refactor?
@@ -389,6 +389,6 @@ namespace Vorp.Shared.Records
 
 #endif
 
-#endregion
+        #endregion
     }
 }

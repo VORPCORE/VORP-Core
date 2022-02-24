@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Vorp.Core.Client.Managers.Legacy
+﻿namespace Vorp.Core.Client.Managers.Legacy
 {
     public class CfxEventsManager : Manager<CfxEventsManager>
     {

@@ -4,8 +4,6 @@ using Lusive.Events.Message;
 using Lusive.Events.Serialization;
 using Lusive.Events.Serialization.Implementations;
 using Lusive.Snowflake;
-using System;
-using System.Threading.Tasks;
 
 namespace Vorp.Core.Client.Events
 {

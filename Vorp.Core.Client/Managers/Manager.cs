@@ -1,5 +1,4 @@
-﻿using System;
-using Vorp.Core.Client.Events;
+﻿using Vorp.Core.Client.Events;
 
 namespace Vorp.Core.Client.Managers
 {

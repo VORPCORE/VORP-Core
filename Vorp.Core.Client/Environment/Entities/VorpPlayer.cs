@@ -1,5 +1,4 @@
-﻿using System.Windows.Input;
-using Vorp.Core.Client.Commands;
+﻿using Vorp.Core.Client.Commands;
 using Vorp.Core.Client.Interface;
 using Vorp.Core.Client.Managers;
 
@@ -58,7 +57,8 @@ namespace Vorp.Core.Client.Environment.Entities
             Logger.Trace($"New Player Created: {playerId}/{playerPedId}: {PlayerName}");
             RequestServerInformation();
 
-            pluginManager.ClientGateway.Mount("vorp:user:group:client", new Action<string>(group => {
+            pluginManager.ClientGateway.Mount("vorp:user:group:client", new Action<string>(group =>
+            {
                 Group = group;
                 Logger.Trace($"Group updated to: {Group}");
 
@@ -92,7 +92,7 @@ namespace Vorp.Core.Client.Environment.Entities
             Vector3 norm = pos;
 
             IsPositionFrozen = true;
-            
+
             if (API.GetGroundZAndNormalFor_3dCoord(pos.X, pos.Y, pos.Z, ref groundZ, ref norm))
                 norm = new Vector3(pos.X, pos.Y, groundZ);
 
