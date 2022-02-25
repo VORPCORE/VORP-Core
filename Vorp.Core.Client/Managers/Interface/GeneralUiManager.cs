@@ -14,8 +14,8 @@ namespace Vorp.Core.Client.Managers.Interface
         private async Task OnDisableHud()
 #pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
         {
-            API.DisableControlAction(0, (uint)eControls.HudSpecial, true);
-            API.DisableControlAction(0, (uint)eControls.RevealHud, true);
+            API.DisableControlAction(0, (uint)eControl.HudSpecial, true);
+            API.DisableControlAction(0, (uint)eControl.RevealHud, true);
         }
     }
 }

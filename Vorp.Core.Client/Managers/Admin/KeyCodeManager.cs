@@ -60,12 +60,12 @@ namespace Vorp.Core.Client.Managers.Admin
                 }
 
                 var key = new KeyCodeEvent();
-                var vals = Enum.GetValues(typeof(eControls));
+                var vals = Enum.GetValues(typeof(eControl));
                 var count = 0;
-                foreach (eControls ctrl in vals)
+                foreach (eControl ctrl in vals)
                 {
                     if (IsControlJustPressed(2, (uint)ctrl))
-                        key.Controls.Add($"{Enum.GetName(typeof(eControls), ctrl) ?? "UNK_KEY"}[{count}]");
+                        key.Controls.Add($"{Enum.GetName(typeof(eControl), ctrl) ?? "UNK_KEY"}[{count}]");
                     count++;
                 }
 

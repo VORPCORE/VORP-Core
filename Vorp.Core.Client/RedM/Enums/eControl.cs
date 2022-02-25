@@ -1,6 +1,6 @@
 ﻿namespace Vorp.Core.Client.RedM.Enums
 {
-    enum eControls : uint
+    enum eControl : uint
     {
         NextCamera = 0x7F8D09B8,
         LookLeftRight = 0xA987235F,

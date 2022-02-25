@@ -14,26 +14,26 @@ namespace Vorp.Core.Client.Managers.Admin
         public Camera CurrentCamera { get; set; }
         public float Speed { get; set; } = 1f;
 
-        readonly List<eControls> _disabledControls = new()
+        readonly List<eControl> _disabledControls = new()
         {
-            eControls.MoveLeftOnly,
-            eControls.MoveLeftRight,
-            eControls.MoveUpDown,
-            eControls.MoveUpOnly,
+            eControl.MoveLeftOnly,
+            eControl.MoveLeftRight,
+            eControl.MoveUpDown,
+            eControl.MoveUpOnly,
 
             // mouse
-            eControls.LookLeftRight,
-            eControls.LookUpDown,
+            eControl.LookLeftRight,
+            eControl.LookUpDown,
             // scroll wheel
-            eControls.SelectNextWeapon,
-            eControls.SelectPrevWeapon,
+            eControl.SelectNextWeapon,
+            eControl.SelectPrevWeapon,
             // modifiers
-            eControls.Sprint,
-            eControls.PcFreeLook,
-            eControls.Duck,
+            eControl.Sprint,
+            eControl.PcFreeLook,
+            eControl.Duck,
             // Up and Down
-            eControls.Dive, // Q
-            eControls.ContextY // E
+            eControl.Dive, // Q
+            eControl.ContextY // E
         };
 
         public bool IsEnabled = false;
@@ -116,64 +116,64 @@ namespace Vorp.Core.Client.Managers.Admin
                 VorpAPI.DrawText($"{CurrentCamera.Rotation}", new Vector2(0f, 0.05f), 0.3f);
 
                 // Speed Control
-                if (IsDisabledControlPressed(0, (uint)eControls.SelectPrevWeapon))
+                if (IsDisabledControlPressed(0, (uint)eControl.SelectPrevWeapon))
                 {
                     Speed = Math.Min(Speed + 0.1f, _maxSpeed);
                 }
-                else if (IsDisabledControlPressed(0, (uint)eControls.SelectNextWeapon))
+                else if (IsDisabledControlPressed(0, (uint)eControl.SelectNextWeapon))
                 {
                     Speed = Math.Max(0.1f, Speed - 0.1f);
                 }
 
                 var multiplier = 1f;
-                if (IsDisabledControlPressed(0, (uint)eControls.Sprint))
+                if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
                 {
                     multiplier = 2f;
                 }
-                else if (IsDisabledControlPressed(0, (uint)eControls.PcFreeLook))
+                else if (IsDisabledControlPressed(0, (uint)eControl.PcFreeLook))
                 {
                     multiplier = 4f;
                 }
-                else if (IsDisabledControlPressed(0, (uint)eControls.Duck))
+                else if (IsDisabledControlPressed(0, (uint)eControl.Duck))
                 {
                     multiplier = 0.25f;
                 }
 
                 // Forward
-                if (IsDisabledControlPressed(2, (uint)eControls.MoveUpOnly))
+                if (IsDisabledControlPressed(2, (uint)eControl.MoveUpOnly))
                 {
                     var pos = Player.GetOffsetPosition(new Vector3(0f, Speed * multiplier, 0f));
                     Player.PositionNoOffset = new Vector3(pos.X, pos.Y, Player.Position.Z);
                     // Player.PositionNoOffset = Player.Position + CurrentCamera.UpVector * (Speed * multiplier);
                 }
                 // Backward
-                else if (IsDisabledControlPressed(2, (uint)eControls.MoveUpDown))
+                else if (IsDisabledControlPressed(2, (uint)eControl.MoveUpDown))
                 {
                     var pos = Player.GetOffsetPosition(new Vector3(0f, -Speed * multiplier, 0f));
                     Player.PositionNoOffset = new Vector3(pos.X, pos.Y, Player.Position.Z);
                     // Player.PositionNoOffset = Player.Position - CurrentCamera.UpVector * (Speed * multiplier);
                 }
                 // Left
-                if (IsDisabledControlPressed(0, (uint)eControls.MoveLeftOnly))
+                if (IsDisabledControlPressed(0, (uint)eControl.MoveLeftOnly))
                 {
                     var pos = Player.GetOffsetPosition(new Vector3(-Speed * multiplier, 0f, 0f));
                     Player.PositionNoOffset = new Vector3(pos.X, pos.Y, Player.Position.Z);
                 }
                 // Right
-                else if (IsDisabledControlPressed(0, (uint)eControls.MoveLeftRight))
+                else if (IsDisabledControlPressed(0, (uint)eControl.MoveLeftRight))
                 {
                     var pos = Player.GetOffsetPosition(new Vector3(Speed * multiplier, 0f, 0f));
                     Player.PositionNoOffset = new Vector3(pos.X, pos.Y, Player.Position.Z);
                 }
 
                 // Up (E)
-                if (IsDisabledControlPressed(0, (uint)eControls.ContextY))
+                if (IsDisabledControlPressed(0, (uint)eControl.ContextY))
                 {
                     Player.PositionNoOffset = Player.GetOffsetPosition(new Vector3(0f, 0f, multiplier * Speed / 2));
                 }
 
                 // Down (Q)
-                if (IsDisabledControlPressed(0, (uint)eControls.Dive))
+                if (IsDisabledControlPressed(0, (uint)eControl.Dive))
                 {
                     Player.PositionNoOffset = Player.GetOffsetPosition(new Vector3(0f, 0f, multiplier * -Speed / 2));
                 }
@@ -201,8 +201,8 @@ namespace Vorp.Core.Client.Managers.Admin
         {
             try
             {
-                var rightAxisX = GetDisabledControlNormal(0, (uint)eControls.LookLeftRight);
-                var rightAxisY = GetDisabledControlNormal(0, (uint)eControls.LookUpDown);
+                var rightAxisX = GetDisabledControlNormal(0, (uint)eControl.LookLeftRight);
+                var rightAxisY = GetDisabledControlNormal(0, (uint)eControl.LookUpDown);
 
                 if (!(Math.Abs(rightAxisX) > 0) && !(Math.Abs(rightAxisY) > 0)) return;
                 var rotation = CurrentCamera.Rotation;

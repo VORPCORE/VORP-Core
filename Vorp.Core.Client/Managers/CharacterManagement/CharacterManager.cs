@@ -202,7 +202,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         {
             if (isSelectingSex)
             {
-                if (IsControlJustPressed(2, (uint)eControls.FrontendRight))
+                if (IsControlJustPressed(2, (uint)eControl.FrontendRight))
                 {
                     if (CameraMain.IsActive)
                         SetCamera(CameraState.SelectFemale, CameraMain);
@@ -210,7 +210,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                         SetCamera(CameraState.SelectFemale, CameraMale);
                 }
 
-                if (IsControlJustPressed(2, (uint)eControls.FrontendLeft))
+                if (IsControlJustPressed(2, (uint)eControl.FrontendLeft))
                 {
                     if (CameraMain.IsActive)
                         SetCamera(CameraState.SelectMale, CameraMain);
@@ -218,7 +218,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                         SetCamera(CameraState.SelectMale, CameraFemale);
                 }
 
-                if (IsControlJustPressed(2, (uint)eControls.FrontendAccept))
+                if (IsControlJustPressed(2, (uint)eControl.FrontendAccept))
                 {
                     if (CameraMale.IsActive)
                         SetCamera(CameraState.Main, CameraMale);
