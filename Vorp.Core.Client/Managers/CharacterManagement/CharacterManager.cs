@@ -37,19 +37,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 DisplayHud(false);
                 DisplayRadar(false);
 
-                await LoadImaps();
-                Instance.LocalPlayer.Position = new Vector3(-563.1345f, -3775.811f, 237.60f);
-                Instance.LocalPlayer.Ped.IsPositionFrozen = true;
-
-                await BaseScript.Delay(100);
-
-                CreateCameras();
-                await BaseScript.Delay(100);
-                CameraMain.IsActive = true;
-                SetCamera(CameraState.Main, CameraMain);
-                RenderScriptCams(true, true, 2000, true, true, 0);
-
-                await CreateSelections();
+                await StartCharacterCreator();
 
                 if (characters.Count == 0)
                 {
@@ -65,6 +53,25 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
                 await Screen.FadeIn(500);
             }));
+        }
+
+        async Task StartCharacterCreator()
+        {
+            await Screen.FadeOut(500);
+
+            await LoadImaps();
+            Instance.LocalPlayer.Position = new Vector3(-563.1345f, -3775.811f, 237.60f);
+            Instance.LocalPlayer.Ped.IsPositionFrozen = true;
+
+            await BaseScript.Delay(100);
+
+            CreateCameras();
+            await BaseScript.Delay(100);
+            CameraMain.IsActive = true;
+            SetCamera(CameraState.Main, CameraMain);
+            RenderScriptCams(true, true, 2000, true, true, 0);
+
+            await CreateSelections();
         }
 
         private async Task LoadImaps()
