@@ -28,8 +28,8 @@ namespace Vorp.Core.Client.RedM
         // char* promptSetTag (sParam2), (BRT2MountPrompt, CTX_GRIP, CTX_HOOK, INPUT_CRK_PROMPT, CTX_REEL, MR53_UC_BRFL)
         // int contextSetting (iParam3), (4 = Set Context Point and Size, 2 = Set Context Volume (param10), 5 = Set Context Volume (param10) and Size, Point Vector3.Zero)
         // int promptPriority (iParam4), (0 - Low, 1 = Normal, 2 = High, 3 = Critical)
-        // int promptTransportMode (iParam5),
-        // vector3 contextPoint (vParam6),
+        // int promptTransportMode (iParam5), (0 ANY, 1 ON FOOT, 2 IN VEHICLE)
+        // vector3 contextPoint (vParam6 (6,7,8)),
         // float contextSize (fParam9),
         // int contextVolume (iParam10)
         // int contextVolume2 (iParam11),
@@ -44,13 +44,18 @@ namespace Vorp.Core.Client.RedM
         // int iParam20 (Rotate Mode),
         // int iParam21 (Rotate Mode),
         // bool bParam22 (53CE46C01A089DA1),
-        // int iParam23 (Control Action Label Change?),
-        // bool bParam24 (STANDARDIZED_HOLD_MODE - promptSetType 4,5),
+        // int iParam23 (STANDARDIZED_HOLD_MODE HASH - SHORT_TIMED_EVENT_MP, SHORT_TIMED_EVENT, MEDIUM_TIMED_EVENT, LONG_TIMED_EVENT, RUSTLING_CALM_TIMING, PLAYER_FOCUS_TIMING, PLAYER_REACTION_TIMING),
+        // bool bParam24 (STANDARDIZED_HOLD_MODE ENABLE - promptSetType 4,5),
         // bool bParam25 (_UIPROMPT_SET_ATTRIBUTE if true))
         //
         //
-        public static Prompt Create(eControl control, string label, int priority = 1, int transportMode = 0, 
-            string tag = null, ePromptType promptType = ePromptType.Pressed, Vector3? contextPoint = null, float contextSize = 0f)
+        public static Prompt Create(eControl control, string label, int priority = 1, int transportMode = 0,
+            string tag = null,
+            ePromptType promptType = ePromptType.Pressed,
+            Vector3? contextPoint = null,
+            float contextSize = 0f,
+            uint timedEventHash = 0
+            )
         {
             int promptHandle = PromptRegisterBegin();
 
@@ -69,21 +74,19 @@ namespace Vorp.Core.Client.RedM
 
             switch (promptType) // All of this is still being tested and checked
             {
-                case ePromptType.Pressed:
-                    Function.Call((Hash)0xCC6656799977741B, promptHandle, 0);
-                    break;
+                case ePromptType.JustReleased:
                 case ePromptType.Released:
-                    Function.Call((Hash)0xCC6656799977741B, promptHandle, 1);
+                    Function.Call((Hash)0xCC6656799977741B, promptHandle, true);
                     break;
-                //case ePromptType.JustPressed:
-                //case ePromptType.JustReleased:
-                //    Function.Call((Hash)0xCC6656799977741B, promptHandle, true);
-                //    break;
+                case ePromptType.JustPressed:
+                case ePromptType.Pressed:
+                    Function.Call((Hash)0xCC6656799977741B, promptHandle, false);
+                    break;
                 case ePromptType.StandardHold:
                     Function.Call((Hash)0x94073D5CA3F16B7B, promptHandle, true); // UiPromptSetHoldMode
                     break;
                 case ePromptType.StandardizedHold:
-                    PromptSetStandardizedHoldMode(promptHandle, 1);
+                    Function.Call((Hash)0x74C7D7B72ED0D3CF, promptHandle, timedEventHash); // PromptSetStandardizedHoldMode
                     break;
             }
 
@@ -102,7 +105,6 @@ namespace Vorp.Core.Client.RedM
 
         public void TriggerEvent()
         {
-            EventTriggered = true;
             Logger.Debug($"Prompt '{_label}' Event Triggered");
             OnPromptEvents?.Invoke();
         }

@@ -51,7 +51,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         private void CreatePrompts()
         {
-            PromptCameraFemale = Prompt.Create(eControl.FrontendRight, "Female");
+            PromptCameraFemale = Prompt.Create(eControl.FrontendRight, "Female", promptType: ePromptType.Released);
             PromptCameraFemale.OnPromptEvents += PromptCameraFemale_OnPromptEvents;
             PromptHandler.Add(PromptCameraFemale);
 
