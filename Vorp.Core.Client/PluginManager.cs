@@ -121,7 +121,7 @@ namespace Vorp.Core.Client
 
                 Instance.AttachTickHandler(PromptHandler.OnHandlePrompt);
 
-                if (clientConfig.PvpEnabled)
+                if (clientConfig.PvpEnabled) // TODO: Add PVP Native Handling
                 {
                     Logger.Trace($"PVP is Enabled");
                 }

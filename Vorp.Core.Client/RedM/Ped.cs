@@ -72,9 +72,13 @@ namespace Vorp.Core.Client.RedM
             long compLegs = BodiesLower[VorpAPI.Random.Next(BodiesLower.Count)];
 
             ApplyShopItemToPed(compEyes);
+            UpdatePedVariation();
             ApplyShopItemToPed(compHead);
+            UpdatePedVariation();
             ApplyShopItemToPed(compBody);
+            UpdatePedVariation();
             ApplyShopItemToPed(compLegs);
+            UpdatePedVariation();
 
             RemoveTagFromMetaPed(0x1D4C528A, 0);
             RemoveTagFromMetaPed(0x3F1F01E5, 0);

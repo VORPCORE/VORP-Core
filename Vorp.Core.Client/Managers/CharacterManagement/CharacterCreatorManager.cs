@@ -9,14 +9,13 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         Ped _pedMale;
         Ped _pedFemale;
 
-        bool isSelectingSex = true;
-
         Camera CameraMain;
         Camera CameraMale;
         Camera CameraFemale;
 
         Prompt PromptCameraRight;
         Prompt PromptCameraLeft;
+        Prompt PromptConfirm;
 
         public override void Begin()
         {
@@ -41,6 +40,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             CreateCameras();
             CreatePrompts();
+
             await BaseScript.Delay(100);
             CameraMain.IsActive = true;
             SetCamera(CameraState.Main, CameraMain);
@@ -51,13 +51,30 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         private void CreatePrompts()
         {
-            PromptCameraRight = Prompt.Create(eControl.FrontendRight, "Female", ePromptType.JustPressed);
+            PromptCameraRight = Prompt.Create(eControl.FrontendRight, "Female", promptType: ePromptType.Pressed);
             PromptCameraRight.OnPromptEvents += PromptCameraRight_OnPromptEvents;
             PromptHandler.Add(PromptCameraRight);
 
-            PromptCameraLeft = Prompt.Create(eControl.FrontendLeft, "Male", ePromptType.JustPressed);
+            PromptCameraLeft = Prompt.Create(eControl.FrontendLeft, "Male", promptType: ePromptType.Released);
             PromptCameraLeft.OnPromptEvents += PromptCameraLeft_OnPromptEvents;
             PromptHandler.Add(PromptCameraLeft);
+
+            PromptConfirm = Prompt.Create(eControl.FrontendAccept, "Confirm", promptType: ePromptType.StandardHold);
+            PromptConfirm.OnPromptEvents += PromptConfirm_OnPromptEvents;
+            PromptHandler.Add(PromptConfirm);
+        }
+
+        private async void PromptConfirm_OnPromptEvents()
+        {
+            if (PromptConfirm.EventTriggered) return;
+            PromptConfirm.EventTriggered = true;
+            PromptConfirm.Enabled = false;
+
+            Logger.Trace($"Confirmed Selection Event Fired");
+
+            await BaseScript.Delay(3000);
+            PromptConfirm.EventTriggered = true;
+            PromptConfirm.Enabled = true;
         }
 
         private void PromptCameraLeft_OnPromptEvents()
@@ -65,7 +82,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             if (CameraMain.IsActive)
                 SetCamera(CameraState.SelectMale, CameraMain);
             else if (CameraFemale.IsActive)
+            {
                 SetCamera(CameraState.SelectMale, CameraFemale);
+                PromptCameraRight.Visible = false;
+                PromptCameraLeft.Visible = true;
+            }
         }
 
         private void PromptCameraRight_OnPromptEvents()
@@ -73,7 +94,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             if (CameraMain.IsActive)
                 SetCamera(CameraState.SelectFemale, CameraMain);
             else if (CameraMale.IsActive)
+            {
                 SetCamera(CameraState.SelectFemale, CameraMale);
+                PromptCameraRight.Visible = true;
+                PromptCameraLeft.Visible = false;
+            }
         }
 
         private async Task LoadImaps()
@@ -88,8 +113,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         {
             try
             {
-                isSelectingSex = true;
-
                 Instance.AttachTickHandler(FreezeClock);
 
                 await CreateMalePed();

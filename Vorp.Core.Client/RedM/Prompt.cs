@@ -14,28 +14,72 @@ namespace Vorp.Core.Client.RedM
         static bool _visible = true;
         static string _label;
         static ePromptType _promptType;
+        public bool EventTriggered = false;
 
-        public Prompt(int handle) : base(handle)
+        public Prompt(int handle, ePromptType promptType) : base(handle)
         {
-
+            _promptType = promptType;
         }
 
-        public static Prompt Create(eControl control, string label, ePromptType ePromptType, Vector3? contextPoint = null, float contextSize = 0f)
+        // void func_2074(
+        // int globalPromptIndexValue (iParam0),
+        // int promptLabel (iParam1),
+        // char* promptSetTag (sParam2), (BRT2MountPrompt, CTX_GRIP, CTX_HOOK, INPUT_CRK_PROMPT, CTX_REEL, MR53_UC_BRFL)
+        // int contextSetting (iParam3), (4 = Set Context Point and Size, 2 = Set Context Volume (param10), 5 = Set Context Volume (param10) and Size, Point Vector3.Zero)
+        // int promptPriority (iParam4), (0 - Low, 1 = Normal, 2 = High, 3 = Critical)
+        // int promptTransportMode (iParam5),
+        // vector3 contextPoint (vParam6),
+        // float contextSize (fParam9),
+        // int contextVolume (iParam10)
+        // int contextVolume2 (iParam11),
+        // int iParam12,
+        // int iParam13,
+        // int promptSetType (iParam14),
+        // int iParam15 (used on Hold),
+        // int holdDuration?,
+        // int iParam17 (used on Mash),
+        // int iParam18 (mash resistance?),
+        // int iParam19,
+        // int iParam20 (Rotate Mode),
+        // int iParam21 (Rotate Mode),
+        // bool bParam22 (53CE46C01A089DA1),
+        // int iParam23 (Control Action Label Change?),
+        // bool bParam24 (STANDARDIZED_HOLD_MODE - promptSetType 4,5),
+        // bool bParam25 (_UIPROMPT_SET_ATTRIBUTE if true))
+        //
+        //
+        public static Prompt Create(eControl control, string label, int priority = 1, int transportMode = 0, 
+            string tag = null, ePromptType promptType = ePromptType.Pressed, Vector3? contextPoint = null, float contextSize = 0f)
         {
             int promptHandle = PromptRegisterBegin();
 
-            // PromptSetControlAction(promptHandle, 1); // This is the label to display
-
-            Function.Call((Hash)0xB5352B7494A08258, promptHandle, (uint)control);
+            Function.Call((Hash)0xB5352B7494A08258, promptHandle, (long)control); // UiPromptSetControlAction
 
             _label = label;
             long str = Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", label);
-            Function.Call((Hash)0x5DD02A8318420DD7, promptHandle, str);
+            Function.Call((Hash)0x5DD02A8318420DD7, promptHandle, str); // UiPromptSetText
 
-            switch (ePromptType)
+            Function.Call((Hash)0xCA24F528D0D16289, promptHandle, priority); // UiPromptSetPriority
+            Function.Call((Hash)0x876E4A35C73A6655, promptHandle, transportMode); // UiPromptSetTransportMode
+            Function.Call((Hash)0x560E76D5E2E1803F, promptHandle, 18, true); // UiPromptSetAttribute
+
+            if (!string.IsNullOrEmpty(tag))
+                Function.Call((Hash)0xDEC85C174751292B, promptHandle, tag); // UiPromptSetTag
+
+            switch (promptType) // All of this is still being tested and checked
             {
+                case ePromptType.Pressed:
+                    Function.Call((Hash)0xCC6656799977741B, promptHandle, 0);
+                    break;
+                case ePromptType.Released:
+                    Function.Call((Hash)0xCC6656799977741B, promptHandle, 1);
+                    break;
+                //case ePromptType.JustPressed:
+                //case ePromptType.JustReleased:
+                //    Function.Call((Hash)0xCC6656799977741B, promptHandle, true);
+                //    break;
                 case ePromptType.StandardHold:
-                    PromptSetHoldMode(promptHandle, 1);
+                    Function.Call((Hash)0x94073D5CA3F16B7B, promptHandle, true); // UiPromptSetHoldMode
                     break;
                 case ePromptType.StandardizedHold:
                     PromptSetStandardizedHoldMode(promptHandle, 1);
@@ -52,11 +96,12 @@ namespace Vorp.Core.Client.RedM
             PromptSetVisible(promptHandle, 1);
             PromptSetEnabled(promptHandle, 1);
 
-            return new Prompt(promptHandle);
+            return new Prompt(promptHandle, promptType);
         }
 
         public void TriggerEvent()
         {
+            EventTriggered = true;
             Logger.Debug($"Prompt '{_label}' Event Triggered");
             OnPromptEvents?.Invoke();
         }
@@ -79,6 +124,7 @@ namespace Vorp.Core.Client.RedM
             {
                 _visible = value;
                 PromptSetVisible(Handle, value ? 1 : 0);
+                Enabled = value;
             }
         }
 
@@ -89,11 +135,11 @@ namespace Vorp.Core.Client.RedM
         public bool HasHoldMode => Function.Call<bool>((Hash)0xB60C9F9ED47ABB76, Handle);
         public bool IsHoldModeRunning => PromptIsHoldModeRunning(Handle);
         public bool IsActive => PromptIsActive(Handle);
-        public bool IsPressed => PromptIsPressed(Handle);
-        public bool IsReleased => PromptIsReleased(Handle);
+        public bool IsPressed => Function.Call<bool>((Hash)0x21E60E230086697F, Handle);
+        public bool IsReleased => Function.Call<bool>((Hash)0xAFC887BA7A7756D6, Handle);
         public bool IsValid => PromptIsValid(Handle);
-        public bool IsJustPressed => PromptIsJustPressed(Handle);
-        public bool IsJustReleased => PromptIsJustReleased(Handle);
+        public bool IsJustPressed => Function.Call<bool>((Hash)0x2787CC611D3FACC5, Handle);
+        public bool IsJustReleased => Function.Call<bool>((Hash)0x635CC82FA297A827, Handle);
 
     }
 }

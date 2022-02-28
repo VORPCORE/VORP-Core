@@ -6,7 +6,7 @@
 
         public static async Task OnHandlePrompt()
         {
-            List<Prompt> prompts = new(_prompts);
+            List<Prompt> prompts = _prompts;
 
             if (prompts.Count == 0)
             {
@@ -15,41 +15,38 @@
 
             foreach (Prompt prompt in prompts)
             {
-                if (!prompt.IsActive) continue;
                 if (!prompt.Visible) continue;
+                if (!prompt.Enabled) continue;
 
-                if (prompt.HasHoldMode && prompt.Type == ePromptType.StandardHold)
+                switch (prompt.Type)
                 {
-                    while (prompt.IsHoldModeRunning)
-                    {
-                        await BaseScript.Delay(0);
-                        if (prompt.HasHoldModeCompleted)
-                        {
+                    case ePromptType.JustPressed:
+                        if (prompt.IsJustPressed)
                             prompt.TriggerEvent();
+                        break;
+                    case ePromptType.Pressed:
+                        if (prompt.IsPressed)
+                            prompt.TriggerEvent();
+                        break;
+                    case ePromptType.JustReleased:
+                        if (prompt.IsJustReleased)
+                            prompt.TriggerEvent();
+                        break;
+                    case ePromptType.Released:
+                        if (prompt.IsReleased)
+                            prompt.TriggerEvent();
+                        break;
+                    default:
+                        while (prompt.IsHoldModeRunning && prompt.HasHoldMode)
+                        {
+                            await BaseScript.Delay(0);
+
+                            if (prompt.HasHoldModeCompleted)
+                            {
+                                prompt.TriggerEvent();
+                            }
                         }
-                    }
-                }
-                else
-                {
-                    switch (prompt.Type)
-                    {
-                        case ePromptType.JustPressed:
-                            if (prompt.IsJustPressed)
-                                prompt.TriggerEvent();
-                            break;
-                        case ePromptType.Pressed:
-                            if (prompt.IsPressed)
-                                prompt.TriggerEvent();
-                            break;
-                        case ePromptType.JustReleased:
-                            if (prompt.IsJustReleased)
-                                prompt.TriggerEvent();
-                            break;
-                        case ePromptType.Released:
-                            if (prompt.IsReleased)
-                                prompt.TriggerEvent();
-                            break;
-                    }
+                        break;
                 }
             }
         }
