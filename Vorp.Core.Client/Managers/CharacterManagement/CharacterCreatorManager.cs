@@ -119,14 +119,15 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             RandomiseClothing(_pedFemale);
         }
 
-        void RandomiseClothing(Ped ped)
+        async void RandomiseClothing(Ped ped)
         {
             // I DO NOT KNOW WHY, I DO NOT WANT TO KNOW WHY
             // BUT I SUMISE, THAT IT IS DUE TO THE NATIVE NOT WORKING IN THE FIRST CALL
             // SO WE CALL IT TWICE
-            ped.RandomiseClothing();
+            ped.RandomiseClothingAsync();
             ped.UpdatePedVariation();
-            ped.RandomiseClothing();
+            await BaseScript.Delay(0);
+            ped.RandomiseClothingAsync();
             ped.UpdatePedVariation();
         }
 

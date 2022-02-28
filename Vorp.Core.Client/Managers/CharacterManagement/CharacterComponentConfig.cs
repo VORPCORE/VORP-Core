@@ -1,4 +1,5 @@
-﻿using Vorp.Shared.Enums;
+﻿using Vorp.Core.Client.Extensions;
+using Vorp.Shared.Enums;
 using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
@@ -32,19 +33,19 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         public static List<ComponentCategory> Male => Config.Male;
         public static List<ComponentCategory> Horse => Config.Horse;
 
-        public static List<uint> GetComponents(ePedType ePedType, ePedComponentCategory ePedComponentCategory)
+        public static List<long> GetComponents(ePedType ePedType, ePedComponentCategory componentCategory)
         {
             try
             {
-                List<uint> components = new();
+                List<long> components = new();
 
-                if (ePedType == ePedType.Female && ePedComponentCategory == ePedComponentCategory.BeardsComplete)
+                if (ePedType == ePedType.Female && componentCategory == ePedComponentCategory.BeardsComplete)
                 {
                     Logger.Warn($"Female peds cannot have Beards, blame R*.");
                     return components;
                 }
 
-                if (ePedType == ePedType.Male && (ePedComponentCategory == ePedComponentCategory.HairAccessories || ePedComponentCategory == ePedComponentCategory.Skirts))
+                if (ePedType == ePedType.Male && (componentCategory == ePedComponentCategory.HairAccessories || componentCategory == ePedComponentCategory.Skirts))
                 {
                     Logger.Warn($"Male ped models cannot have Skirts or Hair Accessories, blame R*.");
                     return components;
@@ -59,16 +60,19 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
                 foreach (ComponentCategory compCategory in componentCategories)
                 {
-                    Enum.TryParse<ePedComponentCategory>(compCategory.Category, out var category);
-                    if (category == ePedComponentCategory)
+                    ePedComponentCategory category = (ePedComponentCategory)compCategory.HashKey;
+
+                    if (category == componentCategory)
                     {
                         foreach (string comp in compCategory.Items)
                         {
-                            if (uint.TryParse(comp, out uint hash))
-                                components.Add(hash);
+                            long compValue = Convert.ToInt64(comp, 16);
+                            components.Add(compValue);
                         }
                     }
                 }
+
+                Logger.Trace($"Ped Type: {ePedType}, Component Category: {componentCategory}, Components: {componentCategories.Count}, Parsed: {components.Count}");
 
                 return components;
             }

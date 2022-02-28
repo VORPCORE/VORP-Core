@@ -12,6 +12,8 @@ namespace Vorp.Shared.Models
         [DataMember(Name = "hash")]
         public string Hash;
 
+        public long HashKey => Convert.ToInt64(Hash, 16);
+
         [DataMember(Name = "items")]
         public List<string> Items = new();
     }

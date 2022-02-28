@@ -1,6 +1,6 @@
 ﻿namespace Vorp.Core.Client.Extensions
 {
-    static class GeneralExtension
+    public static class GeneralExtension
     {
         public static string ToJson(this object obj)
         {
@@ -10,6 +10,13 @@
         public static T FromJson<T>(this string str)
         {
             return JsonConvert.DeserializeObject<T>(str);
+        }
+        public static TEnum ToEnum<TEnum>(this string strEnumValue, TEnum defaultValue)
+        {
+            if (!Enum.IsDefined(typeof(TEnum), strEnumValue))
+                return defaultValue;
+
+            return (TEnum)Enum.Parse(typeof(TEnum), strEnumValue);
         }
     }
 }
