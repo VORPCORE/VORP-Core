@@ -13,8 +13,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         Camera CameraMale;
         Camera CameraFemale;
 
-        Prompt PromptCameraRight;
-        Prompt PromptCameraLeft;
+        Prompt PromptCameraFemale;
+        Prompt PromptCameraMale;
         Prompt PromptConfirm;
 
         public override void Begin()
@@ -51,13 +51,13 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         private void CreatePrompts()
         {
-            PromptCameraRight = Prompt.Create(eControl.FrontendRight, "Female", promptType: ePromptType.Pressed);
-            PromptCameraRight.OnPromptEvents += PromptCameraRight_OnPromptEvents;
-            PromptHandler.Add(PromptCameraRight);
+            PromptCameraFemale = Prompt.Create(eControl.FrontendRight, "Female");
+            PromptCameraFemale.OnPromptEvents += PromptCameraFemale_OnPromptEvents;
+            PromptHandler.Add(PromptCameraFemale);
 
-            PromptCameraLeft = Prompt.Create(eControl.FrontendLeft, "Male", promptType: ePromptType.Released);
-            PromptCameraLeft.OnPromptEvents += PromptCameraLeft_OnPromptEvents;
-            PromptHandler.Add(PromptCameraLeft);
+            PromptCameraMale = Prompt.Create(eControl.FrontendLeft, "Male");
+            PromptCameraMale.OnPromptEvents += PromptCameraMale_OnPromptEvents;
+            PromptHandler.Add(PromptCameraMale);
 
             PromptConfirm = Prompt.Create(eControl.FrontendAccept, "Confirm", promptType: ePromptType.StandardHold);
             PromptConfirm.OnPromptEvents += PromptConfirm_OnPromptEvents;
@@ -68,36 +68,35 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         {
             if (PromptConfirm.EventTriggered) return;
             PromptConfirm.EventTriggered = true;
-            PromptConfirm.Enabled = false;
 
             Logger.Trace($"Confirmed Selection Event Fired");
 
             await BaseScript.Delay(3000);
-            PromptConfirm.EventTriggered = true;
-            PromptConfirm.Enabled = true;
+            Logger.Trace($"Confirmed Selection Event Enabled");
+            PromptConfirm.EventTriggered = false;
         }
 
-        private void PromptCameraLeft_OnPromptEvents()
+        private void PromptCameraMale_OnPromptEvents()
         {
             if (CameraMain.IsActive)
                 SetCamera(CameraState.SelectMale, CameraMain);
             else if (CameraFemale.IsActive)
             {
                 SetCamera(CameraState.SelectMale, CameraFemale);
-                PromptCameraRight.Visible = false;
-                PromptCameraLeft.Visible = true;
+                PromptCameraFemale.Visible = true;
+                PromptCameraMale.Visible = false;
             }
         }
 
-        private void PromptCameraRight_OnPromptEvents()
+        private void PromptCameraFemale_OnPromptEvents()
         {
             if (CameraMain.IsActive)
                 SetCamera(CameraState.SelectFemale, CameraMain);
             else if (CameraMale.IsActive)
             {
                 SetCamera(CameraState.SelectFemale, CameraMale);
-                PromptCameraRight.Visible = true;
-                PromptCameraLeft.Visible = false;
+                PromptCameraFemale.Visible = false;
+                PromptCameraMale.Visible = true;
             }
         }
 

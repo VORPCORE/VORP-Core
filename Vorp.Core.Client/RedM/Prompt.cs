@@ -14,6 +14,7 @@ namespace Vorp.Core.Client.RedM
         static bool _visible = true;
         static string _label;
         static ePromptType _promptType;
+        static int _group;
         public bool EventTriggered = false;
 
         public Prompt(int handle, ePromptType promptType) : base(handle)
@@ -140,6 +141,15 @@ namespace Vorp.Core.Client.RedM
         public bool IsValid => PromptIsValid(Handle);
         public bool IsJustPressed => Function.Call<bool>((Hash)0x2787CC611D3FACC5, Handle);
         public bool IsJustReleased => Function.Call<bool>((Hash)0x635CC82FA297A827, Handle);
-
+        public int Group
+        {
+            get => _group;
+            set
+            {
+                _group = value;
+                PromptSetGroup(Handle, value, 0);
+            }
+            
+        }
     }
 }

@@ -6,12 +6,7 @@
 
         public static async Task OnHandlePrompt()
         {
-            List<Prompt> prompts = _prompts;
-
-            if (prompts.Count == 0)
-            {
-                await BaseScript.Delay(1000);
-            }
+            List<Prompt> prompts = new (_prompts);
 
             foreach (Prompt prompt in prompts)
             {
@@ -36,12 +31,13 @@
                         if (prompt.IsReleased)
                             prompt.TriggerEvent();
                         break;
-                    default:
-                        while (prompt.IsHoldModeRunning && prompt.HasHoldMode)
+                    case ePromptType.StandardHold:
+                    case ePromptType.StandardizedHold:
+                        while (prompt.IsHoldModeRunning)
                         {
                             await BaseScript.Delay(0);
 
-                            if (prompt.HasHoldModeCompleted)
+                            if (prompt.HasHoldModeCompleted && !prompt.EventTriggered)
                             {
                                 prompt.TriggerEvent();
                             }

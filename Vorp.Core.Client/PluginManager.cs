@@ -113,13 +113,13 @@ namespace Vorp.Core.Client
                 VorpAPI.StartSoloTutorialSession();
 
                 // Need to find a better way, currently having to wait 5s before saying we're active
+
+                Instance.AttachTickHandler(PromptHandler.OnHandlePrompt);
                 await BaseScript.Delay(5000);
 
                 ClientGateway.Send("vorp:user:active", Session.ServerId);
                 BaseScript.TriggerServerEvent("vorp:user:activate");
                 LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
-
-                Instance.AttachTickHandler(PromptHandler.OnHandlePrompt);
 
                 if (clientConfig.PvpEnabled) // TODO: Add PVP Native Handling
                 {
