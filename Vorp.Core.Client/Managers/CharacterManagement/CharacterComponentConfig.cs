@@ -32,23 +32,24 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         public static List<ComponentCategory> Male => Config.Male;
         public static List<ComponentCategory> Horse => Config.Horse;
 
-        public static List<uint> GetComponents(ePedType ePedType, ePedComponentCategory ePedComponentCategory)
+        public static List<int> GetComponents(ePedType ePedType, ePedComponentCategory ePedComponentCategory)
         {
             try
             {
+                List<int> components = new();
+
                 if (ePedType == ePedType.Female && ePedComponentCategory == ePedComponentCategory.BeardsComplete)
                 {
                     Logger.Warn($"Female peds cannot have Beards, blame R*.");
-                    return new();
+                    return components;
                 }
 
                 if (ePedType == ePedType.Male && (ePedComponentCategory == ePedComponentCategory.HairAccessories || ePedComponentCategory == ePedComponentCategory.Skirts))
                 {
                     Logger.Warn($"Male ped models cannot have Skirts or Hair Accessories, blame R*.");
-                    return new();
+                    return components;
                 }
 
-                List<uint> components = new();
                 List<ComponentCategory> componentCategories = new List<ComponentCategory>(Male);
 
                 if (ePedType == ePedType.Female)
@@ -63,7 +64,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                     {
                         foreach (string comp in compCategory.Items)
                         {
-                            if (uint.TryParse(comp, out uint hash))
+                            if (int.TryParse(comp, out int hash))
                                 components.Add(hash);
                         }
                     }
