@@ -1,7 +1,4 @@
-﻿using Vorp.Core.Client.Environment;
-using Vorp.Core.Client.Environment.Config;
-
-namespace Vorp.Core.Client.Managers
+﻿namespace Vorp.Core.Client.Managers
 {
     public class ClientConfigManager : Manager<ClientConfigManager>
     {

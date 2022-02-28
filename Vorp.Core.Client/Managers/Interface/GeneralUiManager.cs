@@ -1,6 +1,4 @@
-﻿using Vorp.Core.Client.RedM.Enums;
-
-namespace Vorp.Core.Client.Managers.Interface
+﻿namespace Vorp.Core.Client.Managers.Interface
 {
     public class GeneralUiManager : Manager<GeneralUiManager>
     {

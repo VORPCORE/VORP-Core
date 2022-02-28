@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Managers.Admin
 {

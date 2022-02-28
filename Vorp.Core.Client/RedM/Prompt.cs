@@ -76,7 +76,7 @@ namespace Vorp.Core.Client.RedM
         {
             get => _visible;
             set
-            { 
+            {
                 _visible = value;
                 PromptSetVisible(Handle, value ? 1 : 0);
             }

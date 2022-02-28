@@ -1,6 +1,4 @@
-﻿using Vorp.Core.Client.RedM.Enums;
-
-namespace Vorp.Core.Client.RedM
+﻿namespace Vorp.Core.Client.RedM
 {
     internal class VorpAPI
     {

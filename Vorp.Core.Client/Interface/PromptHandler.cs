@@ -13,7 +13,7 @@
                 await BaseScript.Delay(1000);
             }
 
-            foreach(Prompt prompt in prompts)
+            foreach (Prompt prompt in prompts)
             {
                 if (!prompt.IsActive) continue;
                 if (!prompt.Visible) continue;
@@ -31,7 +31,7 @@
                 }
                 else
                 {
-                    switch(prompt.Type)
+                    switch (prompt.Type)
                     {
                         case ePromptType.JustPressed:
                             if (prompt.IsJustPressed)
