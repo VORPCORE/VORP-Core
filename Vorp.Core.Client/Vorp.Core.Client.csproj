@@ -68,6 +68,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientConfiguration.cs" />
     <Compile Include="Commands\CommandContext.cs" />
     <Compile Include="Commands\CommandFramework.cs" />
     <Compile Include="Commands\CommandInfo.cs" />
@@ -126,10 +127,6 @@
       <Project>{87af19bd-084d-4d37-8763-b25c0c2df459}</Project>
       <Name>Events</Name>
     </ProjectReference>
-    <ProjectReference Include="..\vendor\snowflake\src\Snowflake.csproj">
-      <Project>{4c2c78cb-21b2-4ac4-95a0-4db8338db648}</Project>
-      <Name>Snowflake</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -144,7 +141,6 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
     <None Include="Resources\character-components.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
