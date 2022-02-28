@@ -1,9 +1,8 @@
 ﻿using Vorp.Core.Client.Interface;
-using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
 {
-    internal class CharacterCreatorManager : Manager<CharacterCreatorManager>
+    public class CharacterCreatorManager : Manager<CharacterCreatorManager>
     {
         string _modelHashFemale = "mp_female";
         string _modelHashMale = "mp_male";
@@ -15,6 +14,9 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         Camera CameraMain;
         Camera CameraMale;
         Camera CameraFemale;
+
+        Prompt PromptCameraRight;
+        Prompt PromptCameraLeft;
 
         public override void Begin()
         {
@@ -38,12 +40,40 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             await BaseScript.Delay(100);
 
             CreateCameras();
+            CreatePrompts();
             await BaseScript.Delay(100);
             CameraMain.IsActive = true;
             SetCamera(CameraState.Main, CameraMain);
             RenderScriptCams(true, true, 2000, true, true, 0);
 
             await CreateSelections();
+        }
+
+        private void CreatePrompts()
+        {
+            PromptCameraRight = Prompt.Create(eControl.FrontendRight, "Female", ePromptType.JustPressed);
+            PromptCameraRight.OnPromptEvents += PromptCameraRight_OnPromptEvents;
+            PromptHandler.Add(PromptCameraRight);
+
+            PromptCameraLeft = Prompt.Create(eControl.FrontendLeft, "Male", ePromptType.JustPressed);
+            PromptCameraLeft.OnPromptEvents += PromptCameraLeft_OnPromptEvents;
+            PromptHandler.Add(PromptCameraLeft);
+        }
+
+        private void PromptCameraLeft_OnPromptEvents()
+        {
+            if (CameraMain.IsActive)
+                SetCamera(CameraState.SelectMale, CameraMain);
+            else if (CameraFemale.IsActive)
+                SetCamera(CameraState.SelectMale, CameraFemale);
+        }
+
+        private void PromptCameraRight_OnPromptEvents()
+        {
+            if (CameraMain.IsActive)
+                SetCamera(CameraState.SelectFemale, CameraMain);
+            else if (CameraMale.IsActive)
+                SetCamera(CameraState.SelectFemale, CameraMale);
         }
 
         private async Task LoadImaps()
@@ -60,7 +90,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             {
                 isSelectingSex = true;
 
-                Instance.AttachTickHandler(OnCameraControls);
                 Instance.AttachTickHandler(FreezeClock);
 
                 await CreateMalePed();
@@ -145,36 +174,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             CameraFemale = VorpAPI.CreateCameraWithParams(new Vector3(-560.0867f, -3776.632f, 239.1f), selctionRotation, fov);
         }
 
-        private async Task OnCameraControls()
-        {
-            if (isSelectingSex)
-            {
-                if (IsControlJustPressed(2, (uint)eControl.FrontendRight))
-                {
-                    if (CameraMain.IsActive)
-                        SetCamera(CameraState.SelectFemale, CameraMain);
-                    else if (CameraMale.IsActive)
-                        SetCamera(CameraState.SelectFemale, CameraMale);
-                }
-
-                if (IsControlJustPressed(2, (uint)eControl.FrontendLeft))
-                {
-                    if (CameraMain.IsActive)
-                        SetCamera(CameraState.SelectMale, CameraMain);
-                    else if (CameraFemale.IsActive)
-                        SetCamera(CameraState.SelectMale, CameraFemale);
-                }
-
-                if (IsControlJustPressed(2, (uint)eControl.FrontendAccept))
-                {
-                    if (CameraMale.IsActive)
-                        SetCamera(CameraState.Main, CameraMale);
-                    else if (CameraFemale.IsActive)
-                        SetCamera(CameraState.Main, CameraFemale);
-                }
-            }
-        }
-
         void Dispose()
         {
             if (_pedFemale is not null)
@@ -184,7 +183,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 _pedMale.Delete();
 
             Instance.DetachTickHandler(FreezeClock);
-            Instance.DetachTickHandler(OnCameraControls);
 
             CameraMain.Delete();
             CameraMale.Delete();

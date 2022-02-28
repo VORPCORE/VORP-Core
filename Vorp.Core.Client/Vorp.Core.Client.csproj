@@ -113,6 +113,7 @@
     <Compile Include="RedM\Camera.cs" />
     <Compile Include="RedM\Entity.cs" />
     <Compile Include="RedM\Enums\eControl.cs" />
+    <Compile Include="RedM\Enums\ePromptType.cs" />
     <Compile Include="RedM\Enums\eRelationshipType.cs" />
     <Compile Include="RedM\Enums\eUIGamertagVisibility.cs" />
     <Compile Include="RedM\Ped.cs" />

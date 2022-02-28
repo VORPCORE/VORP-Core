@@ -6,6 +6,7 @@ global using System.Collections.Generic;
 global using System.Linq;
 global using System.Threading.Tasks;
 global using Vorp.Core.Client.RedM;
+global using Vorp.Core.Client.RedM.Enums;
 global using Vorp.Diagnostics;
 global using Vorp.Shared.Diagnostics;
 global using static CitizenFX.Core.Native.API;
@@ -115,6 +116,8 @@ namespace Vorp.Core.Client
                 ClientGateway.Send("vorp:user:active", Session.ServerId);
                 BaseScript.TriggerServerEvent("vorp:user:activate");
                 LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
+
+                Instance.AttachTickHandler(PromptHandler.OnHandlePrompt);
 
                 Logger.Info("Load method has been completed.");
             }

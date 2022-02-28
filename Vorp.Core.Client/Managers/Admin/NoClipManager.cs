@@ -1,5 +1,4 @@
 ﻿using Vorp.Core.Client.Environment.Entities;
-using Vorp.Core.Client.RedM.Enums;
 
 namespace Vorp.Core.Client.Managers.Admin
 {
