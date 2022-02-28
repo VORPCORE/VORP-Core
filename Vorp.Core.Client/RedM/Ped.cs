@@ -106,11 +106,6 @@ namespace Vorp.Core.Client.RedM
                 UpdatePedVariation(true);
             }
 
-            // Currently skin color isn't updating
-            //vorpComponents.Head.Value = Heads[VorpAPI.Random.Next(Heads.Count)];
-            //SetComponent(vorpComponents.Head);
-            //UpdatePedVariation(true);
-
             List<long> Teeth = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Teeth);
             if (!IsMale)
                 Teeth = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Teeth);
@@ -135,7 +130,7 @@ namespace Vorp.Core.Client.RedM
             if (IsMale)
             {
                 List<long> Beards = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.BeardsComplete);
-                if (Beards.Count > 0)
+                if (Beards.Count > 0 && VorpAPI.Random.Next(3) == 1)
                 {
                     vorpComponents.Beard.Value = Beards[VorpAPI.Random.Next(Beards.Count)];
                     SetComponent(vorpComponents.Beard);
