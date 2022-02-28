@@ -57,6 +57,10 @@
       <HintPath>..\dependancies\RedM\CitizenFX.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\dependancies\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -139,10 +143,6 @@
     <ProjectReference Include="..\vendor\fx-events\src\events\Events.csproj">
       <Project>{87af19bd-084d-4d37-8763-b25c0c2df459}</Project>
       <Name>Events</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\vendor\snowflake\src\Snowflake.csproj">
-      <Project>{4c2c78cb-21b2-4ac4-95a0-4db8338db648}</Project>
-      <Name>Snowflake</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
