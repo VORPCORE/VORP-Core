@@ -107,6 +107,8 @@ namespace Vorp.Core.Client
                 await Screen.FadeOut(500);
                 await Session.Loading();
 
+                VorpAPI.StartSoloTutorialSession();
+
                 // Need to find a better way, currently having to wait 5s before saying we're active
                 await BaseScript.Delay(5000);
 
