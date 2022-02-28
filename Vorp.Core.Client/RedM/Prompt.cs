@@ -4,6 +4,8 @@ namespace Vorp.Core.Client.RedM
 {
     internal class Prompt : PoolObject
     {
+        bool _visible = true;
+
         public Prompt(int handle) : base(handle)
         {
 
@@ -31,7 +33,16 @@ namespace Vorp.Core.Client.RedM
             set => PromptSetEnabled(Handle, value ? 1 : 0);
         }
 
-        public void SetVisible(bool isVisible) => PromptSetVisible(Handle, isVisible ? 1 : 0);
+        public bool Visible
+        {
+            get => _visible;
+            set
+            { 
+                _visible = value;
+                PromptSetVisible(Handle, value ? 1 : 0);
+            }
+        }
+
         public void SetStandardMode(bool mode) => PromptSetStandardMode(Handle, mode ? 1 : 0);
         public void SetStandardizedHoldMode(bool mode) => PromptSetStandardizedHoldMode(Handle, mode ? 1 : 0);
         public void SetHoldMode(int mode) => PromptSetHoldMode(Handle, mode);
