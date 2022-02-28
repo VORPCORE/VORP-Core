@@ -1,4 +1,6 @@
-﻿using Vorp.Shared.Models;
+﻿using Vorp.Core.Client.Managers.CharacterManagement;
+using Vorp.Shared.Enums;
+using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.RedM
 {
@@ -82,48 +84,50 @@ namespace Vorp.Core.Client.RedM
 
         public void RandomiseClothing()
         {
-            List<uint> ShirtMale = new()
-            {
-                0x00215112,
-                0x015BDA7D,
-                0x021A1A7A,
-                0x04F54118,
-                0x0567DD7D,
-            };
+            List<uint> Shirts = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.ShirtsFull);
+            if (!IsMale)
+                Shirts = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.ShirtsFull);
 
-            List<uint> ShirtFemale = new()
-            {
-                0x004869A5,
-                0x007CDF56,
-                0x01C0A6E7,
-                0x03671B0A,
-                0x04446738,
-            };
-
-            int rand = VorpAPI.Random.Next(1, 5);
+            List<uint> Boots = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Boots);
+            if (!IsMale)
+                Boots = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Boots);
 
             VorpPedComponents vorpComponents = new VorpPedComponents();
-            vorpComponents.Shirt.Value = IsMale ? ShirtMale[rand] : ShirtFemale[rand];
-            SetComponent(vorpComponents.Shirt);
-            UpdatePedVariation(true);
+            if (Shirts.Count > 0)
+            {
+                vorpComponents.Shirt.Value = Shirts[VorpAPI.Random.Next(Shirts.Count)];
+                SetComponent(vorpComponents.Shirt);
+                UpdatePedVariation(true);
+            }
 
             if (IsMale)
             {
-                vorpComponents.Pant.Value = 0x010051C7;
-                SetComponent(vorpComponents.Pant);
-                UpdatePedVariation(true);
+                List<uint> MalePants = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Pants);
+                if (MalePants.Count > 0)
+                {
+                    vorpComponents.Pant.Value = MalePants[VorpAPI.Random.Next(MalePants.Count)];
+                    SetComponent(vorpComponents.Pant);
+                    UpdatePedVariation(true);
+                }
             }
 
             if (!IsMale)
             {
-                vorpComponents.Skirt.Value = 180955894;
-                SetComponent(vorpComponents.Skirt);
-                UpdatePedVariation(true);
+                List<uint> FemaleSkirts = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Pants);
+                if (FemaleSkirts.Count > 0)
+                {
+                    vorpComponents.Skirt.Value = FemaleSkirts[VorpAPI.Random.Next(FemaleSkirts.Count)];
+                    SetComponent(vorpComponents.Skirt);
+                    UpdatePedVariation(true);
+                }
             }
 
-            vorpComponents.Boots.Value = IsMale ? 0x9F3252BB : 0x019ADA9E;
-            SetComponent(vorpComponents.Boots);
-            UpdatePedVariation(true);
+            if (Boots.Count > 0)
+            {
+                vorpComponents.Boots.Value = Boots[VorpAPI.Random.Next(Boots.Count)];
+                SetComponent(vorpComponents.Boots);
+                UpdatePedVariation(true);
+            }
 
             _vorpPedComponents = vorpComponents;
             Logger.Trace($"Sex: {IsMale} / Comps: {vorpComponents.Shirt.Value}");

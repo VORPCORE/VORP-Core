@@ -13,6 +13,7 @@ global using static CitizenFX.Core.Native.API;
 using System.Reflection;
 using Vorp.Core.Client.Commands;
 using Vorp.Core.Client.Commands.Impl;
+using Vorp.Core.Client.Environment;
 using Vorp.Core.Client.Environment.Entities;
 using Vorp.Core.Client.Events;
 using Vorp.Core.Client.Interface;
@@ -27,6 +28,7 @@ namespace Vorp.Core.Client
         public VorpPlayer LocalPlayer;
         public EventHandlerDictionary EventRegistry => EventHandlers;
         public ExportDictionary ExportDictionary => Exports;
+        ClientConfig clientConfig => ClientConfiguration.Config;
         public Dictionary<Type, object> Managers { get; } = new Dictionary<Type, object>();
         public Dictionary<Type, List<MethodInfo>> TickHandlers { get; set; } = new Dictionary<Type, List<MethodInfo>>();
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
@@ -118,6 +120,11 @@ namespace Vorp.Core.Client
                 LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
 
                 Instance.AttachTickHandler(PromptHandler.OnHandlePrompt);
+
+                if (clientConfig.PvpEnabled)
+                {
+                    Logger.Trace($"PVP is Enabled");
+                }
 
                 Logger.Info("Load method has been completed.");
             }

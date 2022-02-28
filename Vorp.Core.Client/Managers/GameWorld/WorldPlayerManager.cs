@@ -1,12 +1,13 @@
-﻿using Vorp.Core.Client.Environment.Entities;
+﻿using Vorp.Core.Client.Environment;
+using Vorp.Core.Client.Environment.Entities;
 
 namespace Vorp.Core.Client.Managers.GameWorld
 {
     public class WorldPlayerManager : Manager<WorldPlayerManager>
     {
-        ClientConfigManager ClientConfigManager => ClientConfigManager.GetModule();
+        ClientConfig _clientConfig => ClientConfiguration.Config;
         Dictionary<int, WorldPlayer> playersInScope = new Dictionary<int, WorldPlayer>();
-        float ConfigDistance => ClientConfigManager.PlayerNameConfig.Distance;
+        float ConfigDistance => _clientConfig.PlayerNames.Distance;
 
         public override void Begin()
         {

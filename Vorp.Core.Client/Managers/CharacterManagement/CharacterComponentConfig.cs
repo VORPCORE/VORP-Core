@@ -3,7 +3,7 @@ using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
 {
-    internal class CharacterComponentConfig
+    static class CharacterComponentConfig
     {
         static PedComponentOptions _pedComponentOptions;
 
@@ -32,11 +32,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         public static List<ComponentCategory> Male => Config.Male;
         public static List<ComponentCategory> Horse => Config.Horse;
 
-        public static List<int> GetComponents(ePedType ePedType, ePedComponentCategory ePedComponentCategory)
+        public static List<uint> GetComponents(ePedType ePedType, ePedComponentCategory ePedComponentCategory)
         {
             try
             {
-                List<int> components = new();
+                List<uint> components = new();
 
                 if (ePedType == ePedType.Female && ePedComponentCategory == ePedComponentCategory.BeardsComplete)
                 {
@@ -64,7 +64,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                     {
                         foreach (string comp in compCategory.Items)
                         {
-                            if (int.TryParse(comp, out int hash))
+                            if (uint.TryParse(comp, out uint hash))
                                 components.Add(hash);
                         }
                     }

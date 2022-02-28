@@ -1,13 +1,12 @@
 ﻿using Vorp.Core.Client.Commands;
 using Vorp.Core.Client.Interface;
-using Vorp.Core.Client.Managers;
 
 namespace Vorp.Core.Client.Environment.Entities
 {
     public class VorpPlayer : Entity
     {
         public PluginManager pluginManager => PluginManager.Instance;
-        public ClientConfigManager configManager => ClientConfigManager.GetModule();
+        public ClientConfig clientConfig => ClientConfiguration.Config;
 
         private int _playerPedId;
 

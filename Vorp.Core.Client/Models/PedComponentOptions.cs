@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 
-namespace Vorp.Shared.Models
+namespace Vorp.Core.Client.Models
 {
     [DataContract]
     public class ComponentCategory
