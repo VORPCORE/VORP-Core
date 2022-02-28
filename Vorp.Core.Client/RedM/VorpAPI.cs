@@ -123,5 +123,18 @@ namespace Vorp.Core.Client.RedM
 
             return new Ped(API.CreatePed(modelHash, norm.X, norm.Y, norm.Z, heading, false, true, true, true));
         }
+
+        public static void StartSoloTutorialSession() => NetworkStartSoloTutorialSession();
+        public static void EndTutorialSession() => NetworkEndTutorialSession();
+
+        public static async Task GetImap(int hash)
+        {
+            while (!Function.Call<bool>(Hash._IS_IMAP_ACTIVE, hash))
+            {
+                Function.Call(Hash._REQUEST_IMAP, hash);
+                await BaseScript.Delay(100);
+            }
+        }
+
     }
 }

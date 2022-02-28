@@ -13,10 +13,10 @@
             switch (instance)
             {
                 case true:
-                    NetworkStartSoloTutorialSession();
+                    VorpAPI.StartSoloTutorialSession();
                     break;
                 case false:
-                    NetworkEndTutorialSession();
+                    VorpAPI.EndTutorialSession();
                     break;
             }
         }
