@@ -12,7 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\EventLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\StateBagKey.cs" />
-    <Compile Include="..\Vorp.Shared\Enums\ePedComponentCategory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedComponentCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordAvatar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordMember.cs" />
