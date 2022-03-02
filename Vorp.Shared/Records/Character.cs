@@ -238,7 +238,7 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetJob");
+                Logger.Error(ex, "SetJobGrade");
                 return false;
             }
         }
@@ -257,7 +257,7 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetJob");
+                Logger.Error(ex, "SetJobAndGrade");
                 return false;
             }
         }
@@ -293,7 +293,25 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetGroup");
+                Logger.Error(ex, "SetDead");
+                return false;
+            }
+        }
+
+        internal async Task<bool> UpdateInventory()
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("characterId", CharacterId);
+                dynamicParameters.Add("inventory", Inventory);
+                bool result = await DapperDatabase<int>.ExecuteAsync($"UPDATE characters SET `inventory` = @inventory WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                await BaseScript.Delay(0);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "UpdateInventory");
                 return false;
             }
         }
