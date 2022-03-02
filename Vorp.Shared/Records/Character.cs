@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Lusive.Events.Attributes;
 using System.ComponentModel;
 using System.IO;
+using Vorp.Shared.Models;
+using System.Collections.Generic;
 
 namespace Vorp.Shared.Records
 {
@@ -298,6 +300,7 @@ namespace Vorp.Shared.Records
             }
         }
 
+        // Inventory
         internal async Task<bool> UpdateInventory()
         {
             try
@@ -305,7 +308,7 @@ namespace Vorp.Shared.Records
                 DynamicParameters dynamicParameters = new DynamicParameters();
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("inventory", Inventory);
-                bool result = await DapperDatabase<int>.ExecuteAsync($"UPDATE characters SET `inventory` = @inventory WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                bool result = await DapperDatabase<bool>.ExecuteAsync($"UPDATE characters SET `inventory` = @inventory WHERE `charIdentifier` = @characterId;", dynamicParameters);
                 await BaseScript.Delay(0);
                 return result;
             }
@@ -316,6 +319,23 @@ namespace Vorp.Shared.Records
             }
         }
 
+        internal async Task<string> GetDatabaseInventory()
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("characterId", CharacterId);
+                Inventory = await DapperDatabase<string>.GetSingleAsync($"select `inventory` from characters `charIdentifier` = @characterId;", dynamicParameters);
+                return Inventory;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "UpdateInventory");
+                return "{}";
+            }
+        }
+
+        // Save
         internal async Task<bool> Save()
         {
             try
