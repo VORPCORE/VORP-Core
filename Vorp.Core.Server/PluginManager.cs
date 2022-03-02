@@ -42,7 +42,7 @@ namespace Vorp.Core.Server
 
         public void Hook(string eventName, Delegate @delegate)
         {
-            EventHandlers[eventName] += @delegate;
+            EventHandlers.Add(eventName, @delegate);
         }
 
         public static Player ToPlayer(int handle)
