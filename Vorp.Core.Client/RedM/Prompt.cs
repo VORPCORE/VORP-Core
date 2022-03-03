@@ -9,17 +9,17 @@ namespace Vorp.Core.Client.RedM
 {
     internal class Prompt : PoolObject
     {
-        public event PromptEvent OnPromptEvents;
-
         static bool _visible = true;
         static string _label;
         static ePromptType _promptType;
         static int _group;
         public bool EventTriggered = false;
 
-        public Prompt(int handle, ePromptType promptType) : base(handle)
+        public Prompt(int handle, ePromptType promptType, string label) : base(handle)
         {
             _promptType = promptType;
+            _label = label;
+            Logger.Trace($"Registered '{label}'");
         }
 
         // void func_2074(
@@ -61,7 +61,6 @@ namespace Vorp.Core.Client.RedM
 
             Function.Call((Hash)0xB5352B7494A08258, promptHandle, (long)control); // UiPromptSetControlAction
 
-            _label = label;
             long str = Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", label);
             Function.Call((Hash)0x5DD02A8318420DD7, promptHandle, str); // UiPromptSetText
 
@@ -100,13 +99,7 @@ namespace Vorp.Core.Client.RedM
             PromptSetVisible(promptHandle, 1);
             PromptSetEnabled(promptHandle, 1);
 
-            return new Prompt(promptHandle, promptType);
-        }
-
-        public void TriggerEvent()
-        {
-            Logger.Debug($"Prompt '{_label}' Event Triggered");
-            OnPromptEvents?.Invoke();
+            return new Prompt(promptHandle, promptType, label);
         }
 
         public ePromptType Type => _promptType;

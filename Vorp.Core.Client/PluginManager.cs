@@ -114,7 +114,7 @@ namespace Vorp.Core.Client
 
                 // Need to find a better way, currently having to wait 5s before saying we're active
 
-                Instance.AttachTickHandler(PromptHandler.OnHandlePrompt);
+                // Instance.AttachTickHandler(PromptHandler.OnHandlePrompt);
                 await BaseScript.Delay(5000);
 
                 ClientGateway.Send("vorp:user:active", Session.ServerId);

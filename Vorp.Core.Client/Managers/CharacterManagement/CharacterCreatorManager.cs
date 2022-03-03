@@ -51,17 +51,23 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         private void CreatePrompts()
         {
-            PromptCameraFemale = Prompt.Create(eControl.FrontendRight, "Female", promptType: ePromptType.Released);
-            PromptCameraFemale.OnPromptEvents += PromptCameraFemale_OnPromptEvents;
-            PromptHandler.Add(PromptCameraFemale);
-
+            PromptCameraFemale = Prompt.Create(eControl.FrontendRight, "Female");
             PromptCameraMale = Prompt.Create(eControl.FrontendLeft, "Male");
-            PromptCameraMale.OnPromptEvents += PromptCameraMale_OnPromptEvents;
-            PromptHandler.Add(PromptCameraMale);
-
             PromptConfirm = Prompt.Create(eControl.FrontendAccept, "Confirm", promptType: ePromptType.StandardHold);
-            PromptConfirm.OnPromptEvents += PromptConfirm_OnPromptEvents;
-            PromptHandler.Add(PromptConfirm);
+
+            Instance.AttachTickHandler(OnPromptHandler);
+        }
+
+        private async Task OnPromptHandler()
+        {
+            if (PromptCameraFemale.IsJustPressed)
+                PromptCameraFemale_OnPromptEventsAsync();
+
+            if (PromptCameraMale.IsJustPressed)
+                PromptCameraMale_OnPromptEvents();
+
+            if (PromptConfirm.HasHoldModeCompleted)
+                PromptConfirm_OnPromptEvents();
         }
 
         private async void PromptConfirm_OnPromptEvents()
@@ -76,28 +82,31 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             PromptConfirm.EventTriggered = false;
         }
 
-        private void PromptCameraMale_OnPromptEvents()
+        private async void PromptCameraMale_OnPromptEvents()
         {
             if (CameraMain.IsActive)
                 SetCamera(CameraState.SelectMale, CameraMain);
             else if (CameraFemale.IsActive)
-            {
                 SetCamera(CameraState.SelectMale, CameraFemale);
-                PromptCameraFemale.Visible = true;
-                PromptCameraMale.Visible = false;
-            }
+
+            await BaseScript.Delay(2000);
+
+            PromptCameraFemale.Visible = true;
+            PromptCameraMale.Visible = false;
         }
 
-        private void PromptCameraFemale_OnPromptEvents()
+        private async void PromptCameraFemale_OnPromptEventsAsync()
         {
             if (CameraMain.IsActive)
                 SetCamera(CameraState.SelectFemale, CameraMain);
             else if (CameraMale.IsActive)
-            {
                 SetCamera(CameraState.SelectFemale, CameraMale);
-                PromptCameraFemale.Visible = false;
-                PromptCameraMale.Visible = true;
-            }
+
+            await BaseScript.Delay(2000);
+
+            PromptCameraFemale.Visible = false;
+            PromptCameraMale.Visible = true;
+
         }
 
         private async Task LoadImaps()
@@ -206,6 +215,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 _pedMale.Delete();
 
             Instance.DetachTickHandler(FreezeClock);
+            Instance.DetachTickHandler(OnPromptHandler);
 
             CameraMain.Delete();
             CameraMale.Delete();
