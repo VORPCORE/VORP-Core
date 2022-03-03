@@ -72,8 +72,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                     }
                 }
 
-                Logger.Trace($"Ped Type: {ePedType}, Component Category: {componentCategory}, Components: {componentCategories.Count}, Parsed: {components.Count}");
-
                 return components;
             }
             catch (Exception ex)
