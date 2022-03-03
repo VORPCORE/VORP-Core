@@ -41,13 +41,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
                 if (ePedType == ePedType.Female && componentCategory == ePedComponentCategory.BeardsComplete)
                 {
-                    Logger.Warn($"Female peds cannot have Beards, blame R*.");
                     return components;
                 }
 
                 if (ePedType == ePedType.Male && (componentCategory == ePedComponentCategory.HairAccessories || componentCategory == ePedComponentCategory.Skirts))
                 {
-                    Logger.Warn($"Male ped models cannot have Skirts or Hair Accessories, blame R*.");
                     return components;
                 }
 
