@@ -94,6 +94,7 @@
     <Compile Include="Managers\Admin\NoClipManager.cs" />
     <Compile Include="Managers\CharacterManagement\CharacterComponentConfig.cs" />
     <Compile Include="Managers\CharacterManagement\CharacterCreatorManager.cs" />
+    <Compile Include="Managers\CharacterManagement\CharacterEditorManager.cs" />
     <Compile Include="Managers\CharacterManagement\CharacterManager.cs" />
     <Compile Include="Managers\CharacterManagement\InventoryManager.cs" />
     <Compile Include="Managers\ClientConfigManager.cs" />

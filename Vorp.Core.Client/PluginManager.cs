@@ -106,15 +106,11 @@ namespace Vorp.Core.Client
 
                 CommandFramework = new CommandFramework();
                 CommandFramework.Bind(typeof(AdminCommands));
-
-                await Screen.FadeOut(500);
                 await Session.Loading();
-
                 VorpAPI.StartSoloTutorialSession();
+                await Screen.FadeOut(500);
 
                 // Need to find a better way, currently having to wait 5s before saying we're active
-
-                // Instance.AttachTickHandler(PromptHandler.OnHandlePrompt);
                 await BaseScript.Delay(5000);
 
                 ClientGateway.Send("vorp:user:active", Session.ServerId);
