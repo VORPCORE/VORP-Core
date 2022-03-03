@@ -16,6 +16,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         Prompt PromptCameraFemale;
         Prompt PromptCameraMale;
         Prompt PromptConfirm;
+        bool promptActive = false;
 
         public override void Begin()
         {
@@ -60,17 +61,22 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         private async Task OnPromptHandler()
         {
+            if (promptActive) return;
+            promptActive = true;
+
             if (PromptCameraFemale.IsJustPressed)
-                PromptCameraFemale_OnPromptEventsAsync();
+                await PromptCameraFemale_OnPromptEventsAsync();
 
             if (PromptCameraMale.IsJustPressed)
-                PromptCameraMale_OnPromptEvents();
+                await PromptCameraMale_OnPromptEvents();
 
             if (PromptConfirm.HasHoldModeCompleted)
-                PromptConfirm_OnPromptEvents();
+                await PromptConfirm_OnPromptEvents();
+
+            promptActive = false;
         }
 
-        private async void PromptConfirm_OnPromptEvents()
+        private async Task PromptConfirm_OnPromptEvents()
         {
             if (PromptConfirm.EventTriggered) return;
             PromptConfirm.EventTriggered = true;
@@ -82,7 +88,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             PromptConfirm.EventTriggered = false;
         }
 
-        private async void PromptCameraMale_OnPromptEvents()
+        private async Task PromptCameraMale_OnPromptEvents()
         {
             if (CameraMain.IsActive)
                 SetCamera(CameraState.SelectMale, CameraMain);
@@ -95,7 +101,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             PromptCameraMale.Visible = false;
         }
 
-        private async void PromptCameraFemale_OnPromptEventsAsync()
+        private async Task PromptCameraFemale_OnPromptEventsAsync()
         {
             if (CameraMain.IsActive)
                 SetCamera(CameraState.SelectFemale, CameraMain);
