@@ -301,6 +301,23 @@ namespace Vorp.Shared.Records
         }
 
         // Inventory
+        public async Task<Dictionary<string, InventoryItem>> GetInventoryItems()
+        {
+            Inventory = await GetDatabaseInventory();
+            Dictionary<string, int> items = JsonConvert.DeserializeObject<Dictionary<string, int>>(Inventory);
+            Dictionary<string, InventoryItem> invItems = new();
+
+            foreach(KeyValuePair<string, int> item in items)
+            {
+                InventoryItem dbItem = await InventoryItem.GetItem(item.Key);
+                if (item.Value == 0) continue; // if they don't have the item, no point of it being returned
+                dbItem.Count = item.Value;
+                invItems.Add(item.Key, dbItem);
+            }
+
+            return invItems;
+        }
+
         internal async Task<bool> UpdateInventory()
         {
             try
@@ -325,13 +342,32 @@ namespace Vorp.Shared.Records
             {
                 DynamicParameters dynamicParameters = new DynamicParameters();
                 dynamicParameters.Add("characterId", CharacterId);
-                Inventory = await DapperDatabase<string>.GetSingleAsync($"select `inventory` from characters `charIdentifier` = @characterId;", dynamicParameters);
+                Inventory = await DapperDatabase<string>.GetSingleAsync($"select `inventory` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
+
                 return Inventory;
             }
             catch (Exception ex)
             {
                 Logger.Error(ex, "UpdateInventory");
                 return "{}";
+            }
+        }
+
+        // loadout
+        internal async Task<List<Loadout>> GetDatabaseLoadout()
+        {
+            try
+            {
+                DynamicParameters dynamicParameters = new DynamicParameters();
+                dynamicParameters.Add("characterId", CharacterId);
+                List<Loadout> loadouts = await DapperDatabase<Loadout>.GetListAsync($"select * from loadout WHERE `charIdentifier` = @characterId;", dynamicParameters);
+                await BaseScript.Delay(0);
+                return loadouts;
+            }
+            catch (Exception ex)
+            {
+                Logger.Error(ex, "UpdateInventory");
+                return new();
             }
         }
 
