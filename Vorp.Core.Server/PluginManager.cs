@@ -42,12 +42,20 @@ namespace Vorp.Core.Server
 
         public void Hook(string eventName, Delegate @delegate)
         {
+            Logger.Debug($"Registered Legacy Event Handler '{eventName}'");
             EventHandlers.Add(eventName, @delegate);
         }
 
         public static Player ToPlayer(int handle)
         {
             return Instance.Players[handle];
+        }
+
+        public static User ToUser(string handle)
+        {
+            if (int.TryParse(handle, out int iHandle))
+                return ToUser(iHandle);
+            return null;
         }
 
         public static User ToUser(int handle)

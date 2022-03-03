@@ -139,44 +139,44 @@ namespace Vorp.Core.Server.Managers
             int numberOfCharacters = user.NumberOfCharacters;
             Logger.Trace($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
 
-            // ServerGateway.Send(player, "vorp:character:list", user.Characters, ServerConfiguration.MaximumCharacters);
+            ServerGateway.Send(player, "vorp:character:list", user.Characters, ServerConfiguration.MaximumCharacters);
 
-            if (numberOfCharacters <= 0)
-            {
-                BaseScript.TriggerClientEvent(player, "vorpcharacter:createCharacter");
-                Logger.Debug($"Player '{player.Name}' -> vorpcharacter:createCharacter");
-            }
-            else
-            {
-                List<Dictionary<string, dynamic>> characters = new();
+            //if (numberOfCharacters <= 0)
+            //{
+            //    player.TriggerEvent("vorpcharacter:createCharacter");
+            //    Logger.Debug($"Player '{player.Name}' -> vorpcharacter:createCharacter");
+            //}
+            //else
+            //{
+            //    List<Dictionary<string, dynamic>> characters = new();
 
-                foreach (KeyValuePair<int, Character> kvp in user.Characters)
-                {
-                    Character character = kvp.Value;
-                    Dictionary<string, dynamic> characterDict = new Dictionary<string, dynamic>();
-                    characterDict.Add("charIdentifier", character.CharacterId);
-                    characterDict.Add("money", character.Cash);
-                    characterDict.Add("gold", character.Gold);
-                    characterDict.Add("firstname", character.Firstname);
-                    characterDict.Add("lastname", character.Lastname);
-                    characterDict.Add("skin", character.Skin);
-                    characterDict.Add("components", character.Components);
-                    characterDict.Add("coords", character.Coords);
-                    characterDict.Add("isDead", character.IsDead);
-                    characters.Add(characterDict);
-                }
+            //    foreach (KeyValuePair<int, Character> kvp in user.Characters)
+            //    {
+            //        Character character = kvp.Value;
+            //        Dictionary<string, dynamic> characterDict = new Dictionary<string, dynamic>();
+            //        characterDict.Add("charIdentifier", character.CharacterId);
+            //        characterDict.Add("money", character.Cash);
+            //        characterDict.Add("gold", character.Gold);
+            //        characterDict.Add("firstname", character.Firstname);
+            //        characterDict.Add("lastname", character.Lastname);
+            //        characterDict.Add("skin", character.Skin);
+            //        characterDict.Add("components", character.Components);
+            //        characterDict.Add("coords", character.Coords);
+            //        characterDict.Add("isDead", character.IsDead);
+            //        characters.Add(characterDict);
+            //    }
 
-                if (ServerConfiguration.MaximumCharacters == 1 && numberOfCharacters <= 1)
-                {
-                    BaseScript.TriggerClientEvent(player, "vorpcharacter:spawnUniqueCharacter");
-                    Logger.Debug($"Player '{player.Name}' -> vorpcharacter:spawnUniqueCharacter");
-                }
-                else
-                {
-                    BaseScript.TriggerClientEvent(player, "vorpcharacter:selectCharacter", characters);
-                    Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
-                }
-            }
+            //    if (ServerConfiguration.MaximumCharacters == 1 && numberOfCharacters <= 1)
+            //    {
+            //        player.TriggerEvent("vorpcharacter:spawnUniqueCharacter");
+            //        Logger.Debug($"Player '{player.Name}' -> vorpcharacter:spawnUniqueCharacter");
+            //    }
+            //    else
+            //    {
+            //        player.TriggerEvent("vorpcharacter:selectCharacter", characters);
+            //        Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
+            //    }
+            //}
         }
 
 #pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
