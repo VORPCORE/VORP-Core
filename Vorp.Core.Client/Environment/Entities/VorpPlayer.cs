@@ -84,9 +84,28 @@ namespace Vorp.Core.Client.Environment.Entities
             }));
         }
 
-        internal async Task Teleport(Vector3 pos)
+        public async Task SetModel(string model)
         {
-            await Screen.FadeOut(500);
+            uint hash = (uint)GetHashKey(model);
+            if (!IsModelInCdimage(hash))
+            {
+                Logger.Error($"Moddel is not loaded.");
+                return;
+            }
+
+            RequestModel(hash, false);
+            while (!HasModelLoaded(hash))
+            {
+                await BaseScript.Delay(100);
+            }
+
+            Function.Call((Hash)0xED40380076A31506, PlayerId(), hash, true);
+            await BaseScript.Delay(100);
+        }
+
+        internal async Task Teleport(Vector3 pos, bool withFade = true)
+        {
+            if (withFade) await Screen.FadeOut(500);
             float groundZ = pos.Z;
             Vector3 norm = pos;
 
@@ -98,7 +117,7 @@ namespace Vorp.Core.Client.Environment.Entities
             Position = norm;
             IsPositionFrozen = false;
 
-            await Screen.FadeIn(500);
+            if (withFade) await Screen.FadeIn(500);
         }
 
         async void RequestServerInformation()
