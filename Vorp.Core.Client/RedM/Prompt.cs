@@ -49,7 +49,20 @@ namespace Vorp.Core.Client.RedM
         // bool bParam25 (_UIPROMPT_SET_ATTRIBUTE if true))
         //
         //
+
         public static Prompt Create(eControl control, string label, int priority = 1, int transportMode = 0,
+            string tag = null,
+            ePromptType promptType = ePromptType.Pressed,
+            Vector3? contextPoint = null,
+            float contextSize = 0f,
+            uint timedEventHash = 0
+            )
+        {
+            List<eControl> controls = new() { control };
+            return Create(controls, label, priority, transportMode, tag, promptType, contextPoint, contextSize, timedEventHash);
+        }
+
+        public static Prompt Create(List<eControl> controls, string label, int priority = 1, int transportMode = 0,
             string tag = null,
             ePromptType promptType = ePromptType.Pressed,
             Vector3? contextPoint = null,
@@ -59,7 +72,10 @@ namespace Vorp.Core.Client.RedM
         {
             int promptHandle = PromptRegisterBegin();
 
-            Function.Call((Hash)0xB5352B7494A08258, promptHandle, (long)control); // UiPromptSetControlAction
+            foreach (eControl control in controls)
+            {
+                Function.Call((Hash)0xB5352B7494A08258, promptHandle, (long)control); // UiPromptSetControlAction
+            }
 
             long str = Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", label);
             Function.Call((Hash)0x5DD02A8318420DD7, promptHandle, str); // UiPromptSetText

@@ -1,4 +1,6 @@
-﻿using Vorp.Core.Client.Interface;
+﻿using Vorp.Core.Client.Environment.Entities;
+using Vorp.Core.Client.Interface;
+using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
 {
@@ -13,10 +15,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         Camera CameraMale;
         Camera CameraFemale;
 
-        Prompt PromptCameraFemale;
-        Prompt PromptCameraMale;
+        Prompt PromptCharacter;
         Prompt PromptConfirm;
         bool promptActive = false;
+
+        bool male = false;
 
         public override void Begin()
         {
@@ -34,8 +37,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             VorpAPI.StartSoloTutorialSession();
             await LoadImaps();
+            await BaseScript.Delay(100);
+
             Instance.LocalPlayer.Position = new Vector3(-563.1345f, -3775.811f, 237.60f);
-            Instance.LocalPlayer.Ped.IsPositionFrozen = true;
+            Instance.LocalPlayer.IsPositionFrozen = true;
 
             await BaseScript.Delay(100);
 
@@ -52,8 +57,9 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         private void CreatePrompts()
         {
-            PromptCameraFemale = Prompt.Create(eControl.FrontendRight, "Female");
-            PromptCameraMale = Prompt.Create(eControl.FrontendLeft, "Male");
+            List<eControl> controls = new() { eControl.FrontendLeft, eControl.FrontendRight };
+
+            PromptCharacter = Prompt.Create(controls, "Character");
             PromptConfirm = Prompt.Create(eControl.FrontendAccept, "Confirm", promptType: ePromptType.StandardHold);
 
             Instance.AttachTickHandler(OnPromptHandler);
@@ -64,14 +70,13 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             if (promptActive) return;
             promptActive = true;
 
-            if (PromptCameraFemale.IsJustPressed)
+            if (PromptCharacter.IsJustPressed)
+            {
+                male = API.IsControlPressed(0, (uint)eControl.FrontendLeft);
                 await PromptCameraFemale_OnPromptEventsAsync();
-
-            if (PromptCameraMale.IsJustPressed)
-                await PromptCameraMale_OnPromptEvents();
-
-            if (PromptConfirm.HasHoldModeCompleted)
-                await PromptConfirm_OnPromptEvents();
+            }
+            else if (PromptConfirm.HasHoldModeCompleted)
+                    await PromptConfirm_OnPromptEvents();
 
             promptActive = false;
         }
@@ -81,38 +86,42 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             if (PromptConfirm.EventTriggered) return;
             PromptConfirm.EventTriggered = true;
 
-            Logger.Trace($"Confirmed Selection Event Fired");
+            await Screen.FadeOut(500);
 
-            await BaseScript.Delay(3000);
-            Logger.Trace($"Confirmed Selection Event Enabled");
-            PromptConfirm.EventTriggered = false;
-        }
+            string playerModel = "mp_female";
+            VorpPedComponents comps = _pedFemale.PedComponents;
 
-        private async Task PromptCameraMale_OnPromptEvents()
-        {
-            if (CameraMain.IsActive)
-                SetCamera(CameraState.SelectMale, CameraMain);
-            else if (CameraFemale.IsActive)
-                SetCamera(CameraState.SelectMale, CameraFemale);
+            if (CameraMale.IsActive)
+            {
+                playerModel = "mp_male";
+                comps = _pedMale.PedComponents;
+            }
 
-            await BaseScript.Delay(2000);
+            VorpPlayer player = Instance.LocalPlayer;
+            await player.SetModel(playerModel);
+            Vector3 playerCreationPosition = new Vector3(-558.3258f, -3781.111f, 237.60f);
+            await player.Teleport(playerCreationPosition);
+            player.Heading = 93.2f;
+            player.IsPositionFrozen = true;
+            player.Ped.PedComponents = comps;
 
-            PromptCameraFemale.Visible = true;
-            PromptCameraMale.Visible = false;
+            CharacterEditor.Init();
+
+            Dispose();
         }
 
         private async Task PromptCameraFemale_OnPromptEventsAsync()
         {
-            if (CameraMain.IsActive)
+            if (CameraMain.IsActive && !male)
                 SetCamera(CameraState.SelectFemale, CameraMain);
+            else if (CameraMain.IsActive && male)
+                SetCamera(CameraState.SelectMale, CameraMain);
             else if (CameraMale.IsActive)
                 SetCamera(CameraState.SelectFemale, CameraMale);
+            else if (CameraFemale.IsActive)
+                SetCamera(CameraState.SelectMale, CameraFemale);
 
             await BaseScript.Delay(2000);
-
-            PromptCameraFemale.Visible = false;
-            PromptCameraMale.Visible = true;
-
         }
 
         private async Task LoadImaps()
@@ -141,7 +150,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         async Task CreateMalePed()
         {
             _pedMale = await VorpAPI.CreatePed(_modelHashMale, new Vector3(-558.52f, -3775.6f, 237.7f), 93.2f);
-            _pedMale.ApplyDefaultSkinSettings();
+            _pedMale.ApplyRandomBodySettings();
             _pedMale.IsPositionFrozen = true;
             SetEntityInvincible(_pedMale.Handle, true);
             RandomiseClothing(_pedMale);
@@ -150,7 +159,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         async Task CreateFemalePed()
         {
             _pedFemale = await VorpAPI.CreatePed(_modelHashFemale, new Vector3(-558.43f, -3776.65f, 237.7f), 93.2f);
-            _pedFemale.ApplyDefaultSkinSettings();
+            _pedFemale.ApplyRandomBodySettings();
             _pedFemale.IsPositionFrozen = true;
             SetEntityInvincible(_pedFemale.Handle, true);
             RandomiseClothing(_pedFemale);
@@ -161,10 +170,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             // I DO NOT KNOW WHY, I DO NOT WANT TO KNOW WHY
             // BUT I SUMISE, THAT IT IS DUE TO THE NATIVE NOT WORKING IN THE FIRST CALL
             // SO WE CALL IT TWICE
-            ped.RandomiseClothingAsync();
+            ped.ApplyRandomSkinSettings();
             ped.UpdatePedVariation();
             await BaseScript.Delay(0);
-            ped.RandomiseClothingAsync();
+            ped.ApplyRandomSkinSettings();
             ped.UpdatePedVariation();
         }
 
@@ -222,6 +231,9 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             Instance.DetachTickHandler(FreezeClock);
             Instance.DetachTickHandler(OnPromptHandler);
+
+            PromptConfirm.Delete();
+            PromptCharacter.Delete();
 
             CameraMain.Delete();
             CameraMale.Delete();
