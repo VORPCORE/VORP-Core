@@ -150,7 +150,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         async Task CreateMalePed()
         {
             _pedMale = await VorpAPI.CreatePed(_modelHashMale, new Vector3(-558.52f, -3775.6f, 237.7f), 93.2f);
-            _pedMale.ApplyRandomBodySettings();
+            _pedMale.ApplyDefaultSkinSettings();
             _pedMale.IsPositionFrozen = true;
             SetEntityInvincible(_pedMale.Handle, true);
             RandomiseClothing(_pedMale);
@@ -159,7 +159,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         async Task CreateFemalePed()
         {
             _pedFemale = await VorpAPI.CreatePed(_modelHashFemale, new Vector3(-558.43f, -3776.65f, 237.7f), 93.2f);
-            _pedFemale.ApplyRandomBodySettings();
+            _pedFemale.ApplyDefaultSkinSettings();
             _pedFemale.IsPositionFrozen = true;
             SetEntityInvincible(_pedFemale.Handle, true);
             RandomiseClothing(_pedFemale);
@@ -170,10 +170,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             // I DO NOT KNOW WHY, I DO NOT WANT TO KNOW WHY
             // BUT I SUMISE, THAT IT IS DUE TO THE NATIVE NOT WORKING IN THE FIRST CALL
             // SO WE CALL IT TWICE
-            ped.ApplyRandomSkinSettings();
+            ped.RandomiseClothingAsync();
             ped.UpdatePedVariation();
             await BaseScript.Delay(0);
-            ped.ApplyRandomSkinSettings();
+            ped.RandomiseClothingAsync();
             ped.UpdatePedVariation();
         }
 
