@@ -19,6 +19,35 @@ namespace Vorp.Core.Client.Commands.Impl
             }
         }
 
+        [CommandInfo(new[] { "time" }, "Will change the time ONLY on your client.")]
+        public class ClientTime : ICommand
+        {
+            WorldTime _worldTime;
+
+            public void On(VorpPlayer player, List<string> arguments)
+            {
+                if (arguments.Count == 1)
+                {
+                    if (arguments[0] == "start" && _worldTime is not null) _worldTime.Start();
+                    if (arguments[0] == "stop" && _worldTime is not null) _worldTime.Stop();
+                }
+
+                string strHour = arguments[0];
+                string strMinute = arguments[1];
+
+                if (int.TryParse(strHour, out int hour) && int.TryParse(strMinute, out int minute))
+                {
+                    if (_worldTime is null)
+                        _worldTime = new WorldTime(hour, minute);
+                    else
+                    {
+                        _worldTime.Hour = hour;
+                        _worldTime.Minute = minute;
+                    }
+                }
+            }
+        }
+
         [CommandInfo(new[] { "noclip", "nc" }, "Will toggle noclip.")]
         public class NoClipToggle : ICommand
         {

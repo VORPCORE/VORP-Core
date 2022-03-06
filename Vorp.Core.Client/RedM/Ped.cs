@@ -199,15 +199,10 @@ namespace Vorp.Core.Client.RedM
             if (!IsMale)
                 BodiesLower = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.BodiesLower);
 
-            long compEyes = Eyes[VorpAPI.Random.Next(Eyes.Count)];
-            long compHead = Heads[VorpAPI.Random.Next(Heads.Count)];
-            long compBodyUpper = BodiesUpper[VorpAPI.Random.Next(BodiesUpper.Count)];
-            long compBodyLower = BodiesLower[VorpAPI.Random.Next(BodiesLower.Count)];
-
-            vorpComponents.Eyes.Value = compEyes;
-            vorpComponents.Head.Value = compHead;
-            vorpComponents.BodyUpper.Value = compBodyUpper;
-            vorpComponents.BodyLower.Value = compBodyLower;
+            vorpComponents.Eyes.Value = Eyes[VorpAPI.Random.Next(Eyes.Count)];
+            vorpComponents.Head.Value = Heads[VorpAPI.Random.Next(Heads.Count)];
+            vorpComponents.BodyUpper.Value = BodiesUpper[VorpAPI.Random.Next(BodiesUpper.Count)];
+            vorpComponents.BodyLower.Value = BodiesLower[VorpAPI.Random.Next(BodiesLower.Count)];
 
             PedComponents = vorpComponents;
         }
