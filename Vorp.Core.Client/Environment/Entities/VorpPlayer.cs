@@ -87,23 +87,29 @@ namespace Vorp.Core.Client.Environment.Entities
         public async Task SetModel(string model)
         {
             uint hash = (uint)GetHashKey(model);
-            if (!IsModelInCdimage(hash))
+            if (!(Function.Call<bool>(Hash.IS_MODEL_IN_CDIMAGE, hash)))
             {
-                Logger.Error($"Moddel is not loaded.");
+                Logger.Error($"Model is not loaded.");
                 return;
             }
 
-            RequestModel(hash, false);
-            while (!HasModelLoaded(hash))
+            if (Function.Call<bool>(Hash.IS_MODEL_VALID, hash))
             {
-                await BaseScript.Delay(100);
+                Function.Call(Hash.REQUEST_MODEL, hash);
+                while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, hash))
+                {
+                    await BaseScript.Delay(0);
+                }
+            }
+            else
+            {
+                Debug.WriteLine($"Model {hash} is not valid!");
             }
 
             Function.Call((Hash)0xED40380076A31506, PlayerId(), hash, true);
-            await BaseScript.Delay(100);
         }
 
-        internal async Task Teleport(Vector3 pos, bool withFade = true)
+        internal async Task Teleport(Vector3 pos, bool withFade = true, bool findGround = true)
         {
             if (withFade) await Screen.FadeOut(500);
             float groundZ = pos.Z;
@@ -111,7 +117,7 @@ namespace Vorp.Core.Client.Environment.Entities
 
             IsPositionFrozen = true;
 
-            if (API.GetGroundZAndNormalFor_3dCoord(pos.X, pos.Y, pos.Z, ref groundZ, ref norm))
+            if (API.GetGroundZAndNormalFor_3dCoord(pos.X, pos.Y, pos.Z, ref groundZ, ref norm) && findGround)
                 norm = new Vector3(pos.X, pos.Y, groundZ);
 
             Position = norm;
