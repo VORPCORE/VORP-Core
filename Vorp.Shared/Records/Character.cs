@@ -409,7 +409,7 @@ namespace Vorp.Shared.Records
                 // if its an existing character, we just need to update
                 if (CharacterId > 0)
                     query = @"update characters set
-                    `identifier` = @identifier,`group` = @group,`money` = @money,`gold` = @gold,
+                    `group` = @group,`money` = @money,`gold` = @gold,
                     `rol` = @rol,`xp` = @xp,`inventory` = @inventory,`job` = @job,
                     `status` = @status,`firstname` = @firstname,`lastname` = @lastname,
                     `skinPlayer` = @skinPlayer,`compPlayer` = @compPlayer,`jobgrade` = @jobGrade,
