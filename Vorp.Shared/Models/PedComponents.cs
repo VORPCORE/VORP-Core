@@ -19,7 +19,7 @@ namespace Vorp.Shared.Models
             }
         }
 
-        public long Value;
+        public long Value = 0;
 
         public override string ToString()
         {
