@@ -86,6 +86,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             moCharacterRandomise.Type = "button";
             moCharacterRandomise.Label = "Randomise Character";
             moCharacterRandomise.Endpoint = "CharacterRandomise";
+            moCharacterRandomise.Description = "Randomises your character's appearance.";
             menuBase.AddOption(moCharacterRandomise);
 
             MenuOptions moCharacterName = new MenuOptions();
@@ -93,13 +94,22 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             moCharacterName.Label = "Name";
             moCharacterName.RightLabel = "Enter Name";
             moCharacterName.Endpoint = "CharacterChangeName";
+            moCharacterName.Description = "Set your character's name.";
             menuBase.AddOption(moCharacterName);
 
             MenuOptions moCharacterAppearance = new MenuOptions();
             moCharacterAppearance.Type = "menu";
             moCharacterAppearance.Label = "Appearance";
             moCharacterAppearance.SubTitle = "Options";
+            moCharacterAppearance.Description = "Change your character's appearance.";
             menuBase.AddOption(moCharacterAppearance);
+
+            MenuOptions moCharacterSave = new MenuOptions();
+            moCharacterSave.Type = "button";
+            moCharacterSave.Label = "Confirm";
+            moCharacterSave.Endpoint = "CharacterConfirm";
+            moCharacterSave.Description = "Confirm and save your character.";
+            menuBase.AddOption(moCharacterSave);
 
             Instance.NuiManager.Set("character/CREATOR", menuBase);
             Instance.NuiManager.Toggle("character/VISIBLE");
