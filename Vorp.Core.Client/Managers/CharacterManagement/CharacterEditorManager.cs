@@ -21,7 +21,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         static Camera _cameraBody;
 
         static WorldTime _worldTime;
-        static Ped _ped;
 
         public override void Begin()
         {
@@ -33,23 +32,18 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             }));
         }
 
-        internal static async void Init(Ped ped)
+        internal static async void Init()
         {
-            _ped = ped;
-
-            _ped.Heading = 93.2f;
-            _ped.Position = new Vector3(-558.3258f, -3781.111f, 237.60f);
-
             RenderScriptCams(true, true, 250, true, true, 0);
-            Vector3 rot = new Vector3(-13.56231f, 0.00f, -91.93626f);
-            float fov = 45f;
-            _cameraMain = VorpAPI.CreateCameraWithParams(new Vector3(-560.83f, -3776.33f, 239.1f), rot, fov);
+            Vector3 rot = new Vector3(-1.06042f, 0.00f, -90.58475f);
+            float fov = 37f;
+            _cameraMain = VorpAPI.CreateCameraWithParams(new Vector3(-561.223f, -3780.933f, 238.9249f), rot, fov);
             _cameraMain.IsActive = true;
 
-            _cameraFace = VorpAPI.CreateCameraWithParams(new Vector3(-558.9781f, -3780.955f, 239.1f), rot, fov);
-            _cameraBody = VorpAPI.CreateCameraWithParams(new Vector3(-560.6195f, -3780.708f, 239.1f), rot, fov);
-            _cameraWaist = VorpAPI.CreateCameraWithParams(new Vector3(-559.1779f, -3780.964f, 238.5f), rot, fov);
-            _cameraLegs = VorpAPI.CreateCameraWithParams(new Vector3(-559.2103f, -3781.039f, 238.5f), rot, fov);
+            _cameraFace = VorpAPI.CreateCameraWithParams(new Vector3(-561.223f, -3780.933f, 238.9249f), rot, fov);
+            _cameraBody = VorpAPI.CreateCameraWithParams(new Vector3(-561.223f, -3780.933f, 238.9249f), rot, fov);
+            _cameraWaist = VorpAPI.CreateCameraWithParams(new Vector3(-561.223f, -3780.933f, 238.9249f), rot, fov);
+            _cameraLegs = VorpAPI.CreateCameraWithParams(new Vector3(-561.223f, -3780.933f, 238.9249f), rot, fov);
 
             _worldTime = new WorldTime(12, 1);
 
@@ -59,7 +53,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         void Dispose()
         {
             if (_worldTime is not null) _worldTime.Stop();
-            if (_ped is not null) _ped.Delete();
 
             RenderScriptCams(false, true, 250, true, true, 0);
             _cameraMain.Delete();
