@@ -149,6 +149,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="fxmanifest.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\character-components.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
