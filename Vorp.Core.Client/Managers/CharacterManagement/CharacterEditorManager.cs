@@ -47,12 +47,18 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             _worldTime = new WorldTime(12, 1);
 
+            DisplayHud(false);
+            DisplayRadar(false);
+
             await Screen.FadeIn(500);
         }
 
         void Dispose()
         {
             if (_worldTime is not null) _worldTime.Stop();
+
+            DisplayHud(false);
+            DisplayRadar(false);
 
             RenderScriptCams(false, true, 250, true, true, 0);
             _cameraMain.Delete();
