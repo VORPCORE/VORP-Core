@@ -12,6 +12,8 @@ namespace Vorp.Core.Client.Managers.Admin
 
         public Camera CurrentCamera { get; set; }
         public float Speed { get; set; } = 1f;
+        const float _maxFov = 180f;
+        float fov = 75f;
 
         readonly List<eControl> _disabledControls = new()
         {
@@ -19,7 +21,6 @@ namespace Vorp.Core.Client.Managers.Admin
             eControl.MoveLeftRight,
             eControl.MoveUpDown,
             eControl.MoveUpOnly,
-
             // mouse
             eControl.LookLeftRight,
             eControl.LookUpDown,
@@ -30,6 +31,7 @@ namespace Vorp.Core.Client.Managers.Admin
             eControl.Sprint,
             eControl.PcFreeLook,
             eControl.Duck,
+            eControl.Jump,
             // Up and Down
             eControl.Dive, // Q
             eControl.ContextY // E
@@ -115,13 +117,25 @@ namespace Vorp.Core.Client.Managers.Admin
                 VorpAPI.DrawText($"{CurrentCamera.Rotation}", new Vector2(0f, 0.05f), 0.3f);
 
                 // Speed Control
-                if (IsDisabledControlPressed(0, (uint)eControl.SelectPrevWeapon))
+                if (IsDisabledControlPressed(0, (uint)eControl.SelectPrevWeapon) && !IsDisabledControlPressed(0, (uint)eControl.Jump))
                 {
                     Speed = Math.Min(Speed + 0.1f, _maxSpeed);
                 }
-                else if (IsDisabledControlPressed(0, (uint)eControl.SelectNextWeapon))
+                else if (IsDisabledControlPressed(0, (uint)eControl.SelectNextWeapon) && !IsDisabledControlPressed(0, (uint)eControl.Jump))
                 {
                     Speed = Math.Max(0.1f, Speed - 0.1f);
+                }
+
+                // FOV Control
+                if (IsDisabledControlPressed(0, (uint)eControl.SelectPrevWeapon) && IsDisabledControlPressed(0, (uint)eControl.Jump))
+                {
+                    fov = Math.Min(fov + 0.1f, _maxFov);
+                    CurrentCamera.FieldOfView = fov;
+                }
+                else if (IsDisabledControlPressed(0, (uint)eControl.SelectNextWeapon) && IsDisabledControlPressed(0, (uint)eControl.Jump))
+                {
+                    fov = Math.Max(0.1f, fov - 0.1f);
+                    CurrentCamera.FieldOfView = fov;
                 }
 
                 var multiplier = 1f;
@@ -188,7 +202,7 @@ namespace Vorp.Core.Client.Managers.Admin
                 DisablePlayerFiring(Player.Handle, false);
 
 
-                VorpAPI.DrawText($"Speed: {Speed} / Multiplier: {multiplier}", new Vector2(0, 0), 0.3f);
+                VorpAPI.DrawText($"Speed: {Speed} / Multiplier: {multiplier} / FOV: {fov}", new Vector2(0, 0), 0.3f);
             }
             catch (Exception ex)
             {
