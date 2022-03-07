@@ -1,4 +1,6 @@
-﻿using Vorp.Core.Client.Interface;
+﻿using Vorp.Core.Client.Environment.Entities;
+using Vorp.Core.Client.Interface;
+using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
 {
@@ -87,12 +89,23 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             await Screen.FadeOut(500);
 
-            Ped selectedPed = _male ? _pedMale : _pedFemale;
+            string playerModel = "mp_female";
+            VorpPedComponents comps = _pedFemale.PedComponents;
 
-            CharacterEditorManager.Init(selectedPed);
+            if (_male)
+            {
+                playerModel = "mp_male";
+                comps = _pedMale.PedComponents;
+            }
 
-            _pedFemale.Delete();
-            _pedMale.Delete();
+            VorpPlayer player = Instance.LocalPlayer;
+            player.SetModel(playerModel);
+            player.Position = new Vector3(-558.3258f, -3781.111f, 237.60f);
+            player.Heading = 93.2f;
+            player.IsPositionFrozen = true;
+            player.Ped.PedComponents = comps;
+
+            CharacterEditorManager.Init();
 
             Dispose(); // Need future feature to goback
         }
@@ -203,6 +216,9 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             _worldTime = null;
 
             Instance.DetachTickHandler(OnPromptHandler);
+            
+            _pedFemale.Delete();
+            _pedMale.Delete();
 
             _promptConfirm.Delete();
             _promptCharacter.Delete();
