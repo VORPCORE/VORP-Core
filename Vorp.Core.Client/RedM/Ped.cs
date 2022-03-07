@@ -15,6 +15,7 @@ namespace Vorp.Core.Client.RedM
         }
 
         public bool IsMale => IsPedMale(Handle);
+        public bool IsPlayer => IsPedAPlayer(Handle);
         public void SetPedOutfitPreset(int preset) => Function.Call((Hash)0x77FF8D35EEC6BBC4, Handle, preset, 0);
         public bool IsPedReadyToRender => Function.Call<bool>((Hash)0xA0BC8FAED8CFEB3C, Handle);
         public void RandomOutfitVariation()
