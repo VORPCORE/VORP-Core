@@ -72,6 +72,12 @@ namespace Vorp.Shared.Models
         public PedComponent Teeth = new PedComponent(ePedComponentCategory.Teeth);
         public PedComponent Vest = new PedComponent(ePedComponentCategory.Vests);
 
+        public long Texture = GetHashKey("mp_head_fr1_sc08_c0_000_ab");
+        public long Normal = GetHashKey("mp_head_mr1_000_nm");
+        public long Material = 0x7FC5B1E1;
+        public int SkinTone;
+        public float Opacity;
+
         public override string ToString()
         {
             return JsonConvert.SerializeObject(Shirt);

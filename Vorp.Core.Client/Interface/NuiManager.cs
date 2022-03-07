@@ -4,7 +4,7 @@ using Vorp.Shared;
 
 namespace Vorp.Core.Client.Interface
 {
-    class NuiManager
+    public class NuiManager
     {
         private bool _hasFocus;
 
@@ -54,7 +54,11 @@ namespace Vorp.Core.Client.Interface
         /// <param name="data">object that will be serialized</param>
         public void SendMessage(object data)
         {
-            SendNuiMessage(data.ToJson()); //use any json serialization you want
+            string message = data.ToJson();
+
+            Logger.Trace($"SendMessage -> {message}");
+
+            SendNuiMessage(message); //use any json serialization you want
         }
 
         /// <summary>
@@ -130,6 +134,30 @@ namespace Vorp.Core.Client.Interface
                 TReturn result = action(typedData);
                 callback(result.ToJson());
             }));
+        }
+
+        public void Set(string state, dynamic value)
+        {
+            Mutate(state, value, "set");
+        }
+
+        public void Toggle(string state)
+        {
+            Mutate(state, null, "toggle");
+        }
+
+        public void Mutate(string key, dynamic value, string method, Dictionary<string, object> parameters = null)
+        {
+            int seperatorIndex = key.IndexOf("/");
+            string view = seperatorIndex != -1 ? key.Substring(0, seperatorIndex).ToLower() : "base";
+
+            if (seperatorIndex != -1)
+            {
+                key = key.Substring(seperatorIndex + 1);
+            }
+
+            var dataToSend = new { action = "state/Mutate", view, key, method, parameters };
+            SendMessage(dataToSend);
         }
     }
 }

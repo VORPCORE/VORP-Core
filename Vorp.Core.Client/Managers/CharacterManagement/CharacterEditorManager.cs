@@ -1,4 +1,5 @@
 ﻿using Vorp.Core.Client.Interface;
+using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
 {
@@ -14,6 +15,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         private static PluginManager Instance => PluginManager.Instance;
 
+        static Vector3 _pedPosition = new Vector3(-558.3258f, -3781.111f, 237.60f);
+        static float _pedHeading = 93.2f;
+        static Ped _ped;
+
         static Camera _cameraMain;
         static Camera _cameraFace;
         static Camera _cameraWaist;
@@ -21,6 +26,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         static Camera _cameraBody;
 
         static WorldTime _worldTime;
+
+        static Prompt _promptRandomise;
+
+        static bool _hideNui;
 
         public override void Begin()
         {
@@ -32,8 +41,13 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             }));
         }
 
-        internal static async void Init()
+        internal static async void Init(string pedModel, VorpPedComponents components)
         {
+            _ped = await VorpAPI.CreatePed(pedModel, _pedPosition, _pedHeading);
+            _ped.IsPositionFrozen = true;
+            SetEntityInvincible(_ped.Handle, true);
+            _ped.PedComponents = components;
+
             RenderScriptCams(true, true, 250, true, true, 0);
             Vector3 rot = new Vector3(-1.06042f, 0.00f, -90.58475f);
             float fov = 37f;
@@ -47,10 +61,37 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             _worldTime = new WorldTime(12, 1);
 
+            _promptRandomise = Prompt.Create(eControl.ContextX, "Randomise");
+            Instance.AttachTickHandler(OnPromptHandler);
+
             DisplayHud(false);
             DisplayRadar(false);
 
+            Instance.NuiManager.Toggle("character/VISIBLE");
+
+            // SetNuiFocus2(true, true);
+
             await Screen.FadeIn(500);
+        }
+
+        private static async Task OnPromptHandler()
+        {
+            if (_promptRandomise.IsPressed)
+            {
+                _ped.RandomiseClothingAsync(true);
+                await BaseScript.Delay(500);
+            }
+
+            if (IsPauseMenuActive() && !_hideNui)
+            {
+                _hideNui = true;
+                Instance.NuiManager.Toggle("character/VISIBLE");
+            }
+            else if (!IsPauseMenuActive() && _hideNui)
+            {
+                _hideNui = false;
+                Instance.NuiManager.Toggle("character/VISIBLE");
+            }
         }
 
         void Dispose()
@@ -59,6 +100,12 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             DisplayHud(false);
             DisplayRadar(false);
+
+            _ped.Delete();
+
+            SetNuiFocus2(false, false);
+
+            _promptRandomise.Delete();
 
             RenderScriptCams(false, true, 250, true, true, 0);
             _cameraMain.Delete();

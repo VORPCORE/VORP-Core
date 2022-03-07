@@ -90,23 +90,23 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             await Screen.FadeOut(500);
 
-            string playerModel = "mp_female";
+            string pedModel = "mp_female";
             VorpPedComponents comps = _pedFemale.PedComponents;
 
             if (_male)
             {
-                playerModel = "mp_male";
+                pedModel = "mp_male";
                 comps = _pedMale.PedComponents;
             }
 
-            VorpPlayer player = Instance.LocalPlayer;
-            player.SetModel(playerModel);
-            _playerPed.Position = new Vector3(-558.3258f, -3781.111f, 237.60f);
-            _playerPed.Heading = 93.2f;
-            _playerPed.IsPositionFrozen = true;
-            _playerPed.PedComponents = comps;
+            //VorpPlayer player = Instance.LocalPlayer;
+            //player.SetModel(pedModel);
+            //_playerPed.Position = new Vector3(-558.3258f, -3781.111f, 237.60f);
+            //_playerPed.Heading = 93.2f;
+            //_playerPed.IsPositionFrozen = true;
+            //_playerPed.PedComponents = comps;
 
-            CharacterEditorManager.Init();
+            CharacterEditorManager.Init(pedModel, comps);
 
             Dispose(); // Need future feature to goback
         }

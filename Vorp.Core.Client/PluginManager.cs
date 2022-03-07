@@ -33,6 +33,7 @@ namespace Vorp.Core.Client
         public Dictionary<Type, List<MethodInfo>> TickHandlers { get; set; } = new Dictionary<Type, List<MethodInfo>>();
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
         public CommandFramework CommandFramework;
+        public NuiManager NuiManager = new NuiManager();
 
         public PluginManager()
         {

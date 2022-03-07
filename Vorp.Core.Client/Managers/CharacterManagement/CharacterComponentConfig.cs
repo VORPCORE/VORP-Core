@@ -28,7 +28,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         }
 
         public static PedComponentOptions Config => LoadConfiguration();
-
         public static List<ComponentCategory> Female => Config.Female;
         public static List<ComponentCategory> Male => Config.Male;
         public static List<ComponentCategory> Horse => Config.Horse;
@@ -77,6 +76,30 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 Logger.Error(ex, "Error Getting Components");
                 return new();
             }
+        }
+
+        public static TextureCategory GetRandomTextures(bool isMale)
+        {
+            List<TextureCategory> pedTextures = Config.Textures.Female;
+            if (isMale)
+                pedTextures = Config.Textures.Male;
+
+            return pedTextures[VorpAPI.Random.Next(pedTextures.Count)];
+        }
+
+        public static TextureCategory GetPedTextures(bool isMale, uint selectedHead)
+        {
+            List<TextureCategory> pedTextures = Config.Textures.Female;
+            if (isMale)
+                pedTextures = Config.Textures.Male;
+
+            foreach(TextureCategory tex in pedTextures)
+            {
+                if (tex.TextureHash == selectedHead)
+                    return tex;
+            }
+
+            return null;
         }
     }
 }

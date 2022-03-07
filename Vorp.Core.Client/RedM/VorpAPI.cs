@@ -134,5 +134,8 @@
             }
         }
 
+        public static int RequestTexture(long albedo, long normal, long material) => Function.Call<int>((Hash)0xC5E7204F322E49EB, albedo, normal, material);
+
+        public static bool IsTextureValid(int textureId) => Function.Call<bool>((Hash)0x31DC8D3F216D8509, textureId);
     }
 }

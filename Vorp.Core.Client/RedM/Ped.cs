@@ -65,6 +65,10 @@ namespace Vorp.Core.Client.RedM
             
         }
 
+        public void UpdatePedTexture(int textureId) => Function.Call((Hash)0x92DAABA2C1C10B0E, textureId);
+
+        public void ApplyTexture(long component, int textureId) => Function.Call((Hash)0x0B46E25761519058, Handle, component, textureId);
+
         private async void SetupComponents()
         {
             while (!IsPedReadyToRender)
@@ -90,6 +94,7 @@ namespace Vorp.Core.Client.RedM
             RemoveTagFromMetaPed(0xDA0E2C55, 0);
             UpdatePedVariation();
 
+            // Comps
             SetComponent(comp.Accessory);
             SetComponent(comp.Armor);
             SetComponent(comp.Badge);
@@ -111,7 +116,6 @@ namespace Vorp.Core.Client.RedM
             SetComponent(comp.Hair);
             SetComponent(comp.HairAccessory);
             SetComponent(comp.Hats);
-            SetComponent(comp.Head);
             SetComponent(comp.HolstersLeft);
             SetComponent(comp.JewelryBracelets);
             SetComponent(comp.JewelryRingsLeft);
@@ -130,11 +134,22 @@ namespace Vorp.Core.Client.RedM
             SetComponent(comp.Teeth);
             SetComponent(comp.Vest);
             UpdatePedVariation(true);
+
+            // Overlays
+            int textureId = VorpAPI.RequestTexture(comp.Texture, comp.Normal, comp.Material);
+
+            while(VorpAPI.IsTextureValid(textureId))
+            {
+                await BaseScript.Delay(0);
+            }
+
+            ApplyTexture(GetHashKey("heads"), textureId);
+            UpdatePedTexture(textureId);
         }
 
-        public void RandomiseClothingAsync()
+        public void RandomiseClothingAsync(bool forceRandomise = false)
         {
-            if (_vorpPedComponents is not null) return;
+            if (_vorpPedComponents is not null && !forceRandomise) return;
 
             Function.Call((Hash)0x0BFA1BD465CDFEFD, Handle);
 
@@ -186,24 +201,22 @@ namespace Vorp.Core.Client.RedM
             if (Boots.Count > 0)
                 vorpComponents.Boots.Value = Boots[VorpAPI.Random.Next(Boots.Count)];
 
+            // commented out random eyes, that shit is wild
+            //List<long> Eyes = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Eyes);
+            //if (!IsMale)
+            //    Eyes = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Eyes);
+            //vorpComponents.Eyes.Value = Eyes[VorpAPI.Random.Next(Eyes.Count)];
 
-            List<long> Eyes = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Eyes);
-            if (!IsMale)
-                Eyes = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Eyes);
+            TextureCategory textureCategory = CharacterComponentConfig.GetRandomTextures(IsMale);
+            if (textureCategory != null)
+            {
+                vorpComponents.Texture = textureCategory.TextureHash;
+            }
 
-            List<long> Heads = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Heads);
-            if (!IsMale)
-                Heads = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Heads);
-
-            List<long> BodiesUpper = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.BodiesUpper);
-            if (!IsMale)
-                BodiesUpper = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.BodiesUpper);
-
-            List<long> BodiesLower = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.BodiesLower);
-            if (!IsMale)
-                BodiesLower = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.BodiesLower);
-
-            vorpComponents.Eyes.Value = Eyes[VorpAPI.Random.Next(Eyes.Count)];
+            List<long> Heads = textureCategory.Heads;
+            List<long> BodiesUpper = textureCategory.BodiesUpper;
+            List<long> BodiesLower = textureCategory.BodiesLower;
+            
             vorpComponents.Head.Value = Heads[VorpAPI.Random.Next(Heads.Count)];
             vorpComponents.BodyUpper.Value = BodiesUpper[VorpAPI.Random.Next(BodiesUpper.Count)];
             vorpComponents.BodyLower.Value = BodiesLower[VorpAPI.Random.Next(BodiesLower.Count)];
