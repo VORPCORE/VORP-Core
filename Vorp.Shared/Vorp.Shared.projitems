@@ -14,11 +14,13 @@
     <Compile Include="$(MSBuildThisFileDirectory)Data\StateBagKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedComponentCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\eWeatherType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordAvatar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordMember.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\InventoryItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\JsonBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Loadout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\NuiResponse\ValueResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PedComponentOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PedComponents.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Weapon.cs" />

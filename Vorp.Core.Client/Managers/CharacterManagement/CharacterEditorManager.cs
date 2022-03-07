@@ -1,6 +1,7 @@
 ﻿using Vorp.Core.Client.Interface;
 using Vorp.Core.Client.Interface.Menu;
 using Vorp.Shared.Models;
+using Vorp.Shared.Models.NuiResponse;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
 {
@@ -70,6 +71,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             DisplayHud(false);
             DisplayRadar(false);
 
+            World.SetWeather(Shared.Enums.eWeatherType.SUNNY);
+            World.SetWeatherFrozen(true);
+            World.WindSpeed = 0f;
+
             await BaseScript.Delay(1000);
             await Screen.FadeIn(500);
             
@@ -104,6 +109,26 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             moCharacterAppearance.Description = "Change your character's appearance.";
             menuBase.AddOption(moCharacterAppearance);
 
+            List<long> hairs = _ped.Hairs;
+            MenuOptions moCharacterHair = new();
+            moCharacterHair.Type = "list";
+            moCharacterHair.Label = "Hair";
+            moCharacterHair.Endpoint = "CharacterSetHair";
+            moCharacterHair.Description = "Change your character's hair.";
+            moCharacterHair.ListMin = 1;
+            moCharacterHair.ListMax = hairs.Count;
+            moCharacterHair.Value = hairs.IndexOf(_ped.PedComponents.Hair.Value);
+            moCharacterAppearance.AddOption(moCharacterHair);
+
+            Instance.NuiManager.RegisterCallback("CharacterSetHair", new Action<List<string>>(args =>
+            {
+                Dictionary<string, int> valuePairs = JsonConvert.DeserializeObject<Dictionary<string, int>>(args[0]);
+                if (!valuePairs.ContainsKey("selectedValue")) return;
+                int selectIndex = valuePairs["selectedValue"] - 1; // minus 1 because of human reading
+                _ped.PedComponents.Hair.Value = _ped.Hairs[selectIndex];
+                _ped.UpdateComponents();
+            }));
+
             MenuOptions moCharacterSave = new MenuOptions();
             moCharacterSave.Type = "button";
             moCharacterSave.Label = "Confirm";
@@ -127,6 +152,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 _hideNui = false;
                 Instance.NuiManager.Toggle("character/VISIBLE");
             }
+
+            World.SetWeather(Shared.Enums.eWeatherType.SUNNY);
         }
 
         void Dispose()
@@ -148,6 +175,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             _cameraBody.Delete();
             _cameraWaist.Delete();
             _cameraLegs.Delete();
+
+            World.SetWeatherFrozen(false);
         }
     }
 }

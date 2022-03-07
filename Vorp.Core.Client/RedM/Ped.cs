@@ -69,6 +69,8 @@ namespace Vorp.Core.Client.RedM
 
         public void ApplyTexture(long component, int textureId) => Function.Call((Hash)0x0B46E25761519058, Handle, component, textureId);
 
+        public void UpdateComponents() => SetupComponents();
+
         private async void SetupComponents()
         {
             while (!IsPedReadyToRender)
@@ -155,9 +157,7 @@ namespace Vorp.Core.Client.RedM
 
             VorpPedComponents vorpComponents = new VorpPedComponents();
 
-            List<long> Hair = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Hair);
-            if (!IsMale)
-                Hair = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Hair);
+            List<long> Hair = Hairs;
             if (Hair.Count > 0)
                 vorpComponents.Hair.Value = Hair[VorpAPI.Random.Next(Hair.Count)];
 
@@ -265,5 +265,7 @@ namespace Vorp.Core.Client.RedM
         }
 
         public bool IsDead => IsEntityDead(Handle);
+
+        public List<long> Hairs => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Hair);
     }
 }

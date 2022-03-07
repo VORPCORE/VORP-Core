@@ -49,6 +49,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             CreateCameras();
             CreatePrompts();
 
+            World.SetWeather(Shared.Enums.eWeatherType.SUNNY);
+            World.SetWeatherFrozen(true);
+            World.WindSpeed = 0f;
+
             await BaseScript.Delay(100);
             _cameraMain.IsActive = true;
             SetCamera(CameraState.Main, _cameraMain);
@@ -227,6 +231,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             _cameraMain.Delete();
             _cameraMale.Delete();
             _cameraFemale.Delete();
+
+            World.SetWeatherFrozen(false);
         }
     }
 }

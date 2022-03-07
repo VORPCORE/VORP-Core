@@ -24,6 +24,9 @@ namespace Vorp.Core.Client.Interface.Menu
         [DataMember(Name = "order")]
         public int Order;
 
+        [DataMember(Name = "value")]
+        public int Value;
+
         [DataMember(Name = "label")]
         public string Label;
 
@@ -41,6 +44,15 @@ namespace Vorp.Core.Client.Interface.Menu
 
         [DataMember(Name = "endpoint")]
         public string Endpoint;
+
+        [DataMember(Name = "listMin")]
+        public int ListMin;
+
+        [DataMember(Name = "listMax")]
+        public int ListMax;
+
+        [DataMember(Name = "listLabel")]
+        public string ListLabel;
 
         [DataMember(Name = "options")]
         public List<MenuOptions> Options { get; private set; } = new();
