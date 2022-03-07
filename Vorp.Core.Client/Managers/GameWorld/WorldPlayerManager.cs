@@ -27,8 +27,7 @@ namespace Vorp.Core.Client.Managers.GameWorld
                     Vector3 targetCoords = GetEntityCoords(activePlayerId, false, false);
                     if (VorpAPI.Distance(playerCoords, targetCoords) < ConfigDistance)
                     {
-                        int playerPedId = GetPlayerPed(activePlayerId);
-                        playersInScope[activePlayerId] = new WorldPlayer(activePlayerId, playerPedId);
+                        playersInScope[activePlayerId] = new WorldPlayer(activePlayerId);
                     }
                     else
                     {

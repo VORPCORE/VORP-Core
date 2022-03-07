@@ -80,7 +80,7 @@ namespace Vorp.Core.Client.Commands.Impl
 
                     var position = new Vector3(x, y, z);
 
-                    await player.Teleport(position);
+                    await player.Character.Teleport(position);
                 }
                 catch (Exception ex)
                 {

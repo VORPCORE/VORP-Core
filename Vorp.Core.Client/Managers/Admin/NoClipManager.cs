@@ -57,6 +57,8 @@ namespace Vorp.Core.Client.Managers.Admin
         {
             try
             {
+                Ped playerPed = Player.Character;
+
                 if (!IsEnabled)
                 {
                     if (CurrentCamera is not null)
@@ -64,17 +66,17 @@ namespace Vorp.Core.Client.Managers.Admin
                         CurrentCamera.Delete();
                         CurrentCamera = null;
 
-                        Vector3 pos = Player.Position;
+                        Vector3 pos = playerPed.Position;
                         float groundZ = pos.Z;
                         Vector3 norm = Vector3.Zero;
                         if (API.GetGroundZAndNormalFor_3dCoord(pos.X, pos.Y, pos.Z, ref groundZ, ref norm))
-                            PluginManager.Instance.LocalPlayer.Position = new Vector3(pos.X, pos.Y, groundZ);
+                            playerPed.Position = new Vector3(pos.X, pos.Y, groundZ);
 
-                        Player.IsPositionFrozen = false;
-                        Player.IsCollisionEnabled = true;
-                        Player.CanRagdoll = true;
-                        Player.IsVisible = true;
-                        Player.Opacity = 255;
+                        playerPed.IsPositionFrozen = false;
+                        playerPed.IsCollisionEnabled = true;
+                        playerPed.CanRagdoll = true;
+                        playerPed.IsVisible = true;
+                        playerPed.Opacity = 255;
 
                         // Enable controls
                         foreach (var ctrl in _disabledControls)
@@ -97,15 +99,15 @@ namespace Vorp.Core.Client.Managers.Admin
                 // Create camera on toggle
                 if (CurrentCamera is null)
                 {
-                    CurrentCamera = VorpAPI.CreateCameraWithParams(Player.Position, GameplayCamera.Rotation, 75f);
-                    CurrentCamera.AttachTo(Player, Vector3.Zero);
+                    CurrentCamera = VorpAPI.CreateCameraWithParams(playerPed.Position, GameplayCamera.Rotation, 75f);
+                    CurrentCamera.AttachTo(playerPed, Vector3.Zero);
                     VorpAPI.RenderingCamera = CurrentCamera;
 
-                    Player.IsPositionFrozen = true;
-                    Player.IsCollisionEnabled = false;
-                    Player.Opacity = 0;
-                    Player.CanRagdoll = false;
-                    Player.IsVisible = false;
+                    playerPed.IsPositionFrozen = true;
+                    playerPed.IsCollisionEnabled = false;
+                    playerPed.Opacity = 0;
+                    playerPed.CanRagdoll = false;
+                    playerPed.IsVisible = false;
 
                     DisplayHud(false);
                     DisplayRadar(false);
@@ -155,40 +157,40 @@ namespace Vorp.Core.Client.Managers.Admin
                 // Forward
                 if (IsDisabledControlPressed(2, (uint)eControl.MoveUpOnly))
                 {
-                    var pos = Player.GetOffsetPosition(new Vector3(0f, Speed * multiplier, 0f));
-                    Player.PositionNoOffset = new Vector3(pos.X, pos.Y, Player.Position.Z);
+                    var pos = playerPed.GetOffsetPosition(new Vector3(0f, Speed * multiplier, 0f));
+                    playerPed.PositionNoOffset = new Vector3(pos.X, pos.Y, playerPed.Position.Z);
                     // Player.PositionNoOffset = Player.Position + CurrentCamera.UpVector * (Speed * multiplier);
                 }
                 // Backward
                 else if (IsDisabledControlPressed(2, (uint)eControl.MoveUpDown))
                 {
-                    var pos = Player.GetOffsetPosition(new Vector3(0f, -Speed * multiplier, 0f));
-                    Player.PositionNoOffset = new Vector3(pos.X, pos.Y, Player.Position.Z);
+                    var pos = playerPed.GetOffsetPosition(new Vector3(0f, -Speed * multiplier, 0f));
+                    playerPed.PositionNoOffset = new Vector3(pos.X, pos.Y, playerPed.Position.Z);
                     // Player.PositionNoOffset = Player.Position - CurrentCamera.UpVector * (Speed * multiplier);
                 }
                 // Left
                 if (IsDisabledControlPressed(0, (uint)eControl.MoveLeftOnly))
                 {
-                    var pos = Player.GetOffsetPosition(new Vector3(-Speed * multiplier, 0f, 0f));
-                    Player.PositionNoOffset = new Vector3(pos.X, pos.Y, Player.Position.Z);
+                    var pos = playerPed.GetOffsetPosition(new Vector3(-Speed * multiplier, 0f, 0f));
+                    playerPed.PositionNoOffset = new Vector3(pos.X, pos.Y, playerPed.Position.Z);
                 }
                 // Right
                 else if (IsDisabledControlPressed(0, (uint)eControl.MoveLeftRight))
                 {
-                    var pos = Player.GetOffsetPosition(new Vector3(Speed * multiplier, 0f, 0f));
-                    Player.PositionNoOffset = new Vector3(pos.X, pos.Y, Player.Position.Z);
+                    var pos = playerPed.GetOffsetPosition(new Vector3(Speed * multiplier, 0f, 0f));
+                    playerPed.PositionNoOffset = new Vector3(pos.X, pos.Y, playerPed.Position.Z);
                 }
 
                 // Up (E)
                 if (IsDisabledControlPressed(0, (uint)eControl.ContextY))
                 {
-                    Player.PositionNoOffset = Player.GetOffsetPosition(new Vector3(0f, 0f, multiplier * Speed / 2));
+                    playerPed.PositionNoOffset = playerPed.GetOffsetPosition(new Vector3(0f, 0f, multiplier * Speed / 2));
                 }
 
                 // Down (Q)
                 if (IsDisabledControlPressed(0, (uint)eControl.Dive))
                 {
-                    Player.PositionNoOffset = Player.GetOffsetPosition(new Vector3(0f, 0f, multiplier * -Speed / 2));
+                    playerPed.PositionNoOffset = playerPed.GetOffsetPosition(new Vector3(0f, 0f, multiplier * -Speed / 2));
                 }
 
                 // Disable controls
@@ -197,9 +199,9 @@ namespace Vorp.Core.Client.Managers.Admin
                     DisableControlAction(0, (uint)ctrl, true);
                 }
 
-                Player.Heading = Math.Max(0f, (360 + CurrentCamera.Rotation.Z) % 360f);
-                Player.Opacity = 0;
-                DisablePlayerFiring(Player.Handle, false);
+                playerPed.Heading = Math.Max(0f, (360 + CurrentCamera.Rotation.Z) % 360f);
+                playerPed.Opacity = 0;
+                DisablePlayerFiring(playerPed.Handle, false);
 
 
                 VorpAPI.DrawText($"Speed: {Speed} / Multiplier: {multiplier} / FOV: {fov}", new Vector2(0, 0), 0.3f);

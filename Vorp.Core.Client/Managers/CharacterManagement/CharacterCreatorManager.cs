@@ -21,6 +21,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         bool _male = false;
         WorldTime _worldTime;
+        Ped _playerPed => Instance.LocalPlayer.Character;
 
         public override void Begin()
         {
@@ -40,8 +41,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             await LoadImaps();
             await BaseScript.Delay(100);
 
-            Instance.LocalPlayer.Position = new Vector3(-563.1345f, -3775.811f, 237.60f);
-            Instance.LocalPlayer.IsPositionFrozen = true;
+            _playerPed.Position = new Vector3(-563.1345f, -3775.811f, 237.60f);
+            _playerPed.IsPositionFrozen = true;
 
             await BaseScript.Delay(100);
 
@@ -100,10 +101,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             VorpPlayer player = Instance.LocalPlayer;
             player.SetModel(playerModel);
-            player.Position = new Vector3(-558.3258f, -3781.111f, 237.60f);
-            player.Heading = 93.2f;
-            player.IsPositionFrozen = true;
-            player.Ped.PedComponents = comps;
+            _playerPed.Position = new Vector3(-558.3258f, -3781.111f, 237.60f);
+            _playerPed.Heading = 93.2f;
+            _playerPed.IsPositionFrozen = true;
+            _playerPed.PedComponents = comps;
 
             CharacterEditorManager.Init();
 

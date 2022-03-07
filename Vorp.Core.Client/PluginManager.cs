@@ -115,7 +115,7 @@ namespace Vorp.Core.Client
 
                 ClientGateway.Send("vorp:user:active", Session.ServerId);
                 BaseScript.TriggerServerEvent("vorp:user:activate");
-                LocalPlayer = new VorpPlayer(PlayerId(), PlayerPedId());
+                LocalPlayer = new VorpPlayer(PlayerId());
 
                 if (clientConfig.PvpEnabled) // TODO: Add PVP Native Handling
                 {
@@ -144,8 +144,8 @@ namespace Vorp.Core.Client
         {
             if (GetCurrentResourceName() != resourceName) return;
             // Tell server to save
-            Vector3 position = LocalPlayer.Position;
-            float heading = LocalPlayer.Heading;
+            Vector3 position = LocalPlayer.Character.Position;
+            float heading = LocalPlayer.Character.Heading;
 
             ClientGateway.Send("vorp:character:coords:save", position, heading);
         }

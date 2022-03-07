@@ -3,7 +3,7 @@ using Vorp.Core.Client.Interface;
 
 namespace Vorp.Core.Client.Environment.Entities
 {
-    public class VorpPlayer : Entity
+    public class VorpPlayer
     {
         public PluginManager pluginManager => PluginManager.Instance;
         public ClientConfig clientConfig => ClientConfiguration.Config;
@@ -14,46 +14,29 @@ namespace Vorp.Core.Client.Environment.Entities
         public int ServerId { get; private set; }
 
         Ped _pedCache;
-        public Ped Ped
+        public Ped Character
         {
             get
             {
-                if (_pedCache == null)
-                    _pedCache = new Ped(PlayerPedId);
+                int handle = GetPlayerPed(PlayerId);
 
-                if (_pedCache.Handle != PlayerPedId)
-                    _pedCache = new Ped(PlayerPedId);
+                if (ReferenceEquals(_pedCache, null) || handle != _pedCache.Handle)
+                    _pedCache = new Ped(handle);
 
                 return _pedCache;
             }
         }
 
-        public virtual int PlayerPedId
-        {
-            get
-            {
-                if (_playerPedId != PlayerPedId())
-                {
-                    Handle = PlayerPedId();
-                    _playerPedId = PlayerPedId();
-                }
-                return _playerPedId;
-            }
-            private set
-            {
-                _playerPedId = value;
-            }
-        }
+        public virtual int PlayerPedId => _pedCache.Handle;
 
         public string PlayerName { get; private set; }
 
-        public VorpPlayer(int playerId, int playerPedId) : base(playerPedId)
+        public VorpPlayer(int playerId)
         {
             PlayerId = playerId;
             ServerId = GetPlayerServerId(playerId);
-            PlayerPedId = playerPedId;
             PlayerName = GetPlayerName(playerId);
-            Logger.Trace($"New Player Created: {playerId}/{playerPedId}: {PlayerName}");
+            Logger.Trace($"New Player Created: {playerId}: {PlayerName}");
             RequestServerInformation();
 
             pluginManager.ClientGateway.Mount("vorp:user:group:client", new Action<string>(group =>
@@ -109,55 +92,12 @@ namespace Vorp.Core.Client.Environment.Entities
             Function.Call((Hash)0xED40380076A31506, PlayerId(), hash, true);
         }
 
-        internal async Task Teleport(Vector3 pos, bool withFade = true, bool findGround = true)
-        {
-            if (withFade) await Screen.FadeOut(500);
-            float groundZ = pos.Z;
-            Vector3 norm = pos;
-
-            IsPositionFrozen = true;
-
-            if (API.GetGroundZAndNormalFor_3dCoord(pos.X, pos.Y, pos.Z, ref groundZ, ref norm) && findGround)
-                norm = new Vector3(pos.X, pos.Y, groundZ);
-
-            Position = norm;
-            IsPositionFrozen = false;
-
-            if (withFade) await Screen.FadeIn(500);
-        }
-
         async void RequestServerInformation()
         {
             string group = await pluginManager.ClientGateway.Get<string>("vorp:user:group", ServerId);
             Logger.Trace($"Server returned group '{group}'");
             Group = group;
         }
-
-        public bool IsCollisionEnabled
-        {
-            get => !GetEntityCollisionDisabled(PlayerPedId);
-            set => SetEntityCollision(PlayerPedId, value, value);
-        }
-
-        public bool CanRagdoll
-        {
-            get => CanPedRagdoll(PlayerPedId);
-            set => SetPedCanRagdoll(PlayerPedId, value);
-        }
-
-        public bool IsVisible
-        {
-            get => IsEntityVisible(PlayerPedId);
-            set => SetEntityVisible(PlayerPedId, value);
-        }
-
-        public int Opacity
-        {
-            get => GetEntityAlpha(PlayerPedId);
-            set => SetEntityAlpha(PlayerPedId, value, false);
-        }
-
-        public bool IsDead => IsEntityDead(PlayerPedId);
 
         protected string _group { get; private set; }
         public string Group

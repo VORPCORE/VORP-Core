@@ -15,7 +15,7 @@
             get { return GetPlayerPed(PlayerId); }
         }
 
-        public WorldPlayer(int playerId, int playerPedId) : base(playerId, playerPedId)
+        public WorldPlayer(int playerId) : base(playerId)
         {
             pluginManager.AttachTickHandler(OnUpdate);
         }

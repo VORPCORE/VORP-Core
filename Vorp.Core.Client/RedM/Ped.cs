@@ -1,4 +1,5 @@
-﻿using Vorp.Core.Client.Managers.CharacterManagement;
+﻿using Vorp.Core.Client.Interface;
+using Vorp.Core.Client.Managers.CharacterManagement;
 using Vorp.Shared.Enums;
 using Vorp.Shared.Models;
 
@@ -208,5 +209,48 @@ namespace Vorp.Core.Client.RedM
 
             PedComponents = vorpComponents;
         }
+
+        internal async Task Teleport(Vector3 pos, bool withFade = true, bool findGround = true)
+        {
+            if (withFade) await Screen.FadeOut(500);
+            float groundZ = pos.Z;
+            Vector3 norm = pos;
+
+            IsPositionFrozen = true;
+
+            if (API.GetGroundZAndNormalFor_3dCoord(pos.X, pos.Y, pos.Z, ref groundZ, ref norm) && findGround)
+                norm = new Vector3(pos.X, pos.Y, groundZ);
+
+            Position = norm;
+            IsPositionFrozen = false;
+
+            if (withFade) await Screen.FadeIn(500);
+        }
+
+        public bool IsCollisionEnabled
+        {
+            get => !GetEntityCollisionDisabled(Handle);
+            set => SetEntityCollision(Handle, value, value);
+        }
+
+        public bool CanRagdoll
+        {
+            get => CanPedRagdoll(Handle);
+            set => SetPedCanRagdoll(Handle, value);
+        }
+
+        public bool IsVisible
+        {
+            get => IsEntityVisible(Handle);
+            set => SetEntityVisible(Handle, value);
+        }
+
+        public int Opacity
+        {
+            get => GetEntityAlpha(Handle);
+            set => SetEntityAlpha(Handle, value, false);
+        }
+
+        public bool IsDead => IsEntityDead(Handle);
     }
 }

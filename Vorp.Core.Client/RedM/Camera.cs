@@ -82,6 +82,11 @@ namespace Vorp.Core.Client.RedM
             AttachCamToEntity(Handle, vorpPlayer.PlayerPedId, offset.X, offset.Y, offset.Z, true);
         }
 
+        public void AttachTo(Entity entity, Vector3 offset)
+        {
+            AttachCamToEntity(Handle, entity.Handle, offset.X, offset.Y, offset.Z, true);
+        }
+
         /// <summary>
         /// Gets the up vector of this <see cref="Camera"/>.
         /// </summary>

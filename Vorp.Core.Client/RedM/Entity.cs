@@ -18,7 +18,7 @@
         private void _Delete()
         {
             // prevent the game from crashing if this is called on the player ped.
-            if (Handle != PluginManager.Instance.LocalPlayer.Handle)
+            if (Handle != PluginManager.Instance.LocalPlayer.Character.Handle)
             {
                 API.SetEntityAsMissionEntity(Handle, false, true);
                 int handle = Handle;
