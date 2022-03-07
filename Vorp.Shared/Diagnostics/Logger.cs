@@ -3,9 +3,9 @@
     public static class Logger
     {
 #if CLIENT
-        static string _loggingLevel = GetConvar2("vorp_logging_level", "none");
+        static string _loggingLevel = GetResourceMetadata(GetCurrentResourceName(), "log_level", 0);
 #elif SERVER
-        static string _loggingLevel = GetConvar("vorp_logging_level", "none");
+        static string _loggingLevel = GetResourceMetadata(GetCurrentResourceName(), "log_level", 0);
 #endif
 
         static bool ShowOutput(string level)
