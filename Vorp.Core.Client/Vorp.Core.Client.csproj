@@ -46,7 +46,7 @@
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>Y:\GTA\FXServer\RedM\server-data\resources\[vorp_core]\vorp_core\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CLIENT;DEVELOPMENT_CLIENT;RDR3</DefineConstants>
-    <DebugType>full</DebugType>
+    <DebugType>embedded</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>latest</LangVersion>
     <ErrorReport>prompt</ErrorReport>
@@ -97,6 +97,7 @@
     <Compile Include="Managers\CharacterManagement\CharacterEditorManager.cs" />
     <Compile Include="Managers\CharacterManagement\CharacterManager.cs" />
     <Compile Include="Managers\CharacterManagement\InventoryManager.cs" />
+    <Compile Include="Interface\Menu\MenuBase.cs" />
     <Compile Include="Managers\ClientConfigManager.cs" />
     <Compile Include="Managers\GameEvents\GameEventManager.cs" />
     <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />

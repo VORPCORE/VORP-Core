@@ -201,11 +201,10 @@ namespace Vorp.Core.Client.RedM
             if (Boots.Count > 0)
                 vorpComponents.Boots.Value = Boots[VorpAPI.Random.Next(Boots.Count)];
 
-            // commented out random eyes, that shit is wild
-            //List<long> Eyes = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Eyes);
-            //if (!IsMale)
-            //    Eyes = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Eyes);
-            //vorpComponents.Eyes.Value = Eyes[VorpAPI.Random.Next(Eyes.Count)];
+           List <long> Eyes = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Eyes);
+            if (!IsMale)
+                Eyes = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Eyes);
+            vorpComponents.Eyes.Value = Eyes[VorpAPI.Random.Next(Eyes.Count)];
 
             TextureCategory textureCategory = CharacterComponentConfig.GetRandomTextures(IsMale);
             if (textureCategory != null)

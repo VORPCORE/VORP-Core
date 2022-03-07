@@ -156,7 +156,7 @@ namespace Vorp.Core.Client.Interface
                 key = key.Substring(seperatorIndex + 1);
             }
 
-            var dataToSend = new { action = "state/Mutate", view, key, method, parameters };
+            var dataToSend = new { action = "state/Mutate", view, key, method, parameters = value };
             SendMessage(dataToSend);
         }
     }

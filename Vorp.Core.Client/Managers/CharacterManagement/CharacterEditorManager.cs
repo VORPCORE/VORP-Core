@@ -1,4 +1,5 @@
 ﻿using Vorp.Core.Client.Interface;
+using Vorp.Core.Client.Interface.Menu;
 using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
@@ -27,8 +28,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         static WorldTime _worldTime;
 
-        static Prompt _promptRandomise;
-
         static bool _hideNui;
 
         public override void Begin()
@@ -38,6 +37,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 if (GetCurrentResourceName() != resourceName) return;
 
                 Dispose();
+            }));
+
+            Instance.NuiManager.RegisterCallback("CharacterRandomise", new Action(() =>
+            {
+                _ped.RandomiseClothingAsync(true);
             }));
         }
 
@@ -61,27 +65,48 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             _worldTime = new WorldTime(12, 1);
 
-            _promptRandomise = Prompt.Create(eControl.ContextX, "Randomise");
-            Instance.AttachTickHandler(OnPromptHandler);
+            Instance.AttachTickHandler(OnNuiHandling);
 
             DisplayHud(false);
             DisplayRadar(false);
 
-            Instance.NuiManager.Toggle("character/VISIBLE");
-
-            // SetNuiFocus2(true, true);
-
+            await BaseScript.Delay(1000);
             await Screen.FadeIn(500);
+            
+            CreateBaseMenu();
+            Instance.NuiManager.SetFocus(true, true);
         }
 
-        private static async Task OnPromptHandler()
+        private static void CreateBaseMenu()
         {
-            if (_promptRandomise.IsPressed)
-            {
-                _ped.RandomiseClothingAsync(true);
-                await BaseScript.Delay(500);
-            }
+            MenuBase menuBase = new();
+            menuBase.Title = "Main Menu";
 
+            MenuOptions moCharacterRandomise = new MenuOptions();
+            moCharacterRandomise.Type = "button";
+            moCharacterRandomise.Label = "Randomise Character";
+            moCharacterRandomise.Endpoint = "CharacterRandomise";
+            menuBase.AddOption(moCharacterRandomise);
+
+            MenuOptions moCharacterName = new MenuOptions();
+            moCharacterName.Type = "button";
+            moCharacterName.Label = "Name";
+            moCharacterName.RightLabel = "Enter Name";
+            moCharacterName.Endpoint = "CharacterChangeName";
+            menuBase.AddOption(moCharacterName);
+
+            MenuOptions moCharacterAppearance = new MenuOptions();
+            moCharacterAppearance.Type = "menu";
+            moCharacterAppearance.Label = "Appearance";
+            moCharacterAppearance.SubTitle = "Options";
+            menuBase.AddOption(moCharacterAppearance);
+
+            Instance.NuiManager.Set("character/CREATOR", menuBase);
+            Instance.NuiManager.Toggle("character/VISIBLE");
+        }
+
+        private static async Task OnNuiHandling()
+        {
             if (IsPauseMenuActive() && !_hideNui)
             {
                 _hideNui = true;
@@ -101,11 +126,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             DisplayHud(false);
             DisplayRadar(false);
 
-            _ped.Delete();
+            if (_ped is not null) _ped.Delete();
 
             SetNuiFocus2(false, false);
 
-            _promptRandomise.Delete();
+            Instance.NuiManager.Toggle("character/VISIBLE");
 
             RenderScriptCams(false, true, 250, true, true, 0);
             _cameraMain.Delete();
