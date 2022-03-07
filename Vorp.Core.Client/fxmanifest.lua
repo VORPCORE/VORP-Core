@@ -20,6 +20,8 @@ files {
   'ui/**/*'
 }
 
+ui_page 'ui/index.html'
+
 -- SERVER FILES
 
 server_scripts {
@@ -29,5 +31,6 @@ server_scripts {
 
 server_exports {'vorpAPI'}
 
+-- SETTINGS
 -- Log Levels; Trace -> Debug -> Info -> Warn -> Error -> All
 log_level 'all'
