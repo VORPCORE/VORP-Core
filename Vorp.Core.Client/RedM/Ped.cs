@@ -75,13 +75,13 @@ namespace Vorp.Core.Client.RedM
             VorpPedComponents comp = _vorpPedComponents;
 
             ApplyShopItemToPed(comp.Eyes);
-            UpdatePedVariation(true);
+            UpdatePedVariation();
             ApplyShopItemToPed(comp.Head);
-            UpdatePedVariation(true);
+            UpdatePedVariation();
             ApplyShopItemToPed(comp.BodyUpper);
-            UpdatePedVariation(true);
+            UpdatePedVariation();
             ApplyShopItemToPed(comp.BodyLower);
-            UpdatePedVariation(true);
+            UpdatePedVariation();
 
             RemoveTagFromMetaPed(0x1D4C528A, 0);
             RemoveTagFromMetaPed(0x3F1F01E5, 0);
@@ -118,14 +118,16 @@ namespace Vorp.Core.Client.RedM
             SetComponent(comp.Masks);
             SetComponent(comp.Neckties);
             SetComponent(comp.Neckwear);
+            SetComponent(comp.Pants);
             SetComponent(comp.Poncho);
             SetComponent(comp.Satchel);
             SetComponent(comp.Shirt);
+            SetComponent(comp.Skirt);
             SetComponent(comp.Spats);
             SetComponent(comp.Suspenders);
             SetComponent(comp.Teeth);
             SetComponent(comp.Vest);
-            UpdatePedVariation();
+            UpdatePedVariation(true);
         }
 
         public void RandomiseClothingAsync()

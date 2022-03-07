@@ -35,7 +35,7 @@ namespace Vorp.Core.Server.Database
             mySqlConnectionStringBuilder.MinimumPoolSize = databaseConfig.MinimumPoolSize;
             mySqlConnectionStringBuilder.ConnectionTimeout = databaseConfig.ConnectionTimeout;
 
-            return _connectionString = mySqlConnectionStringBuilder.ToString();
+            return _connectionString = $"{mySqlConnectionStringBuilder}";
         }
 
         public static async Task<List<T>> GetListAsync(string query, DynamicParameters args = null)
