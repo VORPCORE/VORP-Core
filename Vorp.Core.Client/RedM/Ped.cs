@@ -86,7 +86,7 @@ namespace Vorp.Core.Client.RedM
             RemoveTagFromMetaPed(0x1D4C528A, 0);
             RemoveTagFromMetaPed(0x3F1F01E5, 0);
             RemoveTagFromMetaPed(0xDA0E2C55, 0);
-            UpdatePedVariation(true);
+            UpdatePedVariation();
 
             SetComponent(comp.Accessory);
             SetComponent(comp.Armor);
@@ -125,7 +125,7 @@ namespace Vorp.Core.Client.RedM
             SetComponent(comp.Suspenders);
             SetComponent(comp.Teeth);
             SetComponent(comp.Vest);
-            UpdatePedVariation(true);
+            UpdatePedVariation();
         }
 
         public void RandomiseClothingAsync()
