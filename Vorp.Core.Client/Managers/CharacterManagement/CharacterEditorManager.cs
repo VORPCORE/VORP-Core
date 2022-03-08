@@ -98,7 +98,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                         else
                             vorpPedComponents.BodyLower.Value = _ped.BodiesLower[selectIndex];
                         break;
-                    case "Shirts":
+                    case "Shirt":
                         if (selectIndex <= 0)
                             vorpPedComponents.Shirt.Value = 0;
                         else
