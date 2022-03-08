@@ -11,6 +11,9 @@ namespace Vorp.Core.Client.Interface.Menu
         [DataMember(Name = "options")]
         public List<MenuOptions> Options { get; private set; } = new();
 
+        [DataMember(Name = "updated")]
+        public long Updated => GetGameTimer();
+
         public void AddOption(MenuOptions menuOptions)
         {
             menuOptions.Order = Options.Count;
@@ -46,7 +49,7 @@ namespace Vorp.Core.Client.Interface.Menu
         public string Endpoint;
 
         [DataMember(Name = "listMin")]
-        public int ListMin;
+        public int ListMin = 1;
 
         [DataMember(Name = "listMax")]
         public int ListMax;
@@ -61,6 +64,40 @@ namespace Vorp.Core.Client.Interface.Menu
         {
             menuOptions.Order = Options.Count;
             Options.Add(menuOptions);
+        }
+
+        public static MenuOptions MenuOptionList(string label, string description, string endpoint,  List<long> list, long currentValue)
+        {
+            MenuOptions menuOptions = new();
+            menuOptions.Type = "list";
+            menuOptions.Label = label;
+            menuOptions.Endpoint = endpoint;
+            menuOptions.Description = description;
+            menuOptions.ListMin = 0;
+            menuOptions.ListMax = list.Count;
+            menuOptions.Value = list.IndexOf(currentValue);
+            return menuOptions;
+        }
+
+        public static MenuOptions MenuOptionMenu(string label, string subtitle, string description)
+        {
+            MenuOptions menuOptions = new();
+            menuOptions.Type = "menu";
+            menuOptions.Label = label;
+            menuOptions.SubTitle = subtitle;
+            menuOptions.Description = description;
+            return menuOptions;
+        }
+
+        public static MenuOptions MenuOptionButton(string label, string description, string endpoint, string rightLabel = "")
+        {
+            MenuOptions menuOptions = new();
+            menuOptions.Type = "button";
+            menuOptions.Label = label;
+            menuOptions.RightLabel = rightLabel;
+            menuOptions.Endpoint = endpoint;
+            menuOptions.Description = description;
+            return menuOptions;
         }
     }
 }
