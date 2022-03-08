@@ -167,15 +167,9 @@ namespace Vorp.Core.Client.RedM
                 Teeth = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Teeth);
             vorpComponents.Teeth.Value = Teeth[VorpAPI.Random.Next(Teeth.Count)];
 
-            List<long> Shirts = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.ShirtsFull);
-            if (!IsMale)
-                Shirts = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.ShirtsFull);
-
-            List<long> Boots = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Boots);
-            if (!IsMale)
-                Boots = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Boots);
-            if (Shirts.Count > 0)
-                vorpComponents.Shirt.Value = Shirts[VorpAPI.Random.Next(Shirts.Count)];
+            List<long> shirts = Shirts;
+            if (shirts.Count > 0)
+                vorpComponents.Shirt.Value = shirts[VorpAPI.Random.Next(shirts.Count)];
 
             if (IsMale)
             {
@@ -199,12 +193,13 @@ namespace Vorp.Core.Client.RedM
                     vorpComponents.Skirt.Value = FemaleSkirts[VorpAPI.Random.Next(FemaleSkirts.Count)];
             }
 
-            if (Boots.Count > 0)
-                vorpComponents.Boots.Value = Boots[VorpAPI.Random.Next(Boots.Count)];
+            List<long> boots = Boots;
+            if (boots.Count > 0)
+                vorpComponents.Boots.Value = boots[VorpAPI.Random.Next(boots.Count)];
 
            List <long> eyes = Eyes;
             if (eyes.Count > 0)
-                vorpComponents.Eyes.Value = Eyes[VorpAPI.Random.Next(Eyes.Count)];
+                vorpComponents.Eyes.Value = eyes[VorpAPI.Random.Next(eyes.Count)];
 
             TextureCategory textureCategory = CharacterComponentConfig.GetRandomTextures(IsMale);
             if (textureCategory != null)
@@ -272,5 +267,7 @@ namespace Vorp.Core.Client.RedM
         public List<long> Beards => CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.BeardsComplete);
         public List<long> BodiesUpper => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BodiesUpper);
         public List<long> BodiesLower => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BodiesLower);
+        public List<long> Shirts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.ShirtsFull);
+        public List<long> Boots => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Boots);
     }
 }

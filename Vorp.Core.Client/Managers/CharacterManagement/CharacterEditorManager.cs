@@ -98,6 +98,21 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                         else
                             vorpPedComponents.BodyLower.Value = _ped.BodiesLower[selectIndex];
                         break;
+                    case "Shirts":
+                        if (selectIndex <= 0)
+                            vorpPedComponents.Shirt.Value = 0;
+                        else
+                            vorpPedComponents.Shirt.Value = _ped.Shirts[selectIndex];
+                        break;
+                    case "Boots":
+                        if (selectIndex <= 0)
+                            vorpPedComponents.Boots.Value = 0;
+                        else
+                            vorpPedComponents.Boots.Value = _ped.Boots[selectIndex];
+                        break;
+                    default:
+                        Logger.Error($"Component '{component}' not configured");
+                        break;
                 }
 
                 _ped.PedComponents = vorpPedComponents;
@@ -168,6 +183,12 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             MenuOptions moCharacterHair = MenuOptions.MenuOptionList("Hair", "Change your character's hair.", "CharacterSetComponent/Hair", _ped.Hairs, _ped.PedComponents.Hair.Value);
             moCharacterAppearance.AddOption(moCharacterHair);
+
+            MenuOptions moCharacterShirt = MenuOptions.MenuOptionList("Shirt", "Change your character's shirt.", "CharacterSetComponent/Shirt", _ped.Shirts, _ped.PedComponents.Shirt.Value);
+            moCharacterAppearance.AddOption(moCharacterShirt);
+
+            MenuOptions moCharacterBoots = MenuOptions.MenuOptionList("Boots", "Change your character's boots.", "CharacterSetComponent/Boots", _ped.Boots, _ped.PedComponents.Boots.Value);
+            moCharacterAppearance.AddOption(moCharacterBoots);
 
             if (_ped.IsMale)
             {
