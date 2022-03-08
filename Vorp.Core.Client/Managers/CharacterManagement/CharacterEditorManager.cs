@@ -40,9 +40,67 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 Dispose();
             }));
 
-            Instance.NuiManager.RegisterCallback("CharacterRandomise", new Action(() =>
+            Instance.NuiManager.RegisterCallback("CharacterRandomise", new Action(async () =>
             {
                 _ped.RandomiseClothingAsync(true);
+                await BaseScript.Delay(100);
+                // Need to review updating values on the NUI Menu
+                CreateBaseMenu(true);
+            }));
+
+            Instance.NuiManager.RegisterCallback("CharacterSetComponent", new Action<List<string>>(args =>
+            {
+                Dictionary<string, dynamic> valuePairs = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(args[0]);
+                if (!valuePairs.ContainsKey("selectedValue")) return;
+
+                int.TryParse($"{valuePairs["selectedValue"]}", out int selectIndex);
+                selectIndex = selectIndex - 1; // Cause Overflow
+
+                string component = valuePairs["component"];
+
+                VorpPedComponents vorpPedComponents = _ped.PedComponents;
+
+                switch(component)
+                {
+                    case "Head":
+                        if (selectIndex <= 0)
+                            vorpPedComponents.Head.Value = 0;
+                        else
+                            vorpPedComponents.Head.Value = _ped.Heads[selectIndex];
+                        break;
+                    case "Eyes":
+                        if (selectIndex <= 0)
+                            vorpPedComponents.Eyes.Value = 0;
+                        else
+                            vorpPedComponents.Eyes.Value = _ped.Eyes[selectIndex];
+                        break;
+                    case "Hair":
+                        if (selectIndex <= 0)
+                            vorpPedComponents.Hair.Value = 0;
+                        else
+                            vorpPedComponents.Hair.Value = _ped.Hairs[selectIndex];
+                        break;
+                    case "Beard":
+                        if (selectIndex <= 0)
+                            vorpPedComponents.Beard.Value = 0;
+                        else
+                            vorpPedComponents.Beard.Value = _ped.Beards[selectIndex];
+                        break;
+                    case "BodyUpper":
+                        if (selectIndex <= 0)
+                            vorpPedComponents.BodyUpper.Value = 0;
+                        else
+                            vorpPedComponents.BodyUpper.Value = _ped.BodiesUpper[selectIndex];
+                        break;
+                    case "BodyLower":
+                        if (selectIndex <= 0)
+                            vorpPedComponents.BodyLower.Value = 0;
+                        else
+                            vorpPedComponents.BodyLower.Value = _ped.BodiesLower[selectIndex];
+                        break;
+                }
+
+                _ped.PedComponents = vorpPedComponents;
             }));
         }
 
@@ -82,62 +140,48 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             Instance.NuiManager.SetFocus(true, true);
         }
 
-        private static void CreateBaseMenu()
+        private static void CreateBaseMenu(bool update = false)
         {
             MenuBase menuBase = new();
             menuBase.Title = "Main Menu";
 
-            MenuOptions moCharacterRandomise = new MenuOptions();
-            moCharacterRandomise.Type = "button";
-            moCharacterRandomise.Label = "Randomise Character";
-            moCharacterRandomise.Endpoint = "CharacterRandomise";
-            moCharacterRandomise.Description = "Randomises your character's appearance.";
+            MenuOptions moCharacterRandomise = MenuOptions.MenuOptionButton("Randomise Character", "Randomises your character's appearance.", "CharacterRandomise");
             menuBase.AddOption(moCharacterRandomise);
 
-            MenuOptions moCharacterName = new MenuOptions();
-            moCharacterName.Type = "button";
-            moCharacterName.Label = "Name";
-            moCharacterName.RightLabel = "Enter Name";
-            moCharacterName.Endpoint = "CharacterChangeName";
-            moCharacterName.Description = "Set your character's name.";
+            MenuOptions moCharacterName = MenuOptions.MenuOptionButton("Name", "Set your character's name.", "CharacterChangeName", "Enter Name");
             menuBase.AddOption(moCharacterName);
 
-            MenuOptions moCharacterAppearance = new MenuOptions();
-            moCharacterAppearance.Type = "menu";
-            moCharacterAppearance.Label = "Appearance";
-            moCharacterAppearance.SubTitle = "Options";
-            moCharacterAppearance.Description = "Change your character's appearance.";
+            MenuOptions moCharacterAppearance = MenuOptions.MenuOptionMenu("Appearance", "Options", "Change your character's appearance.");
             menuBase.AddOption(moCharacterAppearance);
 
-            List<long> hairs = _ped.Hairs;
-            MenuOptions moCharacterHair = new();
-            moCharacterHair.Type = "list";
-            moCharacterHair.Label = "Hair";
-            moCharacterHair.Endpoint = "CharacterSetHair";
-            moCharacterHair.Description = "Change your character's hair.";
-            moCharacterHair.ListMin = 1;
-            moCharacterHair.ListMax = hairs.Count;
-            moCharacterHair.Value = hairs.IndexOf(_ped.PedComponents.Hair.Value);
+            MenuOptions moCharacterEyes = MenuOptions.MenuOptionList("Eyes", "Change your character's eyes.", "CharacterSetComponent/Eyes", _ped.Eyes, _ped.PedComponents.Eyes.Value);
+            moCharacterAppearance.AddOption(moCharacterEyes);
+
+            MenuOptions moCharacterHead = MenuOptions.MenuOptionList("Head", "Change your character's head.", "CharacterSetComponent/Head", _ped.Heads, _ped.PedComponents.Head.Value);
+            moCharacterAppearance.AddOption(moCharacterHead);
+
+            MenuOptions moCharacterBodyUpper = MenuOptions.MenuOptionList("Upper Body", "Change your character's upper body.", "CharacterSetComponent/BodyUpper", _ped.BodiesUpper, _ped.PedComponents.BodyUpper.Value);
+            moCharacterAppearance.AddOption(moCharacterBodyUpper);
+
+            MenuOptions moCharacterBodyLower = MenuOptions.MenuOptionList("Lower Body", "Change your character's lower body.", "CharacterSetComponent/BodyLower", _ped.BodiesLower, _ped.PedComponents.BodyLower.Value);
+            moCharacterAppearance.AddOption(moCharacterBodyLower);
+
+            MenuOptions moCharacterHair = MenuOptions.MenuOptionList("Hair", "Change your character's hair.", "CharacterSetComponent/Hair", _ped.Hairs, _ped.PedComponents.Hair.Value);
             moCharacterAppearance.AddOption(moCharacterHair);
 
-            Instance.NuiManager.RegisterCallback("CharacterSetHair", new Action<List<string>>(args =>
+            if (_ped.IsMale)
             {
-                Dictionary<string, int> valuePairs = JsonConvert.DeserializeObject<Dictionary<string, int>>(args[0]);
-                if (!valuePairs.ContainsKey("selectedValue")) return;
-                int selectIndex = valuePairs["selectedValue"] - 1; // minus 1 because of human reading
-                _ped.PedComponents.Hair.Value = _ped.Hairs[selectIndex];
-                _ped.UpdateComponents();
-            }));
+                MenuOptions moCharacterBeard = MenuOptions.MenuOptionList("Beard", "Change your character's beard.", "CharacterSetComponent/Beard", _ped.Beards, _ped.PedComponents.Beard.Value);
+                moCharacterAppearance.AddOption(moCharacterBeard);
+            }
 
-            MenuOptions moCharacterSave = new MenuOptions();
-            moCharacterSave.Type = "button";
-            moCharacterSave.Label = "Confirm";
-            moCharacterSave.Endpoint = "CharacterConfirm";
-            moCharacterSave.Description = "Confirm and save your character.";
+            MenuOptions moCharacterSave = MenuOptions.MenuOptionButton("Confirm", "Confirm and save your character.", "CharacterConfirm");
             menuBase.AddOption(moCharacterSave);
 
             Instance.NuiManager.Set("character/CREATOR", menuBase);
-            Instance.NuiManager.Toggle("character/VISIBLE");
+
+            if (!update)
+                Instance.NuiManager.Toggle("character/VISIBLE");
         }
 
         private static async Task OnNuiHandling()
