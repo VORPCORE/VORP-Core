@@ -48,9 +48,10 @@ namespace Vorp.Core.Client.RedM
         public void SetComponent(PedComponent component)
         {
             if (component.Component == ePedComponentCategory.Unknown) return;
-            if (component.Value == 0) return;
-
-            Function.Call((Hash)0x59BD177A1A48600A, Handle, (uint)component.Component);
+            if (component.Value == 0)
+                RemoveTagFromMetaPed((uint)component.Component, 0);
+            else
+                Function.Call((Hash)0x59BD177A1A48600A, Handle, (uint)component.Component);
             ApplyShopItemToPed(component);
         }
 
@@ -157,9 +158,9 @@ namespace Vorp.Core.Client.RedM
 
             VorpPedComponents vorpComponents = new VorpPedComponents();
 
-            List<long> Hair = Hairs;
-            if (Hair.Count > 0)
-                vorpComponents.Hair.Value = Hair[VorpAPI.Random.Next(Hair.Count)];
+            List<long> hair = Hairs;
+            if (hair.Count > 0)
+                vorpComponents.Hair.Value = hair[VorpAPI.Random.Next(hair.Count)];
 
             List<long> Teeth = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Teeth);
             if (!IsMale)
@@ -178,9 +179,9 @@ namespace Vorp.Core.Client.RedM
 
             if (IsMale)
             {
-                List<long> Beards = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.BeardsComplete);
-                if (Beards.Count > 0 && VorpAPI.Random.Next(3) == 1)
-                    vorpComponents.Beard.Value = Beards[VorpAPI.Random.Next(Beards.Count)];
+                List<long> beards = Beards;
+                if (beards.Count > 0 && VorpAPI.Random.Next(3) == 1)
+                    vorpComponents.Beard.Value = beards[VorpAPI.Random.Next(beards.Count)];
 
                 List<long> MalePants = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Pants);
                 if (MalePants.Count > 0)
@@ -201,10 +202,9 @@ namespace Vorp.Core.Client.RedM
             if (Boots.Count > 0)
                 vorpComponents.Boots.Value = Boots[VorpAPI.Random.Next(Boots.Count)];
 
-           List <long> Eyes = CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.Eyes);
-            if (!IsMale)
-                Eyes = CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Eyes);
-            vorpComponents.Eyes.Value = Eyes[VorpAPI.Random.Next(Eyes.Count)];
+           List <long> eyes = Eyes;
+            if (eyes.Count > 0)
+                vorpComponents.Eyes.Value = Eyes[VorpAPI.Random.Next(Eyes.Count)];
 
             TextureCategory textureCategory = CharacterComponentConfig.GetRandomTextures(IsMale);
             if (textureCategory != null)
@@ -266,6 +266,11 @@ namespace Vorp.Core.Client.RedM
 
         public bool IsDead => IsEntityDead(Handle);
 
+        public List<long> Heads => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Heads);
+        public List<long> Eyes => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Eyes);
         public List<long> Hairs => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Hair);
+        public List<long> Beards => CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.BeardsComplete);
+        public List<long> BodiesUpper => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BodiesUpper);
+        public List<long> BodiesLower => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BodiesLower);
     }
 }
