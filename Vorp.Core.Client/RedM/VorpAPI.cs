@@ -67,7 +67,7 @@
         /// <param name="title"></param>
         /// <param name="subTitle"></param>
         /// <param name="duration"></param>
-        public unsafe static void DisplayLeftNotification(string title, string subTitle, int duration = 10000)
+        public unsafe static void UiFeedPostSampleToast(string title, string subTitle, int duration = 10000)
         {
             try
             {
@@ -83,7 +83,7 @@
                 struct2[2] = GetHashKey("HUD_TOASTS");
                 struct2[3] = GetHashKey("toast_mp_status_change");
 
-                Function.Call((Hash)0x26e87218390e6729, struct1, struct2, 1, 1);
+                Function.Call((Hash)0x26E87218390E6729, struct1, struct2, 1, 1);
                 Logger.Trace($"DisplayLeftNotification: {title}/{subTitle}");
             }
             catch (Exception ex)
