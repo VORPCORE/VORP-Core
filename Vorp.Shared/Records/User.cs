@@ -304,42 +304,24 @@ namespace Vorp.Shared.Records
                 { "addCurrency", new Action<int, double>(async (currency, amount) =>
                     {
                         await activeChar.AdjustCurrency(true, currency, amount);
-                        UpdateUI();
                     })
                 },
                 { "removeCurrency", new Action<int, double>(async (currency, amount) =>
                     {
                         await activeChar.AdjustCurrency(false, currency, amount);
-                        UpdateUI();
                     })
                 },
                 { "addXp", new Action<int>(async experience =>
                     {
                         await activeChar.AdjustExperience(true, experience);
-                        UpdateUI();
                     })
                 },
                 { "removeXp", new Action<int>(async experience =>
                     {
                         await activeChar.AdjustExperience(false, experience);
-                        UpdateUI();
                     })
                 },
             };
-        }
-
-        public void UpdateUI()
-        {
-            Character activeChar = ActiveCharacter;
-            JsonBuilder jb = new JsonBuilder();
-            jb.Add("type", "ui");
-            jb.Add("action", "update");
-            jb.Add("moneyquanty", activeChar.Cash);
-            jb.Add("goldquanty", activeChar.Gold);
-            jb.Add("rolquanty", activeChar.RoleToken);
-            jb.Add("xp", activeChar.Experience);
-            jb.Add("serverId", CFXServerID);
-            Player.TriggerEvent("vorp:updateUi", $"{jb}");
         }
 #endif
 

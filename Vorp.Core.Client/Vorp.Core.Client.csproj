@@ -105,7 +105,6 @@
     <Compile Include="Managers\Legacy\CfxEventsManager.cs" />
     <Compile Include="Managers\Legacy\LegacyInstanceManager.cs" />
     <Compile Include="Managers\Legacy\LegacyServerCallbackManager.cs" />
-    <Compile Include="Managers\Legacy\LegacyUiCoreManager.cs" />
     <Compile Include="Managers\Manager.cs" />
     <Compile Include="Managers\UserManager.cs" />
     <Compile Include="PluginManager.cs" />
