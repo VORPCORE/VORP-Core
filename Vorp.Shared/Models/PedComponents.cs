@@ -52,7 +52,7 @@ namespace Vorp.Shared.Models
         public PedComponent GunbeltAccessory = new PedComponent(ePedComponentCategory.GunbeltAccessories);
         public PedComponent Hair = new PedComponent(ePedComponentCategory.Hair);
         public PedComponent HairAccessory = new PedComponent(ePedComponentCategory.HairAccessories);
-        public PedComponent Hats = new PedComponent(ePedComponentCategory.Hats);
+        public PedComponent Hat = new PedComponent(ePedComponentCategory.Hats);
         public PedComponent Head = new PedComponent(ePedComponentCategory.Heads);
         public PedComponent HolstersLeft = new PedComponent(ePedComponentCategory.HolstersLeft);
         public PedComponent JewelryBracelets = new PedComponent(ePedComponentCategory.JewelryBracelets);
