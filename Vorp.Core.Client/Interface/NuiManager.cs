@@ -141,6 +141,11 @@ namespace Vorp.Core.Client.Interface
             Mutate(state, value, "set");
         }
 
+        public void Patch(string state, dynamic value)
+        {
+            Mutate(state, value, "patch");
+        }
+
         public void Toggle(string state)
         {
             Mutate(state, null, "toggle");
