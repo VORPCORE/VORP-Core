@@ -118,7 +118,7 @@ namespace Vorp.Core.Client.RedM
             SetComponent(comp.GunbeltAccessory);
             SetComponent(comp.Hair);
             SetComponent(comp.HairAccessory);
-            SetComponent(comp.Hats);
+            SetComponent(comp.Hat);
             SetComponent(comp.HolstersLeft);
             SetComponent(comp.JewelryBracelets);
             SetComponent(comp.JewelryRingsLeft);
@@ -267,9 +267,11 @@ namespace Vorp.Core.Client.RedM
         public List<long> BodiesLower => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BodiesLower);
         public List<long> Accessories => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Accessories);
         public List<long> Armor => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Armor);
+        public List<long> Badges => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Badges);
         public List<long> Beards => CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.BeardsComplete);
         public List<long> Belts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Belts);
         public List<long> BeltBuckles => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BeltBuckles);
+        public List<long> BootAccessories => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BootAccessories);
         public List<long> Boots => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Boots);
         public List<long> Chaps => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Chaps);
         public List<long> Cloaks => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Cloaks);
@@ -282,7 +284,7 @@ namespace Vorp.Core.Client.RedM
         public List<long> Gunbelts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Gunbelts);
         public List<long> GunbeltAccessories => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.GunbeltAccessories);
         public List<long> Hairs => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Hair);
-        public List<long> HairAccessories => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.HairAccessories);
+        public List<long> HairAccessories => CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.HairAccessories);
         public List<long> Hats => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Hats);
         public List<long> HolstersLeft => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.HolstersLeft);
         public List<long> JewelryBracelets => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.JewelryBracelets);
@@ -295,8 +297,8 @@ namespace Vorp.Core.Client.RedM
         public List<long> Pants => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Pants);
         public List<long> Ponchos => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Ponchos);
         public List<long> Satchels => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Satchels);
-        public List<long> Shirts => CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.ShirtsFull);
-        public List<long> Skirts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Skirts);
+        public List<long> Shirts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.ShirtsFull);
+        public List<long> Skirts => CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Skirts);
         public List<long> Spats => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Spats);
         public List<long> Suspenders => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Suspenders);
         public List<long> Teeth => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Teeth);
