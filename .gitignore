@@ -1,2 +1,12 @@
 *.lock
 .vs/*
+/vorpcore_cl/obj
+/vorpcore_cl/obj/**
+/vorpcore_cl/bin
+/vorpcore_cl/bin/**
+/vorpcore_sv/bin
+/vorpcore_sv/bin/**
+/vorpcore_sv/obj
+/vorpcore_sv/obj/**
+/.vs
+/.idea

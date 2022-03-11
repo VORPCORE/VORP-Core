@@ -39,7 +39,7 @@ namespace vorpcore_sv.Class
 
         public Player PlayerVar {
             get {
-                PlayerList pl = new PlayerList();
+                PlayerList pl = vorpcore_sv.PlayerList;
                 return pl[source];
             } 
         }

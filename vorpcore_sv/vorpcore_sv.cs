@@ -9,8 +9,13 @@ namespace vorpcore_sv
 {
     public class vorpcore_sv : BaseScript
     {
+        public static PlayerList PlayerList;
+        public static vorpcore_sv Instance;
+
         public vorpcore_sv()
         {
+            PlayerList = Players;
+
             Console.ForegroundColor = ConsoleColor.DarkYellow;
             Console.WriteLine(@"" + "\n" +
                             @" /$$    /$$  /$$$$$$  /$$$$$$$  /$$$$$$$   /$$$$$$    /$$ /$$   /$$$$$$$  /$$$$$$$$" + "\n" +
@@ -28,6 +33,8 @@ namespace vorpcore_sv
                 Console.WriteLine("\nVORP CORE Running on Linux, thanks for using VorpCore");
             }
             Console.ForegroundColor = ConsoleColor.White;
+
+            Instance = this;
         }
 
         public static bool IsLinux

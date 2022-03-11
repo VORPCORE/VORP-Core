@@ -43,7 +43,7 @@ namespace vorpcore_sv.Scripts
             }
         }
         
-        private void OnPlayerDropped([FromSource]Player player, string reason)
+        private async void OnPlayerDropped([FromSource]Player player, string reason)
         {
             Debug.WriteLine($"Player {player.Name} dropped (Reason: {reason}).");
             string identifier = "steam:" + player.Identifiers["steam"];
@@ -51,6 +51,7 @@ namespace vorpcore_sv.Scripts
             if (_users.ContainsKey(identifier))
             {
                 _users[identifier].SaveUser();
+                await Delay(5000);
                 _users.Remove(identifier);
             }
             Debug.WriteLine($"Saved player {player.Name}.");
@@ -160,7 +161,7 @@ namespace vorpcore_sv.Scripts
         {
             try
             {
-                PlayerList PL = new PlayerList();
+                PlayerList PL = vorpcore_sv.PlayerList;
                 List<Player> playerList = PL.ToList();
                 foreach (Player p in playerList)
                 {

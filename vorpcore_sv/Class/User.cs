@@ -26,7 +26,7 @@ namespace vorpcore_sv.Class
             set
             {
                 usedCharacterId = value;
-                PlayerList pl = new PlayerList();
+                PlayerList pl = vorpcore_sv.PlayerList;
                 foreach (Player player in pl)
                 {
                     string steamid = "steam:" + player.Identifiers["steam"];
