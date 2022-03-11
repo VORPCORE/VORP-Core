@@ -14,12 +14,10 @@
   "KeySwapVoiceRange": "0x80F28E95",
   "DefaultVoiceRange": 5.0,
   "VoiceRanges": [ 2.0, 5.0, 12.0 ],
-
-  "RespawnTime": 25, // 25 seconds
+  "RespawnTime": 25,
   "RespawnKey": "0xDFF812F9",
   "RespawnTitleFont": 1,
   "RespawnSubTitleFont": 1,
-//  "RespawnCoords": [ -353.08, 752.11, 116.0, 321.76 ], // X, Y, Z, Heading
   "hospital" : {
     "Valentine" : {
       "name" :"Valentine",
@@ -39,12 +37,9 @@
   "HeadId": true,
   "HeadIdDistance": 15,
   "ModeKey": true,
-  "KeyShowIds": "0x8CC9CD42", // Press X 
-
+  "KeyShowIds": "0x8CC9CD42",
   "ActiveEagleEye": true,
   "ActiveDeadEye": false,
-
-  //Discord Rich Precense FEATURE DISABLED Please Wait for Milestone 4
   "ActiveDRP": false,
   "DiscordAppId": "null",
   "RichPresenceText": "Test",
