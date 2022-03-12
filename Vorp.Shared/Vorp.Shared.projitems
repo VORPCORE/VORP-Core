@@ -20,7 +20,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\InventoryItem.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\JsonBuilder.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Loadout.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Models\NuiResponse\ValueResponse.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PedComponentOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PedComponents.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Weapon.cs" />

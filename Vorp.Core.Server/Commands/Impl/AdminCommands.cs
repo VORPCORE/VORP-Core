@@ -111,8 +111,6 @@ namespace Vorp.Core.Server.Commands.Impl
                         // Need notification of type unknown
                         break;
                 }
-
-                targetUser.UpdateUI();
             }
         }
 
@@ -152,11 +150,6 @@ namespace Vorp.Core.Server.Commands.Impl
                 if (!double.TryParse(arguments[3], out amount)) return;
 
                 bool result = await targetUser.ActiveCharacter.AdjustCurrency(increase, currencyType, amount);
-
-                if (result)
-                {
-                    targetUser.UpdateUI();
-                }
             }
         }
 

@@ -165,8 +165,6 @@ namespace Vorp.Core.Server.Managers.Legacy
             User user = GetUser(serverId);
             if (user == null) return false;
             bool result = await user.ActiveCharacter.AdjustExperience(false, experience);
-            if (result)
-                user.UpdateUI();
             return result;
         }
 
@@ -180,8 +178,6 @@ namespace Vorp.Core.Server.Managers.Legacy
             User user = GetUser(serverId);
             if (user == null) return false;
             bool result = await user.ActiveCharacter.AdjustExperience(true, experience);
-            if (result)
-                user.UpdateUI();
             return result;
         }
 
@@ -195,8 +191,6 @@ namespace Vorp.Core.Server.Managers.Legacy
             User user = GetUser(serverId);
             if (user == null) return false;
             bool result = await user.ActiveCharacter.AdjustCurrency(false, currency, amount);
-            if (result)
-                user.UpdateUI();
             return result;
         }
 
@@ -210,8 +204,6 @@ namespace Vorp.Core.Server.Managers.Legacy
             User user = GetUser(serverId);
             if (user == null) return false;
             bool result = await user.ActiveCharacter.AdjustCurrency(true, currency, amount);
-            if (result)
-                user.UpdateUI();
             return result;
         }
 
