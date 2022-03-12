@@ -1,7 +1,7 @@
 ﻿using Vorp.Core.Client.Interface;
 using Vorp.Core.Client.Interface.Menu;
+using Vorp.Shared.Enums;
 using Vorp.Shared.Models;
-using Vorp.Shared.Models.NuiResponse;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
 {
@@ -437,7 +437,9 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             //    Instance.NuiManager.Toggle("character/VISIBLE");
             //}
 
-            World.SetWeather(Shared.Enums.eWeatherType.SUNNY);
+            World.SetWeather(eWeatherType.SUNNY);
+            World.SetWeatherFrozen(true);
+            World.WindSpeed = 0f;
         }
 
         void Dispose()
