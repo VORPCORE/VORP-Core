@@ -33,9 +33,9 @@ namespace Vorp.Core.Client.Managers.Admin
             eControl.Duck,
             eControl.Jump,
             // set values
-            eControl.SelectQuickselectSidearmsLeft, // camera ROT X (NUM PAD 1)
-            eControl.SelectQuickselectDualwield, // camera ROT Y (NUM PAD 2)
-            eControl.SelectQuickselectSidearmsRight, // camera ROT Z (NUM PAD 3)
+            eControl.SelectQuickselectSidearmsLeft, // camera ROT X (NUM 1)
+            eControl.SelectQuickselectDualwield, // camera ROT Y (NUM 2)
+            eControl.SelectQuickselectSidearmsRight, // camera ROT Z (NUM 3)
             // print to control
             eControl.FrontendAccept,
             // Up and Down
@@ -206,7 +206,7 @@ namespace Vorp.Core.Client.Managers.Admin
                     playerPed.PositionNoOffset = playerPed.GetOffsetPosition(new Vector3(0f, 0f, multiplier * -Speed / 2));
                 }
 
-                // NUM PAD 1
+                // NUM 1
                 if (IsDisabledControlPressed(0, (uint)eControl.SelectQuickselectSidearmsLeft))
                 {
                     if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
@@ -230,7 +230,7 @@ namespace Vorp.Core.Client.Managers.Admin
                     }
                 }
 
-                // NUM PAD 2
+                // NUM 2
                 if (IsDisabledControlPressed(0, (uint)eControl.SelectQuickselectDualwield))
                 {
                     if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
@@ -254,7 +254,7 @@ namespace Vorp.Core.Client.Managers.Admin
                     }
                 }
 
-                // NUM PAD 3
+                // NUM 3
                 if (IsDisabledControlPressed(0, (uint)eControl.SelectQuickselectSidearmsRight))
                 {
                     if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
