@@ -19,7 +19,7 @@ namespace Vorp.Core.Client.Commands.Impl
             }
         }
 
-        [CommandInfo(new[] { "time" }, "Will change the time ONLY on your client.")]
+        [CommandInfo(new[] { "time" }, "To test the time, only works on your client.")]
         public class ClientTime : ICommand
         {
             WorldTime _worldTime;
