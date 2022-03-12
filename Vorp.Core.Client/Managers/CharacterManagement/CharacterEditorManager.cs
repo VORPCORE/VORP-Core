@@ -27,6 +27,9 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         static Camera _cameraLegs;
         static bool isTransitioning = false;
 
+        static Camera _currentCamera;
+        static string _camera;
+
         static WorldTime _worldTime;
 
         static bool _hideNui;
@@ -50,23 +53,21 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             Instance.NuiManager.RegisterCallback("CharacterCamera", new Action<List<string>>(async args =>
             {
-                if (isTransitioning) return;
-                isTransitioning = true;
                 Dictionary<string, dynamic> valuePairs = JsonConvert.DeserializeObject<Dictionary<string, dynamic>>(args[0]);
-                if (!valuePairs.ContainsKey("camera"))
-                {
-                    isTransitioning = false;
-                    return;
-                }
+                if (!valuePairs.ContainsKey("camera")) return;
                 string camera = valuePairs["camera"];
 
-                Camera currentCamera = _cameraMain;
+                if (camera == _camera) return;
+
+                if (isTransitioning) return;
+                isTransitioning = true;
+
                 if (_cameraFace.IsActive)
-                    currentCamera = _cameraFace;
+                    _currentCamera = _cameraFace;
                 if (_cameraBody.IsActive)
-                    currentCamera = _cameraBody;
+                    _currentCamera = _cameraBody;
                 if (_cameraLegs.IsActive)
-                    currentCamera = _cameraLegs;
+                    _currentCamera = _cameraLegs;
 
                 Camera nextCamera = _cameraMain;
                 if (camera == "Face")
@@ -76,16 +77,19 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 if (camera == "Legs")
                     nextCamera = _cameraLegs;
 
-                if (currentCamera == nextCamera)
+                _camera = camera;
+
+                if (_currentCamera.Handle == nextCamera.Handle)
                 {
+                    await BaseScript.Delay(2000);
                     isTransitioning = false;
                     return;
                 }
 
-                SetCamActiveWithInterp(nextCamera.Handle, currentCamera.Handle, 2000, 250, 250);
+                SetCamActiveWithInterp(nextCamera.Handle, _currentCamera.Handle, 2000, 250, 250);
                 await BaseScript.Delay(2000);
                 nextCamera.IsActive = true;
-                currentCamera.IsActive = false;
+                _currentCamera.IsActive = false;
                 isTransitioning = false;
             }));
 
@@ -264,8 +268,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             RenderScriptCams(true, true, 250, true, true, 0);
             Vector3 rot = new Vector3(0f, 0.00f, -90f);
             float fov = 37f;
+
             _cameraMain = VorpAPI.CreateCameraWithParams(new Vector3(-561.569f, -3780.841f, 238.5f), rot, fov);
             _cameraMain.IsActive = true;
+            _currentCamera = _cameraMain;
 
             _cameraFace = VorpAPI.CreateCameraWithParams(new Vector3(-559.4195f, -3780.841f, 239.1749f), rot, fov);
             _cameraBody = VorpAPI.CreateCameraWithParams(new Vector3(-561.569f, -3780.841f, 238.5f), rot, fov);
@@ -286,7 +292,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             await Screen.FadeIn(500);
 
             CreateBaseMenu();
-            // Instance.NuiManager.SetFocus(true, true);
+            Instance.NuiManager.SetFocus(true, true);
         }
 
         private static async void CreateBaseMenu(bool update = false)
