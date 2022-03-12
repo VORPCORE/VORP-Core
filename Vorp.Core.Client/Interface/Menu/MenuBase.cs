@@ -48,6 +48,9 @@ namespace Vorp.Core.Client.Interface.Menu
         [DataMember(Name = "endpoint")]
         public string Endpoint;
 
+        [DataMember(Name = "focusEndpoint")]
+        public string FocusEndpoint;
+
         [DataMember(Name = "listMin")]
         public int ListMin = 1;
 
@@ -66,7 +69,7 @@ namespace Vorp.Core.Client.Interface.Menu
             Options.Add(menuOptions);
         }
 
-        public static MenuOptions MenuOptionList(string label, string description, string endpoint,  List<long> list, long currentValue)
+        public static MenuOptions MenuOptionList(string label, string description, string endpoint,  List<long> list, long currentValue, string focusEndpoint = "")
         {
             MenuOptions menuOptions = new();
             menuOptions.Type = "list";
@@ -76,20 +79,22 @@ namespace Vorp.Core.Client.Interface.Menu
             menuOptions.ListMin = 0;
             menuOptions.ListMax = list.Count;
             menuOptions.Value = list.IndexOf(currentValue);
+            menuOptions.FocusEndpoint = focusEndpoint;
             return menuOptions;
         }
 
-        public static MenuOptions MenuOptionMenu(string label, string subtitle, string description)
+        public static MenuOptions MenuOptionMenu(string label, string subtitle, string description, string focusEndpoint = "")
         {
             MenuOptions menuOptions = new();
             menuOptions.Type = "menu";
             menuOptions.Label = label;
             menuOptions.SubTitle = subtitle;
             menuOptions.Description = description;
+            menuOptions.FocusEndpoint = focusEndpoint;
             return menuOptions;
         }
 
-        public static MenuOptions MenuOptionButton(string label, string description, string endpoint, string rightLabel = "")
+        public static MenuOptions MenuOptionButton(string label, string description, string endpoint, string rightLabel = "", string focusEndpoint = "")
         {
             MenuOptions menuOptions = new();
             menuOptions.Type = "button";
@@ -97,6 +102,7 @@ namespace Vorp.Core.Client.Interface.Menu
             menuOptions.RightLabel = rightLabel;
             menuOptions.Endpoint = endpoint;
             menuOptions.Description = description;
+            menuOptions.FocusEndpoint = focusEndpoint;
             return menuOptions;
         }
     }

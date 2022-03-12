@@ -32,6 +32,12 @@ namespace Vorp.Core.Client.Managers.Admin
             eControl.PcFreeLook,
             eControl.Duck,
             eControl.Jump,
+            // set values
+            eControl.SelectQuickselectSidearmsLeft, // camera ROT X (NUM PAD 1)
+            eControl.SelectQuickselectDualwield, // camera ROT Y (NUM PAD 2)
+            eControl.SelectQuickselectSidearmsRight, // camera ROT Z (NUM PAD 3)
+            // print to control
+            eControl.FrontendAccept,
             // Up and Down
             eControl.Dive, // Q
             eControl.ContextY // E
@@ -115,9 +121,6 @@ namespace Vorp.Core.Client.Managers.Admin
                     Instance.AttachTickHandler(OnNoClipCheckRotationTick);
                 }
 
-                VorpAPI.DrawText($"{CurrentCamera.Position}", new Vector2(0f, 0.025f), 0.3f);
-                VorpAPI.DrawText($"{CurrentCamera.Rotation}", new Vector2(0f, 0.05f), 0.3f);
-
                 // Speed Control
                 if (IsDisabledControlPressed(0, (uint)eControl.SelectPrevWeapon) && !IsDisabledControlPressed(0, (uint)eControl.Jump))
                 {
@@ -131,12 +134,22 @@ namespace Vorp.Core.Client.Managers.Admin
                 // FOV Control
                 if (IsDisabledControlPressed(0, (uint)eControl.SelectPrevWeapon) && IsDisabledControlPressed(0, (uint)eControl.Jump))
                 {
-                    fov = Math.Min(fov + 0.1f, _maxFov);
+                    float change = 0.1f;
+                    if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
+                    {
+                        change = 1f;
+                    }
+                    fov = Math.Min(fov + change, _maxFov);
                     CurrentCamera.FieldOfView = fov;
                 }
                 else if (IsDisabledControlPressed(0, (uint)eControl.SelectNextWeapon) && IsDisabledControlPressed(0, (uint)eControl.Jump))
                 {
-                    fov = Math.Max(0.1f, fov - 0.1f);
+                    float change = 0.1f;
+                    if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
+                    {
+                        change = 1f;
+                    }
+                    fov = Math.Max(change, fov - change);
                     CurrentCamera.FieldOfView = fov;
                 }
 
@@ -193,18 +206,97 @@ namespace Vorp.Core.Client.Managers.Admin
                     playerPed.PositionNoOffset = playerPed.GetOffsetPosition(new Vector3(0f, 0f, multiplier * -Speed / 2));
                 }
 
+                // NUM PAD 1
+                if (IsDisabledControlPressed(0, (uint)eControl.SelectQuickselectSidearmsLeft))
+                {
+                    if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
+                    {
+                        float Y = CurrentCamera.Rotation.Y;
+                        float Z = CurrentCamera.Rotation.Z;
+                        CurrentCamera.Rotation = new Vector3(0f, Y, Z);
+                        await BaseScript.Delay(100);
+                    }
+                    else
+                    {
+                        float mod = 90f;
+                        if (IsDisabledControlPressed(0, (uint)eControl.Duck))
+                            mod = 45f;
+
+                        float X = CurrentCamera.Rotation.X + mod;
+                        if (X < 0f)
+                            X = CurrentCamera.Rotation.X - mod;
+
+                        CurrentCamera.Rotation += new Vector3(X, 0f, 0f);
+                    }
+                }
+
+                // NUM PAD 2
+                if (IsDisabledControlPressed(0, (uint)eControl.SelectQuickselectDualwield))
+                {
+                    if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
+                    {
+                        float X = CurrentCamera.Rotation.X;
+                        float Z = CurrentCamera.Rotation.Z;
+                        CurrentCamera.Rotation = new Vector3(X, 0f, Z);
+                        await BaseScript.Delay(100);
+                    }
+                    else
+                    {
+                        float mod = 90f;
+                        if (IsDisabledControlPressed(0, (uint)eControl.Duck))
+                            mod = 45f;
+
+                        float Y = CurrentCamera.Rotation.Y + mod;
+                        if (Y < 0f)
+                            Y = CurrentCamera.Rotation.Y - mod;
+
+                        CurrentCamera.Rotation += new Vector3(0f, Y, 0f);
+                    }
+                }
+
+                // NUM PAD 3
+                if (IsDisabledControlPressed(0, (uint)eControl.SelectQuickselectSidearmsRight))
+                {
+                    if (IsDisabledControlPressed(0, (uint)eControl.Sprint))
+                    {
+                        float X = CurrentCamera.Rotation.X;
+                        float Y = CurrentCamera.Rotation.Y;
+                        CurrentCamera.Rotation = new Vector3(X, Y, 0f);
+                        await BaseScript.Delay(100);
+                    }
+                    else
+                    {
+                        float mod = 90f;
+                        if (IsDisabledControlPressed(0, (uint)eControl.Duck))
+                            mod = 45f;
+
+                        float Z = CurrentCamera.Rotation.Z + mod;
+                        if (Z < 0f)
+                            Z = CurrentCamera.Rotation.Z - mod;
+
+                        CurrentCamera.Rotation += new Vector3(0f, 0f, Z);
+                    }
+                }
+
                 // Disable controls
                 foreach (var ctrl in _disabledControls)
                 {
                     DisableControlAction(0, (uint)ctrl, true);
                 }
 
+                if (IsDisabledControlPressed(0, (uint)eControl.FrontendAccept))
+                {
+                    Logger.Trace($"Camera Position: {CurrentCamera.Position}");
+                    Logger.Trace($"Camera Rotation: {CurrentCamera.Rotation}");
+                    Logger.Trace($"Camera FOV: {CurrentCamera.FieldOfView}");
+                    await BaseScript.Delay(100);
+                }
+
                 playerPed.Heading = Math.Max(0f, (360 + CurrentCamera.Rotation.Z) % 360f);
                 playerPed.Opacity = 0;
                 DisablePlayerFiring(playerPed.Handle, false);
 
-
-                VorpAPI.DrawText($"Speed: {Speed} / Multiplier: {multiplier} / FOV: {fov}", new Vector2(0, 0), 0.3f);
+                VorpAPI.DrawText($"Speed: {Speed} / Multiplier: {multiplier} / FOV: {fov} / POS: {CurrentCamera.Position} / ROT: {CurrentCamera.Rotation}", new Vector2(0, 0), 0.3f);
             }
             catch (Exception ex)
             {

@@ -1,5 +1,4 @@
-﻿using Vorp.Core.Client.Environment.Entities;
-using Vorp.Core.Client.Interface;
+﻿using Vorp.Core.Client.Interface;
 using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
