@@ -82,7 +82,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
                 if (_currentCamera.Handle == nextCamera.Handle)
                 {
-                    await BaseScript.Delay(2000);
                     isTransitioning = false;
                     return;
                 }
@@ -294,9 +293,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             World.SetWeatherFrozen(true);
             World.WindSpeed = 0f;
 
-            Instance.WorldTime.ClockTimeOverride(7, 0, pauseClock: true);
             await BaseScript.Delay(1000);
-            Instance.WorldTime.ClockTimeOverride(7, 0, pauseClock: true);
 
             await Screen.FadeIn(500);
 
@@ -435,6 +432,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         private static async Task OnNuiHandling()
         {
+            Instance.WorldTime.ClockTimeOverride_2(7, 0, pauseClock: true);
             //if (IsPauseMenuActive() && !_hideNui)
             //{
             //    _hideNui = true;
@@ -449,6 +447,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         void Dispose()
         {
+            Instance.DetachTickHandler(OnNuiHandling);
             Instance.WorldTime.ClearClockTimeOverride();
 
             DisplayHud(false);

@@ -55,10 +55,14 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             _cameraMain.IsActive = true;
             SetCamera(CameraState.Main, _cameraMain);
             RenderScriptCams(true, true, 2000, true, true, 0);
-
-            Instance.WorldTime.ClockTimeOverride(7, 0, pauseClock: true);
+            Instance.AttachTickHandler(OnWorldTime);
 
             await CreateSelections();
+        }
+
+        private async Task OnWorldTime()
+        {
+            Instance.WorldTime.ClockTimeOverride_2(7, 0, pauseClock: true);
         }
 
         private void CreatePrompts()
@@ -218,11 +222,12 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         void Dispose(bool resetTime = true)
         {
+            Instance.DetachTickHandler(OnPromptHandler);
+            Instance.DetachTickHandler(OnWorldTime);
+
             if (resetTime)
                 Instance.WorldTime.ClearClockTimeOverride();
 
-            Instance.DetachTickHandler(OnPromptHandler);
-            
             _pedFemale.Delete();
             _pedMale.Delete();
 
