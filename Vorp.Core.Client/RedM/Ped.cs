@@ -303,5 +303,17 @@ namespace Vorp.Core.Client.RedM
         public List<long> Suspenders => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Suspenders);
         public List<long> Teeth => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Teeth);
         public List<long> Vests => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Vests);
+
+        // TASKS
+        public void TaskStartScenarioInPlace(string scenario, float heading, int duration = -1)
+        {
+            int hash = GetHashKey(scenario);
+            Function.Call((Hash)0x524B54361229154F, Handle, (uint)hash, duration, true, false, heading, false);
+        }
+
+        public void ClearPedTasksImmediately(bool clearCrouch = true)
+        {
+            Function.Call((Hash)0xAAA34F8A7CB32098, Handle, true, clearCrouch);
+        }
     }
 }
