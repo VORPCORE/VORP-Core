@@ -54,10 +54,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             await BaseScript.Delay(100);
             _cameraMain.IsActive = true;
             SetCamera(CameraState.Main, _cameraMain);
-            RenderScriptCams(true, true, 2000, true, true, 0);
+            RenderScriptCams(true, false, 2000, true, true, 0);
             Instance.AttachTickHandler(OnWorldTime);
 
             await CreateSelections();
+            await BaseScript.Delay(1000);
         }
 
         private async Task OnWorldTime()
