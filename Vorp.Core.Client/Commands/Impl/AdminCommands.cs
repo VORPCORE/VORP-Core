@@ -76,6 +76,10 @@ namespace Vorp.Core.Client.Commands.Impl
                     string xStr = arguments[0];
                     string yStr = arguments[1];
                     string zStr = arguments[2];
+                    string ground = "0";
+
+                    if (arguments.Count == 4)
+                        ground = arguments[3];
 
                     xStr = xStr.Replace(",", "").Replace("f", "");
                     yStr = yStr.Replace(",", "").Replace("f", "");
@@ -86,8 +90,12 @@ namespace Vorp.Core.Client.Commands.Impl
                     float z = float.Parse(zStr);
 
                     var position = new Vector3(x, y, z);
+                    bool findGround = ground == "1";
 
-                    await player.Character.Teleport(position);
+                    if (findGround)
+                        await player.Character.Teleport(position, findGround);
+                    else
+                        player.Character.Position = position;
                 }
                 catch (Exception ex)
                 {
