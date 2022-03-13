@@ -20,18 +20,18 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
                 await characterCreatorManager.StartCharacterCreator();
 
-                if (characters.Count == 0)
-                {
-                    Logger.Trace($"No characters, lets goto character creator.");
-                    return;
-                }
+                //if (characters.Count == 0)
+                //{
+                //    Logger.Trace($"No characters, lets goto character creator.");
+                //    return;
+                //}
 
-                foreach (var kvp in characters)
-                {
-                    int characterId = kvp.Key;
-                    Character character = kvp.Value;
-                }
-
+                //foreach (var kvp in characters)
+                //{
+                //    int characterId = kvp.Key;
+                //    Character character = kvp.Value;
+                //}
+                // RenderScriptCams(false, true, 250, true, true, 0);
                 await Screen.FadeIn(500);
             }));
         }
