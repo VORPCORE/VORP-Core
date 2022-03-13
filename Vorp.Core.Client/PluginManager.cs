@@ -34,6 +34,7 @@ namespace Vorp.Core.Client
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
         public CommandFramework CommandFramework;
         public NuiManager NuiManager = new NuiManager();
+        public WorldTime WorldTime = new WorldTime();
 
         public PluginManager()
         {
