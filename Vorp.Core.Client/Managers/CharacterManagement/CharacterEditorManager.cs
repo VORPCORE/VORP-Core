@@ -335,58 +335,60 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             characterFaceOptions.Add("CharacterSetComponent/Eyes", new Tuple<string, string, List<long>, long>("Eyes", "Change your character's eyes.", _ped.Eyes, _ped.PedComponents.Eyes.Value));
             characterFaceOptions.Add("CharacterSetComponent/Head", new Tuple<string, string, List<long>, long>("Head", "Change your character's head.", _ped.Heads, _ped.PedComponents.Head.Value));
-            characterBodyOptions.Add("CharacterSetComponent/BodyUpper", new Tuple<string, string, List<long>, long>("Upper Body", "Change your character's upper body.", _ped.BodiesUpper, _ped.PedComponents.BodyUpper.Value));
-            characterBodyOptions.Add("CharacterSetComponent/BodyLower", new Tuple<string, string, List<long>, long>("Lower Body", "Change your character's lower body.", _ped.BodiesLower, _ped.PedComponents.BodyLower.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Accessory", new Tuple<string, string, List<long>, long>("Accessory", "Change your character's accessories.", _ped.Accessories, _ped.PedComponents.Accessory.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Armor", new Tuple<string, string, List<long>, long>("Armor", "Change your character's armor.", _ped.Armor, _ped.PedComponents.Armor.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Badge", new Tuple<string, string, List<long>, long>("Badge", "Change your character's badge.", _ped.Badges, _ped.PedComponents.Badge.Value));
+            characterFaceOptions.Add("CharacterSetComponent/Teeth", new Tuple<string, string, List<long>, long>("Teeth", "Change your character's teeth.", _ped.Teeth, _ped.PedComponents.Teeth.Value));
             
             if (_ped.IsMale)
-                characterFaceOptions.Add("CharacterSetComponent/Beard", new Tuple<string, string, List<long>, long>("Beard", "Change your character's beard.", _ped.Beards, _ped.PedComponents.Beard.Value));
+                characterFaceOptions.Add("CharacterSetComponent/Beard", new Tuple<string, string, List<long>, long>("Beard", "Change your character's beard.", _ped.CreatorBeards, _ped.PedComponents.Beard.Value));
+            
+            characterFaceOptions.Add("CharacterSetComponent/Hair", new Tuple<string, string, List<long>, long>("Hair", "Change your character's hair.", _ped.CreatorHairs, _ped.PedComponents.Hair.Value));
 
-            characterClothesOptions.Add("CharacterSetComponent/Belt", new Tuple<string, string, List<long>, long>("Belt", "Change your character's belt.", _ped.Belts, _ped.PedComponents.Belt.Value));
-            characterClothesOptions.Add("CharacterSetComponent/BeltBuckle", new Tuple<string, string, List<long>, long>("Belt Buckle", "Change your character's belt buckle.", _ped.BeltBuckles, _ped.PedComponents.BeltBuckle.Value));
-            characterClothesOptions.Add("CharacterSetComponent/BootAccessory", new Tuple<string, string, List<long>, long>("Boot Accessory", "Change your character's boot accessory.", _ped.BootAccessories, _ped.PedComponents.BootAccessory.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Boots", new Tuple<string, string, List<long>, long>("Boots", "Change your character's boots.", _ped.Boots, _ped.PedComponents.Boots.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Chaps", new Tuple<string, string, List<long>, long>("Chaps", "Change your character's chaps.", _ped.Chaps, _ped.PedComponents.Chaps.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Cloaks", new Tuple<string, string, List<long>, long>("Cloaks", "Change your character's cloak.", _ped.Cloaks, _ped.PedComponents.Cloak.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Coats", new Tuple<string, string, List<long>, long>("Coats", "Change your character's coat.", _ped.Coats, _ped.PedComponents.Coat.Value));
-            characterClothesOptions.Add("CharacterSetComponent/CoatsClosed", new Tuple<string, string, List<long>, long>("Coats Closed", "Change your character's closed coat.", _ped.CoatsClosed, _ped.PedComponents.CoatClosed.Value));
+            if (!_ped.IsMale)
+                characterFaceOptions.Add("CharacterSetComponent/HairAccessories", new Tuple<string, string, List<long>, long>("Hair Accessories", "Change your character's hair accessories.", _ped.CreatorHairAccessories, _ped.PedComponents.HairAccessory.Value));
+
+            characterBodyOptions.Add("CharacterSetComponent/BodyUpper", new Tuple<string, string, List<long>, long>("Upper Body", "Change your character's upper body.", _ped.BodiesUpper, _ped.PedComponents.BodyUpper.Value));
+            characterBodyOptions.Add("CharacterSetComponent/BodyLower", new Tuple<string, string, List<long>, long>("Lower Body", "Change your character's lower body.", _ped.BodiesLower, _ped.PedComponents.BodyLower.Value));
+            
+            characterClothesOptions.Add("CharacterSetComponent/Accessory", new Tuple<string, string, List<long>, long>("Accessory", "Change your character's accessories.", _ped.CreatorAccessories, _ped.PedComponents.Accessory.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Armor", new Tuple<string, string, List<long>, long>("Armor", "Change your character's armor.", _ped.CreatorArmor, _ped.PedComponents.Armor.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Badge", new Tuple<string, string, List<long>, long>("Badge", "Change your character's badge.", _ped.CreatorBadges, _ped.PedComponents.Badge.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Belt", new Tuple<string, string, List<long>, long>("Belt", "Change your character's belt.", _ped.CreatorBelts, _ped.PedComponents.Belt.Value));
+            characterClothesOptions.Add("CharacterSetComponent/BeltBuckle", new Tuple<string, string, List<long>, long>("Belt Buckle", "Change your character's belt buckle.", _ped.CreatorBeltBuckles, _ped.PedComponents.BeltBuckle.Value));
+            characterClothesOptions.Add("CharacterSetComponent/BootAccessory", new Tuple<string, string, List<long>, long>("Boot Accessory", "Change your character's boot accessory.", _ped.CreatorBootAccessories, _ped.PedComponents.BootAccessory.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Boots", new Tuple<string, string, List<long>, long>("Boots", "Change your character's boots.", _ped.CreatorBoots, _ped.PedComponents.Boots.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Chaps", new Tuple<string, string, List<long>, long>("Chaps", "Change your character's chaps.", _ped.CreatorChaps, _ped.PedComponents.Chaps.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Cloaks", new Tuple<string, string, List<long>, long>("Cloaks", "Change your character's cloak.", _ped.CreatorCloaks, _ped.PedComponents.Cloak.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Coats", new Tuple<string, string, List<long>, long>("Coats", "Change your character's coat.", _ped.CreatorCoats, _ped.PedComponents.Coat.Value));
+            characterClothesOptions.Add("CharacterSetComponent/CoatsClosed", new Tuple<string, string, List<long>, long>("Coats Closed", "Change your character's closed coat.", _ped.CreatorCoatsClosed, _ped.PedComponents.CoatClosed.Value));
 
             if (_ped.IsMale)
-                characterClothesOptions.Add("CharacterSetComponent/Dresses", new Tuple<string, string, List<long>, long>("Dresses", "Change your character's dresses.", _ped.Dresses, _ped.PedComponents.Dresses.Value));
+                characterClothesOptions.Add("CharacterSetComponent/Dresses", new Tuple<string, string, List<long>, long>("Dresses", "Change your character's dresses.", _ped.CreatorDresses, _ped.PedComponents.Dresses.Value));
 
-            characterClothesOptions.Add("CharacterSetComponent/EyeWear", new Tuple<string, string, List<long>, long>("Eye Wear", "Change your character's eye wear.", _ped.EyeWear, _ped.PedComponents.EyeWear.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Gauntlets", new Tuple<string, string, List<long>, long>("Gauntlets", "Change your character's gauntlets.", _ped.Gauntlets, _ped.PedComponents.Gauntlet.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Gloves", new Tuple<string, string, List<long>, long>("Gloves", "Change your character's gloves.", _ped.Gloves, _ped.PedComponents.Gloves.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Gunbelts", new Tuple<string, string, List<long>, long>("Gunbelts", "Change your character's gunbelts.", _ped.Gunbelts, _ped.PedComponents.Gunbelt.Value));
-            characterClothesOptions.Add("CharacterSetComponent/GunbeltAccessories", new Tuple<string, string, List<long>, long>("Gunbelt Accessories", "Change your character's gunbelt accessories.", _ped.GunbeltAccessories, _ped.PedComponents.GunbeltAccessory.Value));
-            characterFaceOptions.Add("CharacterSetComponent/Hair", new Tuple<string, string, List<long>, long>("Hair", "Change your character's hair.", _ped.Hairs, _ped.PedComponents.Hair.Value));
+            characterClothesOptions.Add("CharacterSetComponent/EyeWear", new Tuple<string, string, List<long>, long>("Eye Wear", "Change your character's eye wear.", _ped.CreatorEyeWear, _ped.PedComponents.EyeWear.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Gauntlets", new Tuple<string, string, List<long>, long>("Gauntlets", "Change your character's gauntlets.", _ped.CreatorGauntlets, _ped.PedComponents.Gauntlet.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Gloves", new Tuple<string, string, List<long>, long>("Gloves", "Change your character's gloves.", _ped.CreatorGloves, _ped.PedComponents.Gloves.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Gunbelts", new Tuple<string, string, List<long>, long>("Gunbelts", "Change your character's gunbelts.", _ped.CreatorGunbelts, _ped.PedComponents.Gunbelt.Value));
+            characterClothesOptions.Add("CharacterSetComponent/GunbeltAccessories", new Tuple<string, string, List<long>, long>("Gunbelt Accessories", "Change your character's gunbelt accessories.", _ped.CreatorGunbeltAccessories, _ped.PedComponents.GunbeltAccessory.Value));
 
-            if (!_ped.IsMale)
-                characterFaceOptions.Add("CharacterSetComponent/HairAccessories", new Tuple<string, string, List<long>, long>("Hair Accessories", "Change your character's hair accessories.", _ped.HairAccessories, _ped.PedComponents.HairAccessory.Value));
-
-            characterClothesOptions.Add("CharacterSetComponent/Hats", new Tuple<string, string, List<long>, long>("Hats", "Change your character's hats.", _ped.Hats, _ped.PedComponents.Hat.Value));
-            characterClothesOptions.Add("CharacterSetComponent/HolstersLeft", new Tuple<string, string, List<long>, long>("Holsters", "Change your character's holster.", _ped.Hats, _ped.PedComponents.HolstersLeft.Value));
-            characterClothesOptions.Add("CharacterSetComponent/JewelryBracelets", new Tuple<string, string, List<long>, long>("Bracelets", "Change your character's bracelets.", _ped.JewelryBracelets, _ped.PedComponents.JewelryBracelets.Value));
-            characterClothesOptions.Add("CharacterSetComponent/JewelryRingsLeft", new Tuple<string, string, List<long>, long>("Rings Left Hand", "Change your character's rings.", _ped.JewelryRingsLeft, _ped.PedComponents.JewelryRingsLeft.Value));
-            characterClothesOptions.Add("CharacterSetComponent/JewelryRingsRight", new Tuple<string, string, List<long>, long>("Rings Right Hand", "Change your character's rings.", _ped.JewelryRingsRight, _ped.PedComponents.JewelryRingsRight.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Loadouts", new Tuple<string, string, List<long>, long>("Loadouts", "Change your character's loadouts.", _ped.Loadouts, _ped.PedComponents.Loadout.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Masks", new Tuple<string, string, List<long>, long>("Masks", "Change your character's masks.", _ped.Masks, _ped.PedComponents.Masks.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Neckties", new Tuple<string, string, List<long>, long>("Neckties", "Change your character's necktie.", _ped.Neckties, _ped.PedComponents.Neckties.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Neckwear", new Tuple<string, string, List<long>, long>("Neckwear", "Change your character's neckwear.", _ped.Neckwear, _ped.PedComponents.Neckwear.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Pants", new Tuple<string, string, List<long>, long>("Pants", "Change your character's pants.", _ped.Pants, _ped.PedComponents.Pants.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Ponchos", new Tuple<string, string, List<long>, long>("Ponchos", "Change your character's poncho.", _ped.Ponchos, _ped.PedComponents.Poncho.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Satchels", new Tuple<string, string, List<long>, long>("Satchels", "Change your character's satchels.", _ped.Ponchos, _ped.PedComponents.Satchel.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Shirt", new Tuple<string, string, List<long>, long>("Shirt", "Change your character's shirt.", _ped.Shirts, _ped.PedComponents.Shirt.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Hats", new Tuple<string, string, List<long>, long>("Hats", "Change your character's hats.", _ped.CreatorHats, _ped.PedComponents.Hat.Value));
+            characterClothesOptions.Add("CharacterSetComponent/HolstersLeft", new Tuple<string, string, List<long>, long>("Holsters", "Change your character's holster.", _ped.CreatorHolstersLeft, _ped.PedComponents.HolstersLeft.Value));
+            characterClothesOptions.Add("CharacterSetComponent/JewelryBracelets", new Tuple<string, string, List<long>, long>("Bracelets", "Change your character's bracelets.", _ped.CreatorJewelryBracelets, _ped.PedComponents.JewelryBracelets.Value));
+            characterClothesOptions.Add("CharacterSetComponent/JewelryRingsLeft", new Tuple<string, string, List<long>, long>("Rings Left Hand", "Change your character's rings.", _ped.CreatorJewelryRingsLeft, _ped.PedComponents.JewelryRingsLeft.Value));
+            characterClothesOptions.Add("CharacterSetComponent/JewelryRingsRight", new Tuple<string, string, List<long>, long>("Rings Right Hand", "Change your character's rings.", _ped.CreatorJewelryRingsRight, _ped.PedComponents.JewelryRingsRight.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Loadouts", new Tuple<string, string, List<long>, long>("Loadouts", "Change your character's loadouts.", _ped.CreatorLoadouts, _ped.PedComponents.Loadout.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Masks", new Tuple<string, string, List<long>, long>("Masks", "Change your character's masks.", _ped.CreatorMasks, _ped.PedComponents.Masks.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Neckties", new Tuple<string, string, List<long>, long>("Neckties", "Change your character's necktie.", _ped.CreatorNeckties, _ped.PedComponents.Neckties.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Neckwear", new Tuple<string, string, List<long>, long>("Neckwear", "Change your character's neckwear.", _ped.CreatorNeckwear, _ped.PedComponents.Neckwear.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Pants", new Tuple<string, string, List<long>, long>("Pants", "Change your character's pants.", _ped.CreatorPants, _ped.PedComponents.Pants.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Ponchos", new Tuple<string, string, List<long>, long>("Ponchos", "Change your character's poncho.", _ped.CreatorPonchos, _ped.PedComponents.Poncho.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Satchels", new Tuple<string, string, List<long>, long>("Satchels", "Change your character's satchels.", _ped.Satchels, _ped.PedComponents.Satchel.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Shirt", new Tuple<string, string, List<long>, long>("Shirt", "Change your character's shirt.", _ped.CreatorShirts, _ped.PedComponents.Shirt.Value));
 
             if (!_ped.IsMale)
-                characterClothesOptions.Add("CharacterSetComponent/Skirts", new Tuple<string, string, List<long>, long>("Skirt", "Change your character's skirt.", _ped.Skirts, _ped.PedComponents.Skirt.Value));
+                characterClothesOptions.Add("CharacterSetComponent/Skirts", new Tuple<string, string, List<long>, long>("Skirt", "Change your character's skirt.", _ped.CreatorSkirts, _ped.PedComponents.Skirt.Value));
 
-            characterClothesOptions.Add("CharacterSetComponent/Spats", new Tuple<string, string, List<long>, long>("Spats", "Change your character's spats.", _ped.Spats, _ped.PedComponents.Spats.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Suspenders", new Tuple<string, string, List<long>, long>("Suspenders", "Change your character's suspenders.", _ped.Suspenders, _ped.PedComponents.Suspenders.Value));
-            characterFaceOptions.Add("CharacterSetComponent/Teeth", new Tuple<string, string, List<long>, long>("Teeth", "Change your character's teeth.", _ped.Teeth, _ped.PedComponents.Teeth.Value));
-            characterClothesOptions.Add("CharacterSetComponent/Vests", new Tuple<string, string, List<long>, long>("Vests", "Change your character's Vests.", _ped.Vests, _ped.PedComponents.Vest.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Spats", new Tuple<string, string, List<long>, long>("Spats", "Change your character's spats.", _ped.CreatorSpats, _ped.PedComponents.Spats.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Suspenders", new Tuple<string, string, List<long>, long>("Suspenders", "Change your character's suspenders.", _ped.CreatorSuspenders, _ped.PedComponents.Suspenders.Value));
+            characterClothesOptions.Add("CharacterSetComponent/Vests", new Tuple<string, string, List<long>, long>("Vests", "Change your character's Vests.", _ped.CreatorVests, _ped.PedComponents.Vest.Value));
 
             foreach(KeyValuePair<string, Tuple<string, string, List<long>, long>> kvp in characterClothesOptions)
             {

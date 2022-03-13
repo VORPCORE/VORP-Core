@@ -4,6 +4,18 @@ using System.Runtime.Serialization;
 namespace Vorp.Shared.Models
 {
     [DataContract]
+    public class Component
+    {
+        [DataMember(Name = "hash")]
+        public string Hash;
+
+        [DataMember(Name = "isCreator")]
+        public bool IsCreator;
+
+        public long HashKey => Convert.ToInt64(Hash, 16);
+    }
+
+    [DataContract]
     public class ComponentCategory
     {
         [DataMember(Name = "category")]
@@ -15,7 +27,7 @@ namespace Vorp.Shared.Models
         public long HashKey => Convert.ToInt64(Hash, 16);
 
         [DataMember(Name = "items")]
-        public List<string> Items = new();
+        public List<Component> Items = new();
     }
 
     [DataContract]

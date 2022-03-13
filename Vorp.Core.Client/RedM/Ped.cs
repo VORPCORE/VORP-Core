@@ -304,6 +304,44 @@ namespace Vorp.Core.Client.RedM
         public List<long> Teeth => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Teeth);
         public List<long> Vests => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Vests);
 
+        public List<long> CreatorAccessories => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Accessories, true);
+        public List<long> CreatorArmor => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Armor, true);
+        public List<long> CreatorBadges => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Badges, true);
+        public List<long> CreatorBeards => CharacterComponentConfig.GetComponents(ePedType.Male, ePedComponentCategory.BeardsComplete, true);
+        public List<long> CreatorBelts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Belts, true);
+        public List<long> CreatorBeltBuckles => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BeltBuckles, true);
+        public List<long> CreatorBootAccessories => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BootAccessories, true);
+        public List<long> CreatorBoots => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Boots, true);
+        public List<long> CreatorChaps => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Chaps, true);
+        public List<long> CreatorCloaks => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Cloaks, true);
+        public List<long> CreatorCoats => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Coats, true);
+        public List<long> CreatorCoatsClosed => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.CoatsClosed, true);
+        public List<long> CreatorDresses => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Dresses, true);
+        public List<long> CreatorEyeWear => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.EyeWear, true);
+        public List<long> CreatorGauntlets => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Gauntlets, true);
+        public List<long> CreatorGloves => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Gloves, true);
+        public List<long> CreatorGunbelts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Gunbelts, true);
+        public List<long> CreatorGunbeltAccessories => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.GunbeltAccessories, true);
+        public List<long> CreatorHairs => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Hair, true);
+        public List<long> CreatorHairAccessories => CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.HairAccessories, true);
+        public List<long> CreatorHats => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Hats, true);
+        public List<long> CreatorHolstersLeft => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.HolstersLeft, true);
+        public List<long> CreatorJewelryBracelets => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.JewelryBracelets, true);
+        public List<long> CreatorJewelryRingsLeft => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.JewelryRingsLeft, true);
+        public List<long> CreatorJewelryRingsRight => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.JewelryRingsRight, true);
+        public List<long> CreatorLoadouts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Loadouts, true);
+        public List<long> CreatorMasks => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Masks, true);
+        public List<long> CreatorNeckties => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Neckties, true);
+        public List<long> CreatorNeckwear => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Neckwear, true);
+        public List<long> CreatorPants => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Pants, true);
+        public List<long> CreatorPonchos => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Ponchos, true);
+        public List<long> CreatorSatchels => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Satchels, true);
+        public List<long> CreatorShirts => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.ShirtsFull, true);
+        public List<long> CreatorSkirts => CharacterComponentConfig.GetComponents(ePedType.Female, ePedComponentCategory.Skirts, true);
+        public List<long> CreatorSpats => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Spats, true);
+        public List<long> CreatorSuspenders => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Suspenders, true);
+        public List<long> CreatorVests => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Vests, true);
+
         // TASKS
         public void TaskStartScenarioInPlace(string scenario, float heading, int duration = -1)
         {

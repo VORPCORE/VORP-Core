@@ -1,5 +1,4 @@
-﻿using Vorp.Core.Client.Extensions;
-using Vorp.Shared.Enums;
+﻿using Vorp.Shared.Enums;
 using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
@@ -32,7 +31,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         public static List<ComponentCategory> Male => Config.Male;
         public static List<ComponentCategory> Horse => Config.Horse;
 
-        public static List<long> GetComponents(ePedType ePedType, ePedComponentCategory componentCategory)
+        public static List<long> GetComponents(ePedType ePedType, ePedComponentCategory componentCategory, bool isCreator = false)
         {
             try
             {
@@ -61,10 +60,12 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
                     if (category == componentCategory)
                     {
-                        foreach (string comp in compCategory.Items)
+                        foreach (Component comp in compCategory.Items)
                         {
-                            long compValue = Convert.ToInt64(comp, 16);
-                            components.Add(compValue);
+                            if (isCreator && comp.IsCreator)
+                                components.Add(comp.HashKey);
+                            else if (!isCreator)
+                                components.Add(comp.HashKey);
                         }
                     }
                 }
