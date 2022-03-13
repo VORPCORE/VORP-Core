@@ -9,12 +9,12 @@ namespace Vorp.Core.Client.Interface.Menu
         public string Title;
 
         [DataMember(Name = "options")]
-        public List<MenuOptions> Options { get; private set; } = new();
+        public List<MenuOption> Options { get; private set; } = new();
 
         [DataMember(Name = "updated")]
         public long Updated => GetGameTimer();
 
-        public void AddOption(MenuOptions menuOptions)
+        public void AddOption(MenuOption menuOptions)
         {
             menuOptions.Order = Options.Count;
             Options.Add(menuOptions);
@@ -22,7 +22,7 @@ namespace Vorp.Core.Client.Interface.Menu
     }
 
     [DataContract]
-    internal class MenuOptions
+    internal class MenuOption
     {
         [DataMember(Name = "order")]
         public int Order;
@@ -61,17 +61,24 @@ namespace Vorp.Core.Client.Interface.Menu
         public string ListLabel;
 
         [DataMember(Name = "options")]
-        public List<MenuOptions> Options { get; private set; } = new();
+        public List<MenuOption> Options { get; private set; } = new();
 
-        public void AddOption(MenuOptions menuOptions)
+        public void AddOption(MenuOption menuOptions)
         {
             menuOptions.Order = Options.Count;
             Options.Add(menuOptions);
         }
 
-        public static MenuOptions MenuOptionList(string label, string description, string endpoint,  List<long> list, long currentValue, string focusEndpoint = "")
+        public static MenuOption MenuOptionDivider()
         {
-            MenuOptions menuOptions = new();
+            MenuOption menuOptions = new();
+            menuOptions.Type = "spacer";
+            return menuOptions;
+        }
+
+        public static MenuOption MenuOptionList(string label, string description, string endpoint,  List<long> list, long currentValue, string focusEndpoint = "")
+        {
+            MenuOption menuOptions = new();
             menuOptions.Type = "list";
             menuOptions.Label = label;
             menuOptions.Endpoint = endpoint;
@@ -83,9 +90,9 @@ namespace Vorp.Core.Client.Interface.Menu
             return menuOptions;
         }
 
-        public static MenuOptions MenuOptionMenu(string label, string subtitle, string description, string focusEndpoint = "")
+        public static MenuOption MenuOptionMenu(string label, string subtitle, string description, string focusEndpoint = "")
         {
-            MenuOptions menuOptions = new();
+            MenuOption menuOptions = new();
             menuOptions.Type = "menu";
             menuOptions.Label = label;
             menuOptions.SubTitle = subtitle;
@@ -94,9 +101,9 @@ namespace Vorp.Core.Client.Interface.Menu
             return menuOptions;
         }
 
-        public static MenuOptions MenuOptionButton(string label, string description, string endpoint, string rightLabel = "", string focusEndpoint = "")
+        public static MenuOption MenuOptionButton(string label, string description, string endpoint, string rightLabel = "", string focusEndpoint = "")
         {
-            MenuOptions menuOptions = new();
+            MenuOption menuOptions = new();
             menuOptions.Type = "button";
             menuOptions.Label = label;
             menuOptions.RightLabel = rightLabel;
