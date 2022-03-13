@@ -21,7 +21,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         static float _pedHeading = 93.2f;
         static Ped _ped;
 
-        static Camera _cameraMain;
         static Camera _cameraFace;
         static Camera _cameraBody;
         static Camera _cameraLegs;
@@ -29,8 +28,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         static Camera _currentCamera;
         static string _camera;
-
-        static WorldTime _worldTime;
 
         static bool _hideNui;
 
@@ -63,18 +60,22 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 isTransitioning = true;
 
                 if (_cameraFace.IsActive)
+                {
                     _currentCamera = _cameraFace;
-                if (_cameraBody.IsActive)
+                }
+                else if (_cameraBody.IsActive)
+                {
                     _currentCamera = _cameraBody;
-                if (_cameraLegs.IsActive)
+                }
+                else if (_cameraLegs.IsActive)
+                {
                     _currentCamera = _cameraLegs;
+                }
 
-                Camera nextCamera = _cameraMain;
+                Camera nextCamera = _cameraBody;
                 if (camera == "Face")
                     nextCamera = _cameraFace;
-                if (camera == "Body")
-                    nextCamera = _cameraBody;
-                if (camera == "Legs")
+                else if (camera == "Legs")
                     nextCamera = _cameraLegs;
 
                 _camera = camera;
@@ -85,6 +86,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                     isTransitioning = false;
                     return;
                 }
+
+                Logger.Trace($"Current Camera: {_currentCamera.Handle} / Next Camera: {nextCamera.Handle}");
 
                 SetCamActiveWithInterp(nextCamera.Handle, _currentCamera.Handle, 2000, 250, 250);
                 await BaseScript.Delay(2000);
@@ -265,30 +268,35 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             SetEntityInvincible(_ped.Handle, true);
             _ped.PedComponents = components;
 
-            RenderScriptCams(true, true, 250, true, true, 0);
-            Vector3 rot = new Vector3(0f, 0.00f, -90f);
+            _ped.TaskStartScenarioInPlace("GENERIC_STANDING_SCENARIO", _pedHeading);
+
+            Vector3 rot = new Vector3(0f, 0f, -90f);
             float fov = 37f;
 
-            _cameraMain = VorpAPI.CreateCameraWithParams(new Vector3(-561.569f, -3780.841f, 238.5f), rot, fov);
-            _cameraMain.IsActive = true;
-            _currentCamera = _cameraMain;
-
+            RenderScriptCams(true, true, 250, true, true, 0);
             _cameraFace = VorpAPI.CreateCameraWithParams(new Vector3(-559.4195f, -3780.841f, 239.1749f), rot, fov);
             _cameraBody = VorpAPI.CreateCameraWithParams(new Vector3(-561.569f, -3780.841f, 238.5f), rot, fov);
             _cameraLegs = VorpAPI.CreateCameraWithParams(new Vector3(-559.4195f, -3780.841f, 238.9249f), rot, fov);
 
-            _worldTime = new WorldTime(12, 1);
+            Logger.Trace($"Cameras: Face {_cameraFace.Handle} / Body {_cameraBody.Handle} / Legs {_cameraLegs.Handle}");
 
             Instance.AttachTickHandler(OnNuiHandling);
 
             DisplayHud(false);
             DisplayRadar(false);
 
-            World.SetWeather(Shared.Enums.eWeatherType.SUNNY);
+            await BaseScript.Delay(1000);
+            _cameraFace.IsActive = false;
+            _cameraBody.IsActive = true;
+            _cameraLegs.IsActive = false;
+
+            World.SetWeather(eWeatherType.SUNNY);
             World.SetWeatherFrozen(true);
             World.WindSpeed = 0f;
 
-            await BaseScript.Delay(1000);
+            Instance.WorldTime.ClockTimeOverride(7, 0, pauseClock: true);
+            await BaseScript.Delay(100);
+
             await Screen.FadeIn(500);
 
             CreateBaseMenu();
@@ -311,13 +319,13 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             MenuOptions moCharacterAppearance = MenuOptions.MenuOptionMenu("Appearance", "Options", "Change your character's appearance.");
             menuBase.AddOption(moCharacterAppearance);
 
-            MenuOptions moCharacterFace = MenuOptions.MenuOptionMenu("Face", "Options", "Change your character's face.", "CharacterCamera/Main");
+            MenuOptions moCharacterFace = MenuOptions.MenuOptionMenu("Face", "Options", "Change your character's face.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterFace);
 
-            MenuOptions moCharacterBody = MenuOptions.MenuOptionMenu("Body", "Options", "Change your character's body.", "CharacterCamera/Main");
+            MenuOptions moCharacterBody = MenuOptions.MenuOptionMenu("Body", "Options", "Change your character's body.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterBody);
 
-            MenuOptions moCharacterClothes = MenuOptions.MenuOptionMenu("Clothes", "Options", "Change your character's clothes.", "CharacterCamera/Main");
+            MenuOptions moCharacterClothes = MenuOptions.MenuOptionMenu("Clothes", "Options", "Change your character's clothes.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterClothes);
 
             Dictionary<string, Tuple<string, string, List<long>, long>> characterClothesOptions = new();
@@ -436,15 +444,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             //    _hideNui = false;
             //    Instance.NuiManager.Toggle("character/VISIBLE");
             //}
-
-            World.SetWeather(eWeatherType.SUNNY);
-            World.SetWeatherFrozen(true);
-            World.WindSpeed = 0f;
         }
 
         void Dispose()
         {
-            if (_worldTime is not null) _worldTime.Stop();
+            Instance.WorldTime.ClearClockTimeOverride();
 
             DisplayHud(false);
             DisplayRadar(false);
@@ -456,7 +460,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             Instance.NuiManager.Toggle("character/VISIBLE");
 
             RenderScriptCams(false, true, 250, true, true, 0);
-            _cameraMain.Delete();
             _cameraFace.Delete();
             _cameraBody.Delete();
             _cameraLegs.Delete();

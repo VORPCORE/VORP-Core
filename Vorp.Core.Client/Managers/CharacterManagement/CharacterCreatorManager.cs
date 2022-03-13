@@ -19,7 +19,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         bool _promptActive = false;
 
         bool _male = false;
-        WorldTime _worldTime;
         Ped _playerPed => Instance.LocalPlayer.Character;
 
         public override void Begin()
@@ -56,6 +55,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             _cameraMain.IsActive = true;
             SetCamera(CameraState.Main, _cameraMain);
             RenderScriptCams(true, true, 2000, true, true, 0);
+
+            Instance.WorldTime.ClockTimeOverride(7, 0, pauseClock: true);
 
             await CreateSelections();
         }
@@ -140,8 +141,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         {
             try
             {
-                _worldTime = new WorldTime(18, 0);
-
                 await CreateMalePed();
                 await CreateFemalePed();
             }
@@ -212,12 +211,14 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             _cameraMain = VorpAPI.CreateCameraWithParams(new Vector3(-561.4737f, -3776.209f, 239.1f), selctionRotation, fov);
             _cameraMale = VorpAPI.CreateCameraWithParams(new Vector3(-560.0516f, -3775.583f, 239.1f), selctionRotation, fov);
             _cameraFemale = VorpAPI.CreateCameraWithParams(new Vector3(-560.0867f, -3776.632f, 239.1f), selctionRotation, fov);
+            _cameraMain.IsActive = false;
+            _cameraMale.IsActive = false;
+            _cameraFemale.IsActive = false;
         }
 
         void Dispose()
         {
-            if (_worldTime is not null) _worldTime.Stop();
-            _worldTime = null;
+            Instance.WorldTime.ClearClockTimeOverride();
 
             Instance.DetachTickHandler(OnPromptHandler);
             
