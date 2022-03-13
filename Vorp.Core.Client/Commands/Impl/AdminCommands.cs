@@ -50,7 +50,7 @@ namespace Vorp.Core.Client.Commands.Impl
 
                 if (int.TryParse(strHour, out int hour) && int.TryParse(strMinute, out int minute))
                 {
-                    PluginManager.Instance.WorldTime.ClockTimeOverride(hour, minute, pauseClock: true);
+                    PluginManager.Instance.WorldTime.ClockTimeOverride_2(hour, minute, pauseClock: true);
                 }
             }
         }
