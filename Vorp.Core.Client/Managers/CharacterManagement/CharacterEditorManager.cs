@@ -308,22 +308,25 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             MenuBase menuBase = new();
             menuBase.Title = "Main Menu";
 
-            MenuOptions moCharacterRandomise = MenuOptions.MenuOptionButton("Randomise Character", "Randomises your character's appearance.", "CharacterRandomise");
+            MenuOption moCharacterRandomise = MenuOption.MenuOptionButton("Randomise Character", "Randomises your character's appearance.", "CharacterRandomise");
             menuBase.AddOption(moCharacterRandomise);
 
-            MenuOptions moCharacterName = MenuOptions.MenuOptionButton("Name", "Set your character's name.", "CharacterChangeName", "Enter Name");
+            MenuOption moDivider = MenuOption.MenuOptionDivider();
+            menuBase.AddOption(moDivider);
+
+            MenuOption moCharacterName = MenuOption.MenuOptionButton("Name", "Set your character's name.", "CharacterChangeName", "Enter Name");
             menuBase.AddOption(moCharacterName);
 
-            MenuOptions moCharacterAppearance = MenuOptions.MenuOptionMenu("Appearance", "Options", "Change your character's appearance.");
+            MenuOption moCharacterAppearance = MenuOption.MenuOptionMenu("Appearance", "Options", "Change your character's appearance.");
             menuBase.AddOption(moCharacterAppearance);
 
-            MenuOptions moCharacterFace = MenuOptions.MenuOptionMenu("Face", "Options", "Change your character's face.", "CharacterCamera/Body");
+            MenuOption moCharacterFace = MenuOption.MenuOptionMenu("Face", "Options", "Change your character's face.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterFace);
 
-            MenuOptions moCharacterBody = MenuOptions.MenuOptionMenu("Body", "Options", "Change your character's body.", "CharacterCamera/Body");
+            MenuOption moCharacterBody = MenuOption.MenuOptionMenu("Body", "Options", "Change your character's body.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterBody);
 
-            MenuOptions moCharacterClothes = MenuOptions.MenuOptionMenu("Clothes", "Options", "Change your character's clothes.", "CharacterCamera/Body");
+            MenuOption moCharacterClothes = MenuOption.MenuOptionMenu("Clothes", "Options", "Change your character's clothes.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterClothes);
 
             Dictionary<string, Tuple<string, string, List<long>, long>> characterClothesOptions = new();
@@ -392,7 +395,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 string description = kvp.Value.Item2;
                 List<long> list = kvp.Value.Item3;
                 long currentValue = kvp.Value.Item4;
-                MenuOptions menuOption = MenuOptions.MenuOptionList(label, description, endpoint, list, currentValue, "CharacterCamera/Main");
+                MenuOption menuOption = MenuOption.MenuOptionList(label, description, endpoint, list, currentValue, "CharacterCamera/Main");
                 moCharacterClothes.AddOption(menuOption);
             }
 
@@ -403,7 +406,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 string description = kvp.Value.Item2;
                 List<long> list = kvp.Value.Item3;
                 long currentValue = kvp.Value.Item4;
-                MenuOptions menuOption = MenuOptions.MenuOptionList(label, description, endpoint, list, currentValue, "CharacterCamera/Face");
+                MenuOption menuOption = MenuOption.MenuOptionList(label, description, endpoint, list, currentValue, "CharacterCamera/Face");
                 moCharacterFace.AddOption(menuOption);
             }
 
@@ -414,11 +417,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 string description = kvp.Value.Item2;
                 List<long> list = kvp.Value.Item3;
                 long currentValue = kvp.Value.Item4;
-                MenuOptions menuOption = MenuOptions.MenuOptionList(label, description, endpoint, list, currentValue, "CharacterCamera/Body");
+                MenuOption menuOption = MenuOption.MenuOptionList(label, description, endpoint, list, currentValue, "CharacterCamera/Body");
                 moCharacterBody.AddOption(menuOption);
             }
 
-            MenuOptions moCharacterSave = MenuOptions.MenuOptionButton("Confirm", "Confirm and save your character.", "CharacterConfirm");
+            MenuOption moCharacterSave = MenuOption.MenuOptionButton("Confirm", "Confirm and save your character.", "CharacterConfirm");
             menuBase.AddOption(moCharacterSave);
 
             if (!update)
