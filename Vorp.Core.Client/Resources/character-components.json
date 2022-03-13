@@ -909,18 +909,8 @@
           "0x771A7EE9",
           "0x7B035098"
         ],
-        "body": [
-          "0x465F719A",
-          "0x6D582255",
-          "0x8CC97681",
-          "0xB0D24F3F"
-        ],
-        "leg": [
-          "0x47FE9FC0",
-          "0x64F9856B",
-          "0xB0F62B29",
-          "0xACAE409"
-        ]
+        "body": [ "0x465F719A", "0x6D582255", "0x8CC97681", "0xB0D24F3F" ],
+        "leg": [ "0x47FE9FC0", "0x64F9856B", "0xB0F62B29", "0xACAE409" ]
       },
       {
         "texture": "MP_head_fr1_sc01_c0_000_ab",
@@ -935,12 +925,7 @@
           "0x8036DB0B",
           "0x8239BA1C"
         ],
-        "body": [
-          "0x34C3B131",
-          "0x5C1686B",
-          "0x8C9686C8",
-          "0xBF787383"
-        ],
+        "body": [ "0x34C3B131", "0x5C1686B", "0x8C9686C8", "0xBF787383" ],
         "leg": [
           "0xF5E0272A",
           "0xB897BFA0",
@@ -995,12 +980,7 @@
           "0x6B50E776",
           "0x729570C7"
         ],
-        "body": [
-          "0x69B6305B",
-          "0xBA09D8ED",
-          "0xC8EA5978",
-          "0xCD7F8895"
-        ],
+        "body": [ "0x69B6305B", "0xBA09D8ED", "0xC8EA5978", "0xCD7F8895" ],
         "leg": [
           "0x52CC3F25",
           "0x6577142C",
@@ -1327,7 +1307,12 @@
     {
       "category": "badges",
       "hash": "0x3F7F3587",
-      "items": [ "0x0929677D" ]
+      "items": [
+        {
+          "hash": "0x0929677D",
+          "isCreator": true
+        }
+      ]
     },
     {
       "category": "belts",
@@ -24132,7 +24117,20 @@
     {
       "category": "satchels",
       "hash": "0x94504D26",
-      "items": [ "0x42247599", "0xFCAF241B", "0x7E2D016B" ]
+      "items": [
+        {
+          "hash": "0x42247599",
+          "isCreator": true
+        },
+        {
+          "hash": "0xFCAF241B",
+          "isCreator": true
+        },
+        {
+          "hash": "0x7E2D016B",
+          "isCreator": true
+        }
+      ]
     },
     {
       "category": "shirts_full",
@@ -31429,7 +31427,12 @@
     {
       "category": "horse_shoes",
       "hash": "0xFACFC3C0",
-      "items": [ "0x0865A270" ]
+      "items": [
+        {
+          "hash": "0x0865A270",
+          "isCreator": true
+        }
+      ]
     },
     {
       "category": "HORSE_TAILS",
@@ -32078,7 +32081,12 @@
     {
       "category": "saddle_lanterns",
       "hash": "0x1530BE1C",
-      "items": [ "0x635E387C" ]
+      "items": [
+        {
+          "hash": "0x635E387C",
+          "isCreator": true
+        }
+      ]
     },
     {
       "category": "saddle_stirrups",
@@ -32403,7 +32411,12 @@
     {
       "category": "horse_holster",
       "hash": "0xAC106B30",
-      "items": [ "0xF772CED6" ]
+      "items": [
+        {
+          "hash": "0xF772CED6",
+          "isCreator": true
+        }
+      ]
     }
   ],
   "male": [
@@ -32718,7 +32731,20 @@
     {
       "category": "badges",
       "hash": "0x3F7F3587",
-      "items": [ "0x0A5074E9", "0x1FC12C9C", "0x6E96F448" ]
+      "items": [
+        {
+          "hash": "0x0A5074E9",
+          "isCreator": true
+        },
+        {
+          "hash": "0x1FC12C9C",
+          "isCreator": true
+        },
+        {
+          "hash": "0x6E96F448",
+          "isCreator": true
+        }
+      ]
     },
     {
       "category": "belts",
@@ -40811,7 +40837,16 @@
     {
       "category": "dresses",
       "hash": "0xA2926F9B",
-      "items": [ "0xC1B7D659", "0xB8A78F00" ]
+      "items": [
+        {
+          "hash": "0xC1B7D659",
+          "isCreator": true
+        },
+        {
+          "hash": "0xB8A78F00",
+          "isCreator": true
+        }
+      ]
     },
     {
       "category": "eyes",
@@ -54646,7 +54681,20 @@
     {
       "category": "satchels",
       "hash": "0x94504D26",
-      "items": [ "0x7D84EFD5", "0xEE49F9B6", "0xEA272E11" ]
+      "items": [
+        {
+          "hash": "0x7D84EFD5",
+          "isCreator": true
+        },
+        {
+          "hash": "0xEE49F9B6",
+          "isCreator": true
+        },
+        {
+          "hash": "0xEA272E11",
+          "isCreator": true
+        }
+      ]
     },
     {
       "category": "shirts_full",
