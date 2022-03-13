@@ -19,17 +19,30 @@ namespace Vorp.Core.Client.Commands.Impl
             }
         }
 
+        [CommandInfo(new[] { "scenario", "sce" }, "Will play a scenario, no params to stop.")]
+        public class CmdScenario : ICommand
+        {
+            public void On(VorpPlayer player, List<string> arguments)
+            {
+                if (arguments.Count == 0)
+                {
+                    player.Character.ClearPedTasksImmediately();
+                    return;
+                }
+
+                player.Character.TaskStartScenarioInPlace(arguments[0], player.Character.Heading);
+            }
+        }
+
         [CommandInfo(new[] { "time" }, "To test the time, only works on your client.")]
         public class ClientTime : ICommand
         {
-            WorldTime _worldTime;
-
             public void On(VorpPlayer player, List<string> arguments)
             {
                 if (arguments.Count == 1)
                 {
-                    if (arguments[0] == "start" && _worldTime is not null) _worldTime.Start();
-                    if (arguments[0] == "stop" && _worldTime is not null) _worldTime.Stop();
+                    PluginManager.Instance.WorldTime.ClearClockTimeOverride();
+                    return;
                 }
 
                 string strHour = arguments[0];
@@ -37,13 +50,7 @@ namespace Vorp.Core.Client.Commands.Impl
 
                 if (int.TryParse(strHour, out int hour) && int.TryParse(strMinute, out int minute))
                 {
-                    if (_worldTime is null)
-                        _worldTime = new WorldTime(hour, minute);
-                    else
-                    {
-                        _worldTime.Hour = hour;
-                        _worldTime.Minute = minute;
-                    }
+                    PluginManager.Instance.WorldTime.ClockTimeOverride(hour, minute, pauseClock: true);
                 }
             }
         }
