@@ -95,6 +95,8 @@ namespace Vorp.Core.Client.Managers.Admin
                         DisplayHud(true);
                         DisplayRadar(true);
 
+                        RenderScriptCams(false, false, 0, false, false, 0);
+
                         await BaseScript.Delay(100);
 
                         Instance.DetachTickHandler(OnNoClipControlTick);
