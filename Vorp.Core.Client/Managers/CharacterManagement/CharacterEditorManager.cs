@@ -421,6 +421,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 moCharacterBody.AddOption(menuOption);
             }
 
+
+            MenuOption moDivider2 = MenuOption.MenuOptionDivider();
+            menuBase.AddOption(moDivider2);
+
             MenuOption moCharacterSave = MenuOption.MenuOptionButton("Confirm", "Confirm and save your character.", "CharacterConfirm");
             menuBase.AddOption(moCharacterSave);
 
