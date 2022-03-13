@@ -112,7 +112,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             CharacterEditorManager.Init(pedModel, comps);
 
-            Dispose(); // Need future feature to goback
+            Dispose(false); // Need future feature to goback
         }
 
         private async Task PromptCameraFemale_OnPromptEventsAsync()
@@ -216,9 +216,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             _cameraFemale.IsActive = false;
         }
 
-        void Dispose()
+        void Dispose(bool resetTime = true)
         {
-            Instance.WorldTime.ClearClockTimeOverride();
+            if (resetTime)
+                Instance.WorldTime.ClearClockTimeOverride();
 
             Instance.DetachTickHandler(OnPromptHandler);
             

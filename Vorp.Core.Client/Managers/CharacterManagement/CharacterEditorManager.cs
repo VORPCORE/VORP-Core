@@ -285,7 +285,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             DisplayHud(false);
             DisplayRadar(false);
 
-            await BaseScript.Delay(1000);
+            await BaseScript.Delay(500);
             _cameraFace.IsActive = false;
             _cameraBody.IsActive = true;
             _cameraLegs.IsActive = false;
@@ -295,7 +295,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             World.WindSpeed = 0f;
 
             Instance.WorldTime.ClockTimeOverride(7, 0, pauseClock: true);
-            await BaseScript.Delay(100);
+            await BaseScript.Delay(1000);
+            Instance.WorldTime.ClockTimeOverride(7, 0, pauseClock: true);
 
             await Screen.FadeIn(500);
 
