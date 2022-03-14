@@ -1,4 +1,8 @@
 {
+  "language": {
+    "defaultLanguage": "english",
+    "languages": ["english"]
+  },
   "pvp": false,
   "playerNames": {
     "display": true,
