@@ -108,13 +108,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 comps = _pedMale.PedComponents;
             }
 
-            //VorpPlayer player = Instance.LocalPlayer;
-            //player.SetModel(pedModel);
-            //_playerPed.Position = new Vector3(-558.3258f, -3781.111f, 237.60f);
-            //_playerPed.Heading = 93.2f;
-            //_playerPed.IsPositionFrozen = true;
-            //_playerPed.PedComponents = comps;
-
             CharacterEditorManager.Init(pedModel, comps);
 
             Dispose(false); // Need future feature to goback
