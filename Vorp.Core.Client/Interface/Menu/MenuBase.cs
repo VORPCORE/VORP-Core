@@ -8,6 +8,9 @@ namespace Vorp.Core.Client.Interface.Menu
         [DataMember(Name = "title")]
         public string Title;
 
+        [DataMember(Name = "subtitle")]
+        public string SubTitle;
+
         [DataMember(Name = "options")]
         public List<MenuOption> Options { get; private set; } = new();
 

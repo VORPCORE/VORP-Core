@@ -304,7 +304,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         private static void CreateBaseMenu(bool update = false)
         {
             MenuBase menuBase = new();
-            menuBase.Title = ClientConfiguration.Translation("mainMenu.label");
+            menuBase.Title = ClientConfiguration.Translation("character.label");
+            menuBase.SubTitle = ClientConfiguration.Translation("mainMenu.label");
 
             MenuOption moCharacterRandomise = MenuOption.MenuOptionButton(ClientConfiguration.Translation("character.randomise.label"), ClientConfiguration.Translation("character.randomise.description"), "CharacterRandomise");
             menuBase.AddOption(moCharacterRandomise);
