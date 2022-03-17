@@ -70,8 +70,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         {
             List<eControl> controls = new() { eControl.FrontendLeft, eControl.FrontendRight };
 
-            _promptCharacter = Prompt.Create(controls, "Character");
-            _promptConfirm = Prompt.Create(eControl.FrontendAccept, "Confirm", promptType: ePromptType.StandardHold);
+            _promptCharacter = Prompt.Create(controls, ClientConfiguration.Translation("character.label"));
+            _promptConfirm = Prompt.Create(eControl.FrontendAccept, ClientConfiguration.Translation("confirm.label"), promptType: ePromptType.StandardHold);
 
             Instance.AttachTickHandler(OnPromptHandler);
         }

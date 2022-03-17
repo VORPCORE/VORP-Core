@@ -1,6 +1,7 @@
 {
   "mainMenu.label": "Main Menu",
   "character.label": "Character",
+  "confirm.label": "Confirm",
   "character.randomise.label": "Randomise Character",
   "character.randomise.description": "Randomises your character's appearance.",
   "character.name.label": "Name",
