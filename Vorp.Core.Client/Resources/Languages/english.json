@@ -21,5 +21,17 @@
   "character.face.eyes.label": "Eyes",
   "character.face.eyes.description": "Change your character's eyes.",
   "character.face.head.label": "Head",
-  "character.face.head.description": "Change your character's head."
+  "character.face.head.description": "Change your character's head.",
+  "character.face.teeth.label": "Teeth",
+  "character.face.teeth.description": "Change your character's teeth.",
+  "character.face.beard.label": "Beard",
+  "character.face.beard.description": "Change your character's beard.",
+  "character.face.hair.label": "Hair",
+  "character.face.hair.description": "Change your character's hair.",
+  "character.face.hairAccessories.label": "Hair Accessories",
+  "character.face.hairAccessories.description": "Change your character's hair accessories.",
+  "character.body.upper.label": "Upper Body",
+  "character.body.upper.description": "Change your character's upper body.",
+  "character.body.lower.label": "Lower Body",
+  "character.body.lower.description": "Change your character's lower body."
 }

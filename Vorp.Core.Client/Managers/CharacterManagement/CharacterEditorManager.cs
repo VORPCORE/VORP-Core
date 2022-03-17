@@ -312,39 +312,39 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             MenuOption moDivider = MenuOption.MenuOptionDivider();
             menuBase.AddOption(moDivider);
 
-            MenuOption moCharacterName = MenuOption.MenuOptionButton(ClientConfiguration.Translation("character.name.label"), "Set your character's name.", "CharacterChangeName", "Enter Name");
+            MenuOption moCharacterName = MenuOption.MenuOptionButton(ClientConfiguration.Translation("character.name.label"), ClientConfiguration.Translation("character.name.description"), "CharacterChangeName", ClientConfiguration.Translation("character.name.label.right"));
             menuBase.AddOption(moCharacterName);
 
-            MenuOption moCharacterAppearance = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.appearance.label"), "Options", "Change your character's appearance.");
+            MenuOption moCharacterAppearance = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.appearance.label"), ClientConfiguration.Translation("character.appearance.subtitle"), ClientConfiguration.Translation("character.appearance.description"));
             menuBase.AddOption(moCharacterAppearance);
 
-            MenuOption moCharacterFace = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.face.label"), "Options", "Change your character's face.", "CharacterCamera/Body");
+            MenuOption moCharacterFace = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.face.label"), ClientConfiguration.Translation("character.face.subtitle"), ClientConfiguration.Translation("character.face.description"), "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterFace);
 
-            MenuOption moCharacterBody = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.body.label"), "Options", "Change your character's body.", "CharacterCamera/Body");
+            MenuOption moCharacterBody = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.body.label"), ClientConfiguration.Translation("character.body.subtitle"), ClientConfiguration.Translation("character.body.description"), "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterBody);
 
-            MenuOption moCharacterClothes = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.clothes.label"), "Options", "Change your character's clothes.", "CharacterCamera/Body");
+            MenuOption moCharacterClothes = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.clothes.label"), ClientConfiguration.Translation("character.clothes.subtitle"), ClientConfiguration.Translation("character.clothes.description"), "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterClothes);
 
             Dictionary<string, Tuple<string, string, List<long>, long>> characterClothesOptions = new();
             Dictionary<string, Tuple<string, string, List<long>, long>> characterFaceOptions = new();
             Dictionary<string, Tuple<string, string, List<long>, long>> characterBodyOptions = new();
 
-            characterFaceOptions.Add("CharacterSetComponent/Eyes", new Tuple<string, string, List<long>, long>("Eyes", "Change your character's eyes.", _ped.Eyes, _ped.PedComponents.Eyes.Value));
-            characterFaceOptions.Add("CharacterSetComponent/Head", new Tuple<string, string, List<long>, long>("Head", "Change your character's head.", _ped.Heads, _ped.PedComponents.Head.Value));
-            characterFaceOptions.Add("CharacterSetComponent/Teeth", new Tuple<string, string, List<long>, long>("Teeth", "Change your character's teeth.", _ped.Teeth, _ped.PedComponents.Teeth.Value));
+            characterFaceOptions.Add("CharacterSetComponent/Eyes", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.eyes.label"), ClientConfiguration.Translation("character.face.eyes.description"), _ped.Eyes, _ped.PedComponents.Eyes.Value));
+            characterFaceOptions.Add("CharacterSetComponent/Head", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.head.label"), ClientConfiguration.Translation("character.face.head.description"), _ped.Heads, _ped.PedComponents.Head.Value));
+            characterFaceOptions.Add("CharacterSetComponent/Teeth", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.teeth.label"), ClientConfiguration.Translation("character.face.teeth.description"), _ped.Teeth, _ped.PedComponents.Teeth.Value));
             
             if (_ped.IsMale)
-                characterFaceOptions.Add("CharacterSetComponent/Beard", new Tuple<string, string, List<long>, long>("Beard", "Change your character's beard.", _ped.CreatorBeards, _ped.PedComponents.Beard.Value));
+                characterFaceOptions.Add("CharacterSetComponent/Beard", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.beard.label"), ClientConfiguration.Translation("character.face.beard.description"), _ped.CreatorBeards, _ped.PedComponents.Beard.Value));
             
-            characterFaceOptions.Add("CharacterSetComponent/Hair", new Tuple<string, string, List<long>, long>("Hair", "Change your character's hair.", _ped.CreatorHairs, _ped.PedComponents.Hair.Value));
+            characterFaceOptions.Add("CharacterSetComponent/Hair", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.hair.label"), ClientConfiguration.Translation("character.face.hair.description"), _ped.CreatorHairs, _ped.PedComponents.Hair.Value));
 
             if (!_ped.IsMale)
-                characterFaceOptions.Add("CharacterSetComponent/HairAccessories", new Tuple<string, string, List<long>, long>("Hair Accessories", "Change your character's hair accessories.", _ped.CreatorHairAccessories, _ped.PedComponents.HairAccessory.Value));
+                characterFaceOptions.Add("CharacterSetComponent/HairAccessories", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.hairAccessories.label"), ClientConfiguration.Translation("character.face.hairAccessories.description"), _ped.CreatorHairAccessories, _ped.PedComponents.HairAccessory.Value));
 
-            characterBodyOptions.Add("CharacterSetComponent/BodyUpper", new Tuple<string, string, List<long>, long>("Upper Body", "Change your character's upper body.", _ped.BodiesUpper, _ped.PedComponents.BodyUpper.Value));
-            characterBodyOptions.Add("CharacterSetComponent/BodyLower", new Tuple<string, string, List<long>, long>("Lower Body", "Change your character's lower body.", _ped.BodiesLower, _ped.PedComponents.BodyLower.Value));
+            characterBodyOptions.Add("CharacterSetComponent/BodyUpper", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.upper.label"), ClientConfiguration.Translation("character.body.upper.description"), _ped.BodiesUpper, _ped.PedComponents.BodyUpper.Value));
+            characterBodyOptions.Add("CharacterSetComponent/BodyLower", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.lower.label"), ClientConfiguration.Translation("character.body.lower.description"), _ped.BodiesLower, _ped.PedComponents.BodyLower.Value));
             
             characterClothesOptions.Add("CharacterSetComponent/Accessory", new Tuple<string, string, List<long>, long>("Accessory", "Change your character's accessories.", _ped.CreatorAccessories, _ped.PedComponents.Accessory.Value));
             characterClothesOptions.Add("CharacterSetComponent/Armor", new Tuple<string, string, List<long>, long>("Armor", "Change your character's armor.", _ped.CreatorArmor, _ped.PedComponents.Armor.Value));
