@@ -27,9 +27,10 @@ namespace Vorp.Core.Client
                 string languagesFile = LoadResourceFile(GetCurrentResourceName(), $"/Resources/Languages/{selectedLanguage}.json");
 
                 if (!string.IsNullOrEmpty(languagesFile))
+                {
                     _language = JsonConvert.DeserializeObject<Dictionary<string, string>>(languagesFile);
-                
-                Logger.Info($"Language '{selectedLanguage}.json' loaded!");
+                    Logger.Info($"Language '{selectedLanguage}.json' loaded!");
+                }
 
                 Logger.Trace($"Client Configuration Loaded");
 
@@ -46,6 +47,11 @@ namespace Vorp.Core.Client
 
         public static string Translation(string key)
         {
+            if (_language.Count == 0)
+            {
+                LoadConfiguration();
+            }
+
             if (!_language.ContainsKey(key))
                 return $"Translation for '{key}' not found.";
 
