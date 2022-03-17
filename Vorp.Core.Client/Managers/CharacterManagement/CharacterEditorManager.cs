@@ -301,32 +301,30 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             Instance.NuiManager.SetFocus(true, true);
         }
 
-        private static async void CreateBaseMenu(bool update = false)
+        private static void CreateBaseMenu(bool update = false)
         {
-            await VorpAPI.LoadStreamedTextureDict("generic_textures");
-
             MenuBase menuBase = new();
-            menuBase.Title = "Main Menu";
+            menuBase.Title = ClientConfiguration.Translation("mainMenu.label");
 
-            MenuOption moCharacterRandomise = MenuOption.MenuOptionButton("Randomise Character", "Randomises your character's appearance.", "CharacterRandomise");
+            MenuOption moCharacterRandomise = MenuOption.MenuOptionButton(ClientConfiguration.Translation("character.randomise.label"), ClientConfiguration.Translation("character.randomise.description"), "CharacterRandomise");
             menuBase.AddOption(moCharacterRandomise);
 
             MenuOption moDivider = MenuOption.MenuOptionDivider();
             menuBase.AddOption(moDivider);
 
-            MenuOption moCharacterName = MenuOption.MenuOptionButton("Name", "Set your character's name.", "CharacterChangeName", "Enter Name");
+            MenuOption moCharacterName = MenuOption.MenuOptionButton(ClientConfiguration.Translation("character.name.label"), "Set your character's name.", "CharacterChangeName", "Enter Name");
             menuBase.AddOption(moCharacterName);
 
-            MenuOption moCharacterAppearance = MenuOption.MenuOptionMenu("Appearance", "Options", "Change your character's appearance.");
+            MenuOption moCharacterAppearance = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.appearance.label"), "Options", "Change your character's appearance.");
             menuBase.AddOption(moCharacterAppearance);
 
-            MenuOption moCharacterFace = MenuOption.MenuOptionMenu("Face", "Options", "Change your character's face.", "CharacterCamera/Body");
+            MenuOption moCharacterFace = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.face.label"), "Options", "Change your character's face.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterFace);
 
-            MenuOption moCharacterBody = MenuOption.MenuOptionMenu("Body", "Options", "Change your character's body.", "CharacterCamera/Body");
+            MenuOption moCharacterBody = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.body.label"), "Options", "Change your character's body.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterBody);
 
-            MenuOption moCharacterClothes = MenuOption.MenuOptionMenu("Clothes", "Options", "Change your character's clothes.", "CharacterCamera/Body");
+            MenuOption moCharacterClothes = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.clothes.label"), "Options", "Change your character's clothes.", "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterClothes);
 
             Dictionary<string, Tuple<string, string, List<long>, long>> characterClothesOptions = new();
