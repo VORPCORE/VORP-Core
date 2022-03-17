@@ -21,9 +21,13 @@ namespace Vorp.Core.Client
 
                 if (string.IsNullOrEmpty(selectedLanguage))
                     selectedLanguage = _config.Language.DefaultLanguage;
-                
+
+                Logger.Info($"Language '{selectedLanguage}.json' loading");
+
                 string languagesFile = LoadResourceFile(GetCurrentResourceName(), $"/Resources/Languages/{selectedLanguage}.json");
-                _language = JsonConvert.DeserializeObject<Dictionary<string, string>>(languagesFile);
+
+                if (!string.IsNullOrEmpty(languagesFile))
+                    _language = JsonConvert.DeserializeObject<Dictionary<string, string>>(languagesFile);
                 
                 Logger.Info($"Language '{selectedLanguage}.json' loaded!");
 

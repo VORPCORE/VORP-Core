@@ -207,7 +207,9 @@ namespace Vorp.Shared.Records
                     if (Characters.Count >= _serverConfigManager.UserConfig.Characters.Maximum) return false;
                     try
                     {
-                        Character character = new Character(0, firstname, lastname);
+                        Character character = new Character();
+                        character.Firstname = firstname;
+                        character.Lastname = lastname;
                         character.Skin = skin;
                         character.Components = comps;
                         return await character.Save();
