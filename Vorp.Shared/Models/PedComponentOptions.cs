@@ -118,7 +118,7 @@ namespace Vorp.Shared.Models
             get
             {
                 List<long> result = new();
-                foreach (var item in Type)
+                foreach (var item in Waist)
                 {
                     long compValue = Convert.ToInt64(item, 16);
                     result.Add(compValue);
