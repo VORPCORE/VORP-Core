@@ -87,7 +87,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 await PromptCameraFemale_OnPromptEventsAsync();
             }
             else if (_promptConfirm.HasHoldModeCompleted)
-                    await PromptConfirm_OnPromptEvents();
+                await PromptConfirm_OnPromptEvents();
 
             _promptActive = false;
         }

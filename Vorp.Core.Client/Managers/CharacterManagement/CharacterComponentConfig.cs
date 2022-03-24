@@ -94,7 +94,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             if (isMale)
                 pedTextures = Config.Textures.Male;
 
-            foreach(TextureCategory tex in pedTextures)
+            foreach (TextureCategory tex in pedTextures)
             {
                 if (tex.TextureHash == selectedHead)
                     return tex;

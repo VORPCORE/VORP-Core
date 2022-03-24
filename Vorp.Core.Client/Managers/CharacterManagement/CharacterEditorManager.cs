@@ -260,7 +260,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
         internal static void UpdateComponent(int index, List<long> items, PedComponent pedComponent)
         {
             index--; // minus as UI sends from list starting at 1
-            
+
             if (index > items.Count) index = items.Count - 1;
 
             pedComponent.Value = index <= 0 ? 0 : items[index];
@@ -341,10 +341,10 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             characterFaceOptions.Add("CharacterSetComponent/Eyes", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.eyes.label"), ClientConfiguration.Translation("character.face.eyes.description"), _ped.Eyes, _ped.PedComponents.Eyes.Value));
             characterFaceOptions.Add("CharacterSetComponent/Head", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.head.label"), ClientConfiguration.Translation("character.face.head.description"), _ped.Heads, _ped.PedComponents.Head.Value));
             characterFaceOptions.Add("CharacterSetComponent/Teeth", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.teeth.label"), ClientConfiguration.Translation("character.face.teeth.description"), _ped.Teeth, _ped.PedComponents.Teeth.Value));
-            
+
             if (_ped.IsMale)
                 characterFaceOptions.Add("CharacterSetComponent/Beard", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.beard.label"), ClientConfiguration.Translation("character.face.beard.description"), _ped.CreatorBeards, _ped.PedComponents.Beard.Value));
-            
+
             characterFaceOptions.Add("CharacterSetComponent/Hair", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.hair.label"), ClientConfiguration.Translation("character.face.hair.description"), _ped.CreatorHairs, _ped.PedComponents.Hair.Value));
 
             if (!_ped.IsMale)
@@ -354,7 +354,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             characterBodyOptions.Add("CharacterSetComponent/BodyWaist", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.waist.label"), ClientConfiguration.Translation("character.body.waist.description"), _ped.BodyWaist, _ped.PedComponents.BodyWaist.Value));
             characterBodyOptions.Add("CharacterSetComponent/BodyUpper", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.upper.label"), ClientConfiguration.Translation("character.body.upper.description"), _ped.BodiesUpper, _ped.PedComponents.BodyUpper.Value));
             characterBodyOptions.Add("CharacterSetComponent/BodyLower", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.lower.label"), ClientConfiguration.Translation("character.body.lower.description"), _ped.BodiesLower, _ped.PedComponents.BodyLower.Value));
-            
+
             characterClothesOptions.Add("CharacterSetComponent/Accessory", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.clothes.accessories.label"), ClientConfiguration.Translation("character.clothes.accessories.description"), _ped.CreatorAccessories, _ped.PedComponents.Accessory.Value));
             characterClothesOptions.Add("CharacterSetComponent/Armor", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.clothes.armor.label"), ClientConfiguration.Translation("character.clothes.armor.description"), _ped.CreatorArmor, _ped.PedComponents.Armor.Value));
             characterClothesOptions.Add("CharacterSetComponent/Badge", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.clothes.badge.label"), ClientConfiguration.Translation("character.clothes.badge.description"), _ped.CreatorBadges, _ped.PedComponents.Badge.Value));
@@ -396,7 +396,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             characterClothesOptions.Add("CharacterSetComponent/Suspenders", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.clothes.suspenders.label"), ClientConfiguration.Translation("character.clothes.suspenders.description"), _ped.CreatorSuspenders, _ped.PedComponents.Suspenders.Value));
             characterClothesOptions.Add("CharacterSetComponent/Vests", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.clothes.vests.label"), ClientConfiguration.Translation("character.clothes.vests.description"), _ped.CreatorVests, _ped.PedComponents.Vest.Value));
 
-            foreach(KeyValuePair<string, Tuple<string, string, List<long>, long>> kvp in characterClothesOptions)
+            foreach (KeyValuePair<string, Tuple<string, string, List<long>, long>> kvp in characterClothesOptions)
             {
                 string endpoint = kvp.Key;
                 string label = kvp.Value.Item1;

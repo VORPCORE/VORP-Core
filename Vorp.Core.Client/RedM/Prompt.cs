@@ -1,6 +1,4 @@
-﻿using Vorp.Core.Client.RedM.PromptEvents;
-
-namespace Vorp.Core.Client.RedM.PromptEvents
+﻿namespace Vorp.Core.Client.RedM.PromptEvents
 {
     public delegate void PromptEvent();
 }
@@ -160,7 +158,7 @@ namespace Vorp.Core.Client.RedM
                 _group = value;
                 PromptSetGroup(Handle, value, 0);
             }
-            
+
         }
     }
 }

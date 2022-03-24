@@ -68,7 +68,7 @@ namespace Vorp.Core.Client.RedM
                 _vorpPedComponents = value;
                 SetupComponents();
             }
-            
+
         }
 
         public void UpdatePedTexture(int textureId) => Function.Call((Hash)0x92DAABA2C1C10B0E, textureId);
@@ -150,7 +150,7 @@ namespace Vorp.Core.Client.RedM
             // Overlays
             int textureId = VorpAPI.RequestTexture(comp.Texture, comp.Normal, comp.Material);
 
-            while(VorpAPI.IsTextureValid(textureId))
+            while (VorpAPI.IsTextureValid(textureId))
             {
                 await BaseScript.Delay(0);
             }
@@ -209,7 +209,7 @@ namespace Vorp.Core.Client.RedM
             if (boots.Count > 0)
                 vorpComponents.Boots.Value = boots[VorpAPI.Random.Next(boots.Count)];
 
-           List <long> eyes = Eyes;
+            List<long> eyes = Eyes;
             if (eyes.Count > 0)
                 vorpComponents.Eyes.Value = eyes[VorpAPI.Random.Next(eyes.Count)];
 
@@ -222,7 +222,7 @@ namespace Vorp.Core.Client.RedM
             List<long> Heads = textureCategory.Heads;
             List<long> BodiesUpper = textureCategory.BodiesUpper;
             List<long> BodiesLower = textureCategory.BodiesLower;
-            
+
             vorpComponents.Head.Value = Heads[VorpAPI.Random.Next(Heads.Count)];
             vorpComponents.BodyUpper.Value = BodiesUpper[VorpAPI.Random.Next(BodiesUpper.Count)];
             vorpComponents.BodyLower.Value = BodiesLower[VorpAPI.Random.Next(BodiesLower.Count)];

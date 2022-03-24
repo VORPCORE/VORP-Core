@@ -145,7 +145,8 @@
         {
             Function.Call((Hash)0xC1BA29DF5631B0F8, txd, false);
             int attempts = 0;
-            while (!(Function.Call<bool>((Hash)0x54D6900929CCF162, txd))) {
+            while (!(Function.Call<bool>((Hash)0x54D6900929CCF162, txd)))
+            {
                 Function.Call((Hash)0xC1BA29DF5631B0F8, txd, false);
                 await BaseScript.Delay(100);
 

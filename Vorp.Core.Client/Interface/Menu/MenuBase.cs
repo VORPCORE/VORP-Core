@@ -79,7 +79,7 @@ namespace Vorp.Core.Client.Interface.Menu
             return menuOptions;
         }
 
-        public static MenuOption MenuOptionList(string label, string description, string endpoint,  List<long> list, long currentValue, string focusEndpoint = "")
+        public static MenuOption MenuOptionList(string label, string description, string endpoint, List<long> list, long currentValue, string focusEndpoint = "")
         {
             MenuOption menuOptions = new();
             menuOptions.Type = "list";

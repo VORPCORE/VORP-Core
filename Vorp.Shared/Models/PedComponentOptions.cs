@@ -60,7 +60,7 @@ namespace Vorp.Shared.Models
                 return result;
             }
         }
-        
+
         public List<long> BodiesUpper
         {
             get

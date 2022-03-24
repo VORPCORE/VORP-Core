@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 #endif
 
 using Lusive.Events.Attributes;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using Vorp.Shared.Models;
-using System.Collections.Generic;
 
 namespace Vorp.Shared.Records
 {
@@ -103,13 +103,13 @@ namespace Vorp.Shared.Records
         [Description("gunsmith")]
         public double GunSmith { get; private set; } = 0.00;
 
-#endregion
+        #endregion
 
-#region Properties
+        #region Properties
         public bool IsActive { get; set; } = false;
-#endregion
+        #endregion
 
-#region Methods
+        #region Methods
 
 #if SERVER
         // TODO: Move all SQL into procedures? or EF after refactor?
@@ -270,7 +270,7 @@ namespace Vorp.Shared.Records
             Dictionary<string, int> items = JsonConvert.DeserializeObject<Dictionary<string, int>>(Inventory);
             Dictionary<string, InventoryItem> invItems = new();
 
-            foreach(KeyValuePair<string, int> item in items)
+            foreach (KeyValuePair<string, int> item in items)
             {
                 InventoryItem dbItem = await InventoryItem.GetItem(item.Key);
                 if (item.Value == 0) continue; // if they don't have the item, no point of it being returned
@@ -426,6 +426,6 @@ namespace Vorp.Shared.Records
 
 #endif
 
-#endregion
+        #endregion
     }
 }
