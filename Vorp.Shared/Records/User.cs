@@ -300,7 +300,7 @@ namespace Vorp.Shared.Records
                 { "setRol", new Action<double>(roleToken => activeChar.SetRoleToken(roleToken)) },
                 { "setXp", new Action<int>(experience => activeChar.SetExperience(experience)) },
                 { "setFirstname", new Action<string>(firstname => Logger.Error($"[{GetInvokingResource()}] Method 'setFirstname' Deprecated, please inform us if you us this, and why.")) },
-                { "setLastname", new Action<string>(firstlastnamename => Logger.Error($"[{GetInvokingResource()}] Method 'setLastname' Deprecated, please inform us if you us this, and why.")) },
+                { "setLastname", new Action<string>(lastname => Logger.Error($"[{GetInvokingResource()}] Method 'setLastname' Deprecated, please inform us if you us this, and why.")) },
                 { "updateSkin", new Action<string>(skin => activeChar.Skin = skin) },
                 { "updateComps", new Action<string>(comp => activeChar.Components = comp) },
                 { "addCurrency", new Action<int, double>(async (currency, amount) =>
