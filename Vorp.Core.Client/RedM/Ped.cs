@@ -47,7 +47,7 @@ namespace Vorp.Core.Client.RedM
 
         public void SetBodyComponent(PedComponent component)
         {
-            Function.Call((Hash)0x59BD177A1A48600A, Handle, (uint)component.Value);
+            Function.Call((Hash)0x1902C4CFCC5BE57C, Handle, (uint)component.Value);
         }
 
         public void SetComponent(PedComponent component)
