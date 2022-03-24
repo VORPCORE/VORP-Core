@@ -53,8 +53,9 @@ namespace Vorp.Shared.Models
         [Description("used")]
         public int Used;
 
+        // WHY THE FUCK?! WHAT DOES IT MEAN?
         [DataMember(Name = "used2")]
-        [Description("used")]
+        [Description("used2")]
         public int Used2;
 
         [DataMember(Name = "dropped")]
