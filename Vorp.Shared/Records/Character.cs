@@ -46,36 +46,6 @@ namespace Vorp.Shared.Records
             Info = binaryReader.ReadString();
             GunSmith = binaryReader.ReadDouble();
         }
-//#elif SERVER
-//        public Character(BinaryReader binaryReader, bool buildMe = false)
-//        {
-//            SteamIdentifier = binaryReader.ReadString();
-//            SteamName = binaryReader.ReadString();
-//            CharacterId = binaryReader.ReadInt32();
-//            Group = binaryReader.ReadString();
-//            Cash = binaryReader.ReadDouble();
-//            Gold = binaryReader.ReadDouble();
-//            RoleToken = binaryReader.ReadDouble();
-//            Experience = binaryReader.ReadInt32();
-//            Inventory = binaryReader.ReadString();
-//            Job = binaryReader.ReadString();
-//            Status = binaryReader.ReadString();
-//            Meta = binaryReader.ReadString();
-//            Firstname = binaryReader.ReadString();
-//            Lastname = binaryReader.ReadString();
-//            Skin = binaryReader.ReadString();
-//            Components = binaryReader.ReadString();
-//            JobGrade = binaryReader.ReadInt32();
-//            Coords = binaryReader.ReadString();
-//            IsDead = binaryReader.ReadBoolean();
-//            ClanId = binaryReader.ReadInt32();
-//            Trust = binaryReader.ReadInt32();
-//            Supporter = binaryReader.ReadInt32();
-//            Walk = binaryReader.ReadString();
-//            Crafting = binaryReader.ReadString();
-//            Info = binaryReader.ReadString();
-//            GunSmith = binaryReader.ReadDouble();
-//        }
 #endif
 
         #region Fields
