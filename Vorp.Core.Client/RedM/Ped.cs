@@ -167,6 +167,9 @@ namespace Vorp.Core.Client.RedM
 
             VorpPedComponents vorpComponents = new VorpPedComponents();
 
+            vorpComponents.BodyType.Value = BodyType[VorpAPI.Random.Next(BodyType.Count)];
+            vorpComponents.BodyWaist.Value = BodyWaist[VorpAPI.Random.Next(BodyWaist.Count)];
+
             List<long> hair = Hairs;
             if (hair.Count > 0)
                 vorpComponents.Hair.Value = hair[VorpAPI.Random.Next(hair.Count)];
