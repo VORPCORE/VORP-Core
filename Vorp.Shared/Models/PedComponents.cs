@@ -35,8 +35,10 @@ namespace Vorp.Shared.Models
         public PedComponent Beard = new PedComponent(ePedComponentCategory.BeardsComplete);
         public PedComponent Belt = new PedComponent(ePedComponentCategory.Belts);
         public PedComponent BeltBuckle = new PedComponent(ePedComponentCategory.BeltBuckles);
-        public PedComponent BodyLower = new PedComponent(ePedComponentCategory.BodiesLower);
+        public PedComponent BodyType = new PedComponent(ePedComponentCategory.BodyType);
+        public PedComponent BodyWaist = new PedComponent(ePedComponentCategory.BodyWaist);
         public PedComponent BodyUpper = new PedComponent(ePedComponentCategory.BodiesUpper);
+        public PedComponent BodyLower = new PedComponent(ePedComponentCategory.BodiesLower);
         public PedComponent Boots = new PedComponent(ePedComponentCategory.Boots);
         public PedComponent BootAccessory = new PedComponent(ePedComponentCategory.BootAccessories);
         public PedComponent Chaps = new PedComponent(ePedComponentCategory.Chaps);

@@ -115,6 +115,12 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                         case "Head":
                             UpdateComponent(selectIndex, _ped.Heads, vorpPedComponents.Head);
                             break;
+                        case "BodyType":
+                            UpdateComponent(selectIndex, _ped.BodyType, vorpPedComponents.BodyType);
+                            break;
+                        case "BodyWaist":
+                            UpdateComponent(selectIndex, _ped.BodyWaist, vorpPedComponents.BodyWaist);
+                            break;
                         case "BodyUpper":
                             UpdateComponent(selectIndex, _ped.BodiesUpper, vorpPedComponents.BodyUpper);
                             break;
@@ -344,6 +350,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             if (!_ped.IsMale)
                 characterFaceOptions.Add("CharacterSetComponent/HairAccessories", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.hairAccessories.label"), ClientConfiguration.Translation("character.face.hairAccessories.description"), _ped.CreatorHairAccessories, _ped.PedComponents.HairAccessory.Value));
 
+            characterBodyOptions.Add("CharacterSetComponent/BodyType", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.type.label"), ClientConfiguration.Translation("character.body.type.description"), _ped.BodyType, _ped.PedComponents.BodyType.Value));
+            characterBodyOptions.Add("CharacterSetComponent/BodyWaist", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.waist.label"), ClientConfiguration.Translation("character.body.waist.description"), _ped.BodyWaist, _ped.PedComponents.BodyWaist.Value));
             characterBodyOptions.Add("CharacterSetComponent/BodyUpper", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.upper.label"), ClientConfiguration.Translation("character.body.upper.description"), _ped.BodiesUpper, _ped.PedComponents.BodyUpper.Value));
             characterBodyOptions.Add("CharacterSetComponent/BodyLower", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.lower.label"), ClientConfiguration.Translation("character.body.lower.description"), _ped.BodiesLower, _ped.PedComponents.BodyLower.Value));
             

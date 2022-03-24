@@ -58,6 +58,9 @@
         HorseSaddleLanterns = 0x1530BE1C,
         HorseSaddleStirrups = 0xDA6DADCA,
         HorseBridles = 0x94B2E3AF,
-        HorseUnknown = 0xAC106B30
+        HorseUnknown = 0xAC106B30,
+        // CUSTOM CATEGORIES
+        BodyType = 100,
+        BodyWaist = 101
     }
 }

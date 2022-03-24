@@ -45,6 +45,11 @@ namespace Vorp.Core.Client.RedM
 
         public void UpdatePedVariation(bool p1 = false, bool p5 = false) => Function.Call((Hash)0xCC8CA3E88256E58F, Handle, p1, true, true, true, p5);
 
+        public void SetBodyComponent(PedComponent component)
+        {
+            Function.Call((Hash)0x59BD177A1A48600A, Handle, (uint)component.Value);
+        }
+
         public void SetComponent(PedComponent component)
         {
             if (component.Component == ePedComponentCategory.Unknown) return;
@@ -95,6 +100,10 @@ namespace Vorp.Core.Client.RedM
             RemoveTagFromMetaPed(0x1D4C528A, 0);
             RemoveTagFromMetaPed(0x3F1F01E5, 0);
             RemoveTagFromMetaPed(0xDA0E2C55, 0);
+            UpdatePedVariation();
+
+            SetBodyComponent(comp.BodyType);
+            SetBodyComponent(comp.BodyWaist);
             UpdatePedVariation();
 
             // Comps
@@ -263,6 +272,8 @@ namespace Vorp.Core.Client.RedM
 
         public List<long> Eyes => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Eyes);
         public List<long> Heads => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Heads);
+        public List<long> BodyType => CharacterComponentConfig.Config.Body.Types;
+        public List<long> BodyWaist => CharacterComponentConfig.Config.Body.Waists;
         public List<long> BodiesUpper => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BodiesUpper);
         public List<long> BodiesLower => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.BodiesLower);
         public List<long> Accessories => CharacterComponentConfig.GetComponents(IsMale ? ePedType.Male : ePedType.Female, ePedComponentCategory.Accessories);
