@@ -1,4 +1,37 @@
 {
+  "body": {
+    "type": [
+      "0x3AC0BCD",
+      "0xB5FA4DC7",
+      "0xE9FC31A2",
+      "0x1F19E7B",
+      "0xFECAD38F",
+      "0xE9FC31A2"
+    ],
+    "waist": [
+      "0x86155956",
+      "0x97F0FD0D",
+      "0xEC92A64F",
+      "0xC0794E49",
+      "0xCDA6E8A4",
+      "0xB418B588",
+      "0x3743BBB0",
+      "0x8EEDF07",
+      "0x17C87CBA",
+      "0xD998005A",
+      "0x68109C55",
+      "0x3BDB43E7",
+      "0x4C35E49C",
+      "0x1DF38818",
+      "0x833C52B8",
+      "0x927AF135",
+      "0x677F9B3F",
+      "0x79A13F82",
+      "0xBA0BC056",
+      "0xCC4664CB",
+      "0x74D74B1C"
+    ]
+  },
   "textures": {
     "female": [
       {
