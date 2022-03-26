@@ -52,7 +52,7 @@ namespace Vorp.Core.Client.RedM
 
         public void SetComponent(PedComponent component)
         {
-            if (component.Component == ePedComponentCategory.Unknown) return;
+            if (component.Component == ePedComponentCategory.UNKNOWN) return;
             if (component.Value == 0)
                 RemoveTagFromMetaPed((uint)component.Component, 0);
             else

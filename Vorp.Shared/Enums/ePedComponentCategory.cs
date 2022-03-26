@@ -2,7 +2,7 @@
 {
     public enum ePedComponentCategory : uint
     {
-        Unknown = 0xFAE91080,
+        UNKNOWN = 0xFAE91080,
         Accessories = 0x79D7DF96,
         Armor = 0x72E6EF74,
         Badges = 0x3F7F3587,
@@ -13,6 +13,7 @@
         BodiesUpper = 0x0B3966C9,
         Boots = 0x777EC6EF,
         BootAccessories = 0x18729F39,
+        Bow = 0x8E84A2AA,
         Chaps = 0x3107499B,
         Cloaks = 0x3C1A74CD,
         Coats = 0xE06D30CE,
@@ -43,6 +44,7 @@
         Skirts = 0xA0E3AB7F, // FEMALE
         Spats = 0x514ADCEA,
         Suspenders = 0x877A2CF7,
+        Spurs = 0x18729F39,
         Teeth = 0x96EDAE5C,
         Vests = 0x485EE834,
         HorseAccessories = 0xD3500E5D,
