@@ -17,6 +17,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
                 DisplayHud(false);
                 DisplayRadar(false);
+                SetMinimapHideFow(true);
 
                 await characterCreatorManager.StartCharacterCreator();
 
