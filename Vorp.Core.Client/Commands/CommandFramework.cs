@@ -1,4 +1,5 @@
 using Vorp.Core.Client.Environment.Entities;
+using Vorp.Shared.Commands;
 
 namespace Vorp.Core.Client.Commands
 {

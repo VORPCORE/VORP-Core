@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Vorp.Shared.Commands;
 using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server.Commands.Impl

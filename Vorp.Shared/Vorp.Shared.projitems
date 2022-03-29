@@ -9,6 +9,8 @@
     <Import_RootNamespace>Vorp.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\EventLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\StateBagKey.cs" />

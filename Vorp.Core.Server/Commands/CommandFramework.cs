@@ -1,6 +1,7 @@
 using CitizenFX.Core.Native;
 using System.Collections.Generic;
 using System.Linq;
+using Vorp.Shared.Commands;
 using Vorp.Shared.Records;
 
 namespace Vorp.Core.Server.Commands

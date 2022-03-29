@@ -1,6 +1,6 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Vorp.Core.Server.Commands
+namespace Vorp.Shared.Commands
 {
     public abstract class CommandContext
     {

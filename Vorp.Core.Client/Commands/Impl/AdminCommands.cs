@@ -1,5 +1,6 @@
 ﻿using Vorp.Core.Client.Environment.Entities;
 using Vorp.Core.Client.Managers.Admin;
+using Vorp.Shared.Commands;
 
 namespace Vorp.Core.Client.Commands.Impl
 {

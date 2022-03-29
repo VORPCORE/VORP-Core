@@ -73,9 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientConfiguration.cs" />
-    <Compile Include="Commands\CommandContext.cs" />
     <Compile Include="Commands\CommandFramework.cs" />
-    <Compile Include="Commands\CommandInfo.cs" />
     <Compile Include="Commands\ICommand.cs" />
     <Compile Include="Commands\Impl\AdminCommands.cs" />
     <Compile Include="Discord\DiscordRichPresence.cs" />

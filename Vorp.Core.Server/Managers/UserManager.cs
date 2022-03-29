@@ -4,6 +4,7 @@ using Vorp.Core.Server.Commands;
 using Vorp.Core.Server.Database.Store;
 using Vorp.Core.Server.Events;
 using Vorp.Core.Server.Web;
+using Vorp.Shared.Commands;
 using Vorp.Shared.Data;
 using Vorp.Shared.Models;
 using Vorp.Shared.Records;
