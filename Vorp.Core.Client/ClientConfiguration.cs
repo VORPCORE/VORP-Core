@@ -12,7 +12,9 @@ namespace Vorp.Core.Client
             try
             {
                 if (_config is not null)
+                {
                     return _config;
+                }
 
                 string file = LoadResourceFile(GetCurrentResourceName(), $"/Resources/client-config.json");
                 _config = JsonConvert.DeserializeObject<ClientConfig>(file);
@@ -20,7 +22,9 @@ namespace Vorp.Core.Client
                 string selectedLanguage = GetResourceKvpString2("vorp:core:language");
 
                 if (string.IsNullOrEmpty(selectedLanguage))
+                {
                     selectedLanguage = _config.Language.DefaultLanguage;
+                }
 
                 Logger.Info($"Language '{selectedLanguage}.json' loading");
 
@@ -39,7 +43,7 @@ namespace Vorp.Core.Client
             catch (Exception ex)
             {
                 Logger.Error(ex, $"Client Configuration was unable to be loaded.");
-                return (ClientConfig)default!;
+                return default!;
             }
         }
 
@@ -53,7 +57,9 @@ namespace Vorp.Core.Client
             }
 
             if (!_language.ContainsKey(key))
+            {
                 return $"Translation for '{key}' not found.";
+            }
 
             return _language[key];
         }
