@@ -8,17 +8,17 @@ namespace Vorp.Core.Server.Managers
     {
         public override void Begin()
         {
-            ServerGateway.Mount("vorp:character:coords:save", new Func<ClientId, int, Vector3, float, Task<bool>>(OnSaveCoords));
-            ServerGateway.Mount("vorp:character:dead", new Func<ClientId, int, bool, Task<bool>>(OnUpdateIsDead));
+            ServerGateway.Mount("vorp:character:coords:save", new Func<ClientId, int, Vector3, float, Task<bool>>(OnSaveCoordsAsync));
+            ServerGateway.Mount("vorp:character:dead", new Func<ClientId, int, bool, Task<bool>>(OnUpdateIsDeadAsync));
         }
 
-        private async Task<bool> OnUpdateIsDead(ClientId source, int id, bool isDead)
+        private async Task<bool> OnUpdateIsDeadAsync(ClientId source, int id, bool isDead)
         {
             if (source.Handle != id) return false;
             return await source.User.ActiveCharacter.SetDead(isDead);
         }
 
-        private async Task<bool> OnSaveCoords(ClientId source, int id, Vector3 coords, float heading)
+        private async Task<bool> OnSaveCoordsAsync(ClientId source, int id, Vector3 coords, float heading)
         {
             if (source.Handle != id) return false;
 

@@ -99,7 +99,7 @@ namespace Vorp.Core.Server.Web
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Content-Type", "application/json");
             headers.Add("Authorization", $"Bot {_srvCfg.Discord.BotKey}");
-            return await request.Http($"{url}", method, jsonData, headers);
+            return await request.HttpAsync($"{url}", method, jsonData, headers);
         }
 
         public async Task<RequestResponse> DiscordRequest(string method, string endpoint, string jsonData = "")
@@ -107,13 +107,13 @@ namespace Vorp.Core.Server.Web
             Dictionary<string, string> headers = new Dictionary<string, string>();
             headers.Add("Content-Type", "application/json");
             headers.Add("Authorization", $"Bot {_srvCfg.Discord.BotKey}");
-            return await request.Http($"https://discordapp.com/api/{endpoint}", method, jsonData, headers);
+            return await request.HttpAsync($"https://discordapp.com/api/{endpoint}", method, jsonData, headers);
         }
 
         public async Task<string> Avatar(ulong discordId)
         {
             string url = $"https://api.discord.wf/v2/users/{discordId}/avatar";
-            RequestResponse requestResponse = await request.Http(url);
+            RequestResponse requestResponse = await request.HttpAsync(url);
             if (requestResponse.status == System.Net.HttpStatusCode.OK)
             {
                 DiscordAvatar avatar = JsonConvert.DeserializeObject<DiscordAvatar>(requestResponse.content);

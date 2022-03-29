@@ -4,16 +4,16 @@ namespace Vorp.Core.Client.Managers.Admin
 {
     public class NoClipManager : Manager<NoClipManager>
     {
+        VorpPlayer _player = PluginManager.Instance.LocalPlayer;
 
-        VorpPlayer Player = PluginManager.Instance.LocalPlayer;
-
-        const float _minY = -89f, _maxY = 89f;
+        const float _minY = -89f;
+        const float _maxY = 89f;
         const float _maxSpeed = 32f;
 
         public Camera CurrentCamera { get; set; }
         public float Speed { get; set; } = 1f;
         const float _maxFov = 180f;
-        float fov = 75f;
+        float _fov = 75f;
 
         readonly List<eControl> _disabledControls = new()
         {
@@ -53,17 +53,17 @@ namespace Vorp.Core.Client.Managers.Admin
         public void Toggle()
         {
             IsEnabled = !IsEnabled;
-            Player = PluginManager.Instance.LocalPlayer;
+            _player = PluginManager.Instance.LocalPlayer;
 
             if (IsEnabled)
-                Instance.AttachTickHandler(OnNoClipControlTick);
+                Instance.AttachTickHandler(OnNoClipControlAsync);
         }
 
-        private async Task OnNoClipControlTick()
+        private async Task OnNoClipControlAsync()
         {
             try
             {
-                Ped playerPed = Player.Character;
+                Ped playerPed = _player.Character;
 
                 if (!IsEnabled)
                 {
@@ -90,7 +90,7 @@ namespace Vorp.Core.Client.Managers.Admin
                             DisableControlAction(0, (uint)ctrl, false);
                         }
 
-                        Instance.DetachTickHandler(OnNoClipCheckRotationTick);
+                        Instance.DetachTickHandler(OnNoClipCheckRotationAsync);
 
                         DisplayHud(true);
                         DisplayRadar(true);
@@ -99,7 +99,7 @@ namespace Vorp.Core.Client.Managers.Admin
 
                         await BaseScript.Delay(100);
 
-                        Instance.DetachTickHandler(OnNoClipControlTick);
+                        Instance.DetachTickHandler(OnNoClipControlAsync);
                     }
                     return;
                 }
@@ -120,7 +120,7 @@ namespace Vorp.Core.Client.Managers.Admin
                     DisplayHud(false);
                     DisplayRadar(false);
 
-                    Instance.AttachTickHandler(OnNoClipCheckRotationTick);
+                    Instance.AttachTickHandler(OnNoClipCheckRotationAsync);
                 }
 
                 // Speed Control
@@ -141,8 +141,8 @@ namespace Vorp.Core.Client.Managers.Admin
                     {
                         change = 1f;
                     }
-                    fov = Math.Min(fov + change, _maxFov);
-                    CurrentCamera.FieldOfView = fov;
+                    _fov = Math.Min(_fov + change, _maxFov);
+                    CurrentCamera.FieldOfView = _fov;
                 }
                 else if (IsDisabledControlPressed(0, (uint)eControl.SelectNextWeapon) && IsDisabledControlPressed(0, (uint)eControl.Jump))
                 {
@@ -151,8 +151,8 @@ namespace Vorp.Core.Client.Managers.Admin
                     {
                         change = 1f;
                     }
-                    fov = Math.Max(change, fov - change);
-                    CurrentCamera.FieldOfView = fov;
+                    _fov = Math.Max(change, _fov - change);
+                    CurrentCamera.FieldOfView = _fov;
                 }
 
                 var multiplier = 1f;
@@ -298,7 +298,7 @@ namespace Vorp.Core.Client.Managers.Admin
                 playerPed.Opacity = 0;
                 DisablePlayerFiring(playerPed.Handle, false);
 
-                VorpAPI.DrawText($"Speed: {Speed} / Multiplier: {multiplier} / FOV: {fov} / POS: {CurrentCamera.Position} / ROT: {CurrentCamera.Rotation}", new Vector2(0, 0), 0.3f);
+                VorpAPI.DrawText($"Speed: {Speed} / Multiplier: {multiplier} / FOV: {_fov} / POS: {CurrentCamera.Position} / ROT: {CurrentCamera.Rotation}", new Vector2(0, 0), 0.3f);
             }
             catch (Exception ex)
             {
@@ -306,7 +306,7 @@ namespace Vorp.Core.Client.Managers.Admin
             }
         }
 
-        private async Task OnNoClipCheckRotationTick()
+        private async Task OnNoClipCheckRotationAsync()
         {
             try
             {

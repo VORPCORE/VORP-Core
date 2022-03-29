@@ -128,16 +128,16 @@ namespace Vorp.Core.Server.Events
             SendInternal(EventFlowType.Straight, new ClientId(target), endpoint, args);
         }
 
-        public Task<T> Get<T>(Player player, string endpoint, params object[] args) where T : class =>
-            Get<T>(player.Handle, endpoint, args);
+        public Task<T> GetAsync<T>(Player player, string endpoint, params object[] args) where T : class =>
+            GetAsync<T>(player.Handle, endpoint, args);
 
-        public Task<T> Get<T>(string target, string endpoint, params object[] args) where T : class =>
-            Get<T>((ClientId)target, endpoint, args);
+        public Task<T> GetAsync<T>(string target, string endpoint, params object[] args) where T : class =>
+            GetAsync<T>((ClientId)target, endpoint, args);
 
-        public Task<T> Get<T>(int target, string endpoint, params object[] args) where T : class =>
-            Get<T>(new ClientId(target), endpoint, args);
+        public Task<T> GetAsync<T>(int target, string endpoint, params object[] args) where T : class =>
+            GetAsync<T>(new ClientId(target), endpoint, args);
 
-        public async Task<T> Get<T>(ClientId client, string endpoint, params object[] args) where T : class
+        public async Task<T> GetAsync<T>(ClientId client, string endpoint, params object[] args) where T : class
         {
             return await GetInternal<T>(client, endpoint, args);
         }

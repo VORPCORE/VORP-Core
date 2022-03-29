@@ -9,7 +9,6 @@ namespace Vorp.Core.Server.Managers.Legacy
     {
         public delegate Dictionary<string, dynamic> AuxDelegate(int serverId);
         public delegate Dictionary<string, Dictionary<string, dynamic>> AuxGetConnectedUsers();
-        private LegacyCallbackManager _callbackManager => LegacyCallbackManager.GetModule();
 
         public override void Begin()
         {
@@ -20,22 +19,22 @@ namespace Vorp.Core.Server.Managers.Legacy
             ExportDictionary.Add("GetUser", new Func<int, Dictionary<string, dynamic>>(ExportGetUser));
 
             Event("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
-            ExportDictionary.Add("AddMoney", new Func<int, int, double, Task<bool>>(ExportAddMoney));
+            ExportDictionary.Add("AddMoney", new Func<int, int, double, Task<bool>>(ExportAddMoneyAsync));
 
             Event("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoney));
-            ExportDictionary.Add("RemoveMoney", new Func<int, int, double, Task<bool>>(ExportRemoveMoney));
+            ExportDictionary.Add("RemoveMoney", new Func<int, int, double, Task<bool>>(ExportRemoveMoneyAsync));
 
             Event("vorp:addXp", new Action<int, int>(OnAddExperience));
-            ExportDictionary.Add("AddExperience", new Func<int, int, Task<bool>>(ExportAddExperience));
+            ExportDictionary.Add("AddExperience", new Func<int, int, Task<bool>>(ExportAddExperienceAsync));
 
             Event("vorp:removeXp", new Action<int, int>(OnRemoveExperience));
-            ExportDictionary.Add("RemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperience));
+            ExportDictionary.Add("RemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperienceAsync));
 
             Event("vorp:setJob", new Action<int, string>(OnSetJob));
-            ExportDictionary.Add("SetJob", new Func<int, string, Task<bool>>(ExportSetJob));
+            ExportDictionary.Add("SetJob", new Func<int, string, Task<bool>>(ExportSetJobAsync));
 
             Event("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
-            ExportDictionary.Add("SetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroup));
+            ExportDictionary.Add("SetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroupAsync));
 
             // Review these events
             Event("vorp:saveLastCoords", new Action<Player, Vector3, float>(OnSaveLastCoords));
@@ -136,7 +135,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return users;
         }
 
-        private async Task<bool> ExportSetCharacterGroup(int serverId, string group)
+        private async Task<bool> ExportSetCharacterGroupAsync(int serverId, string group)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -145,10 +144,10 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnSetCharacterGroup(int serverId, string group)
         {
-            await ExportSetJob(serverId, group);
+            await ExportSetJobAsync(serverId, group);
         }
 
-        private async Task<bool> ExportSetJob(int serverId, string job)
+        private async Task<bool> ExportSetJobAsync(int serverId, string job)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -157,10 +156,10 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnSetJob(int serverId, string job)
         {
-            await ExportSetJob(serverId, job);
+            await ExportSetJobAsync(serverId, job);
         }
 
-        private async Task<bool> ExportRemoveExperience(int serverId, int experience)
+        private async Task<bool> ExportRemoveExperienceAsync(int serverId, int experience)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -170,10 +169,10 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnRemoveExperience(int serverId, int experience)
         {
-            await ExportRemoveExperience(serverId, experience);
+            await ExportRemoveExperienceAsync(serverId, experience);
         }
 
-        private async Task<bool> ExportAddExperience(int serverId, int experience)
+        private async Task<bool> ExportAddExperienceAsync(int serverId, int experience)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -183,10 +182,10 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnAddExperience(int serverId, int experience)
         {
-            await ExportAddExperience(serverId, experience);
+            await ExportAddExperienceAsync(serverId, experience);
         }
 
-        private async Task<bool> ExportRemoveMoney(int serverId, int currency, double amount)
+        private async Task<bool> ExportRemoveMoneyAsync(int serverId, int currency, double amount)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -196,10 +195,10 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnRemoveMoney(int serverId, int currency, double amount)
         {
-            await ExportRemoveMoney(serverId, currency, amount);
+            await ExportRemoveMoneyAsync(serverId, currency, amount);
         }
 
-        private async Task<bool> ExportAddMoney(int serverId, int currency, double amount)
+        private async Task<bool> ExportAddMoneyAsync(int serverId, int currency, double amount)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -209,7 +208,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnAddMoney(int serverId, int currency, double amount)
         {
-            await ExportAddMoney(serverId, currency, amount);
+            await ExportAddMoneyAsync(serverId, currency, amount);
         }
 
         private void OnGetCharacter(int serverId, CallbackDelegate cb)

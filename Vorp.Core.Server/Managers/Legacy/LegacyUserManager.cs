@@ -21,25 +21,25 @@ namespace Vorp.Core.Server.Managers.Legacy
 
             // This event is not secure
             Event("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
-            ExportDictionary.Add("ExportAddCurrency", new Func<int, int, double, Task<bool>>(ExportAddCurrency));
+            ExportDictionary.Add("ExportAddCurrency", new Func<int, int, double, Task<bool>>(ExportAddCurrencyAsync));
             // This event is not secure
             Event("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoney));
-            ExportDictionary.Add("ExportRemoveCurrency", new Func<int, int, double, Task<bool>>(ExportRemoveCurrency));
+            ExportDictionary.Add("ExportRemoveCurrency", new Func<int, int, double, Task<bool>>(ExportRemoveCurrencyAsync));
             // This event is not secure
             Event("vorp:addXp", new Action<int, int>(OnAddExperience));
-            ExportDictionary.Add("ExportAddExperience", new Func<int, int, Task<bool>>(ExportAddExperience));
+            ExportDictionary.Add("ExportAddExperience", new Func<int, int, Task<bool>>(ExportAddExperienceAsync));
             // This event is not secure
             Event("vorp:removeXp", new Action<int, int>(OnRemoveExperience));
-            ExportDictionary.Add("ExportRemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperience));
+            ExportDictionary.Add("ExportRemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperienceAsync));
             // This event is not secure
             Event("vorp:setJob", new Action<int, string>(OnSetCharacterJob));
-            ExportDictionary.Add("ExportSetCharacterJob", new Func<int, string, Task<bool>>(ExportSetCharacterJob));
+            ExportDictionary.Add("ExportSetCharacterJob", new Func<int, string, Task<bool>>(ExportSetCharacterJobAsync));
             // This event is not secure
             Event("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
-            ExportDictionary.Add("ExportSetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroup));
+            ExportDictionary.Add("ExportSetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroupAsync));
         }
 
-        private async Task<bool> ExportSetCharacterGroup(int serverId, string job)
+        private async Task<bool> ExportSetCharacterGroupAsync(int serverId, string job)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -49,10 +49,10 @@ namespace Vorp.Core.Server.Managers.Legacy
         private async void OnSetCharacterGroup(int serverId, string job)
         {
             Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'OnSetCharacterGroup'.");
-            await ExportSetCharacterGroup(serverId, job);
+            await ExportSetCharacterGroupAsync(serverId, job);
         }
 
-        private async Task<bool> ExportSetCharacterJob(int serverId, string job)
+        private async Task<bool> ExportSetCharacterJobAsync(int serverId, string job)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -62,10 +62,10 @@ namespace Vorp.Core.Server.Managers.Legacy
         private async void OnSetCharacterJob(int serverId, string job)
         {
             Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportSetCharacterJob'.");
-            await ExportSetCharacterJob(serverId, job);
+            await ExportSetCharacterJobAsync(serverId, job);
         }
 
-        private async Task<bool> ExportRemoveExperience(int serverId, int amount)
+        private async Task<bool> ExportRemoveExperienceAsync(int serverId, int amount)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -75,10 +75,10 @@ namespace Vorp.Core.Server.Managers.Legacy
         private async void OnRemoveExperience(int serverId, int amount)
         {
             Logger.Warn($"Event 'vorp:removeXp' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportRemoveExperience'.");
-            await ExportRemoveExperience(serverId, amount);
+            await ExportRemoveExperienceAsync(serverId, amount);
         }
 
-        private async Task<bool> ExportAddExperience(int serverId, int amount)
+        private async Task<bool> ExportAddExperienceAsync(int serverId, int amount)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -88,10 +88,10 @@ namespace Vorp.Core.Server.Managers.Legacy
         private async void OnAddExperience(int serverId, int amount)
         {
             Logger.Warn($"Event 'vorp:addXp' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportAddExperience'.");
-            await ExportAddExperience(serverId, amount);
+            await ExportAddExperienceAsync(serverId, amount);
         }
 
-        private async Task<bool> ExportRemoveCurrency(int serverId, int currencyType, double amount)
+        private async Task<bool> ExportRemoveCurrencyAsync(int serverId, int currencyType, double amount)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -101,10 +101,10 @@ namespace Vorp.Core.Server.Managers.Legacy
         private async void OnRemoveMoney(int serverId, int currencyType, double amount)
         {
             Logger.Warn($"Event 'vorp:removeMoney' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportRemoveCurrency'.");
-            await ExportRemoveCurrency(serverId, currencyType, amount);
+            await ExportRemoveCurrencyAsync(serverId, currencyType, amount);
         }
 
-        private async Task<bool> ExportAddCurrency(int serverId, int currencyType, double amount)
+        private async Task<bool> ExportAddCurrencyAsync(int serverId, int currencyType, double amount)
         {
             User user = GetUser(serverId);
             if (user == null) return false;
@@ -114,7 +114,7 @@ namespace Vorp.Core.Server.Managers.Legacy
         private async void OnAddMoney(int serverId, int currencyType, double amount)
         {
             Logger.Warn($"Event 'vorp:addMoney' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportAddCurrency'.");
-            await ExportAddCurrency(serverId, currencyType, amount);
+            await ExportAddCurrencyAsync(serverId, currencyType, amount);
         }
 
         private Dictionary<string, dynamic> ExportActiveGetCharacter(int serverId)

@@ -152,7 +152,7 @@ namespace Vorp.Core.Server
 
         public bool IsLoadingManager<T>() where T : Manager<T>, new()
         {
-            return Managers.FirstOrDefault(self => self.Key == typeof(T)).Value is bool == false;
+            return !(Managers.FirstOrDefault(self => self.Key == typeof(T)).Value is bool);
         }
 
         public object GetManager(Type type)

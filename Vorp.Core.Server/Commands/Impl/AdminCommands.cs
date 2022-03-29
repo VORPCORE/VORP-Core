@@ -59,9 +59,9 @@ namespace Vorp.Core.Server.Commands.Impl
                 int jobGrade = 0;
                 if (arguments.Count < 2) return;
 
-                if (arguments.Count == 3)
+                if (arguments.Count == 3 && !int.TryParse(arguments[2], out jobGrade))
                 {
-                    if (!int.TryParse(arguments[2], out jobGrade)) return;
+                    return;
                 }
 
                 int targetId = 0;

@@ -37,7 +37,7 @@ namespace Vorp.Core.Server.Web.Discord.Entity
 
             string jsonData = JsonConvert.SerializeObject(this);
 
-            await request.Http($"{Url}", "POST", jsonData, headers);
+            await request.HttpAsync($"{Url}", "POST", jsonData, headers);
         }
     }
 }

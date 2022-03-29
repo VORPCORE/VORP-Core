@@ -29,7 +29,7 @@ namespace Vorp.Core.Server.Web
         {
             EventHandlers["__cfx_internal:httpResponse"] += new Action<int, int, string, dynamic>(Response);
             Exports.Add("HttpRequest",
-                new Func<string, string, string, string, Task<Dictionary<string, dynamic>>>(Http));
+                new Func<string, string, string, string, Task<Dictionary<string, dynamic>>>(HttpAsync));
         }
 
         public void Response(int token, int status, string text, dynamic header)
@@ -44,7 +44,7 @@ namespace Vorp.Core.Server.Web
             ResponseDictionary[token] = response;
         }
 
-        public async Task<Dictionary<string, dynamic>> Http(string url, string method, string data, dynamic headers)
+        public async Task<Dictionary<string, dynamic>> HttpAsync(string url, string method, string data, dynamic headers)
         {
             var requestData = new RequestDataInternal { url = url, method = method, data = data, headers = headers };
             var json = JsonConvert.SerializeObject(requestData);
@@ -65,7 +65,7 @@ namespace Vorp.Core.Server.Web
 
     public class Request : BaseScript
     {
-        public async Task<RequestResponse> Http(string url, string method = "GET", string data = "",
+        public async Task<RequestResponse> HttpAsync(string url, string method = "GET", string data = "",
             Dictionary<string, string> headers = null)
         {
             headers = headers ?? new Dictionary<string, string>();
