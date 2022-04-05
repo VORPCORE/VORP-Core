@@ -2,17 +2,13 @@
 {
     public static class Logger
     {
-#if CLIENT
         static string _loggingLevel = GetResourceMetadata(GetCurrentResourceName(), "log_level", 0);
-#elif SERVER
-        static string _loggingLevel = GetResourceMetadata(GetCurrentResourceName(), "log_level", 0);
-#endif
 
         static bool ShowOutput(string level)
         {
             string lowercase = _loggingLevel.ToLower();
             if (lowercase == "all") return true;
-            return (lowercase == _loggingLevel);
+            return (lowercase == level);
         }
 
         public static void Info(string msg)
