@@ -83,7 +83,10 @@ namespace Vorp.Core.Client.RedM
             Function.Call((Hash)0x560E76D5E2E1803F, promptHandle, 18, true); // UiPromptSetAttribute
 
             if (!string.IsNullOrEmpty(tag))
-                Function.Call((Hash)0xDEC85C174751292B, promptHandle, tag); // UiPromptSetTag
+            {
+                long strTag = Function.Call<long>(Hash._CREATE_VAR_STRING, 10, "LITERAL_STRING", tag);
+                Function.Call((Hash)0xDEC85C174751292B, promptHandle, strTag); // UiPromptSetTag
+            }
 
             switch (promptType) // All of this is still being tested and checked
             {
