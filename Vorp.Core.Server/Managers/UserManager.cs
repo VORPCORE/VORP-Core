@@ -140,7 +140,9 @@ namespace Vorp.Core.Server.Managers
             int numberOfCharacters = user.NumberOfCharacters;
             Logger.Trace($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
 
-            ServerGateway.Send(player, "vorp:character:list", user.Characters, ServerConfiguration.MaximumCharacters);
+            Dictionary<int, Character> chars = new();
+
+            ServerGateway.Send(player, "vorp:character:list", chars, ServerConfiguration.MaximumCharacters);
 
             //if (numberOfCharacters <= 0)
             //{

@@ -328,6 +328,34 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             MenuOption moCharacterFace = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.face.label"), ClientConfiguration.Translation("character.face.subtitle"), ClientConfiguration.Translation("character.face.description"), "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterFace);
 
+            // Body Herritage START
+            MenuOption moCharacterHerritage = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.herritage.label"), ClientConfiguration.Translation("character.herritage.subtitle"), ClientConfiguration.Translation("character.herritage.description"), "CharacterCamera/Body");
+            moCharacterAppearance.AddOption(moCharacterHerritage);
+
+            MenuOption menuItemBodyType = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.type.label"), ClientConfiguration.Translation("character.body.type.description"), "CharacterSetComponent/BodyType", _ped.BodyType, _ped.PedComponents.BodyType.Value, "CharacterCamera/Body", "character-body");
+            moCharacterHerritage.AddOption(menuItemBodyType);
+
+            // need to change this in the future
+            List<TextureCategory> textureCategories = CharacterComponentConfig.Config.Textures.Female;
+            if (_ped.IsMale)
+                textureCategories = CharacterComponentConfig.Config.Textures.Male;
+
+            foreach (TextureCategory textureCategory in textureCategories)
+            {
+                MenuOption body = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.type.label"), ClientConfiguration.Translation("character.body.type.description"), "CharacterSetComponent/BodyType", _ped.BodyType, _ped.PedComponents.BodyType.Value, "CharacterCamera/Body");
+                menuItemBodyType.AddOption(body);
+
+                MenuOption menuItemBodyHead = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.type.label"), ClientConfiguration.Translation("character.body.type.description"), "CharacterSetComponent/Head", textureCategory.Heads, _ped.PedComponents.Head.Value, "CharacterCamera/Body");
+                body.AddOption(menuItemBodyHead);
+
+                MenuOption menuItemBodyUpper = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.upper.label"), ClientConfiguration.Translation("character.body.upper.description"), "CharacterSetComponent/BodyUpper", textureCategory.BodiesUpper, _ped.PedComponents.BodyUpper.Value, "CharacterCamera/Body");
+                body.AddOption(menuItemBodyUpper);
+
+                MenuOption menuItemBodyLower = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.lower.label"), ClientConfiguration.Translation("character.body.lower.description"), "CharacterSetComponent/BodyLower", textureCategory.BodiesLower, _ped.PedComponents.BodyLower.Value, "CharacterCamera/Body");
+                body.AddOption(menuItemBodyLower);
+            }
+            // Body Herritage END
+
             MenuOption moCharacterBody = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.body.label"), ClientConfiguration.Translation("character.body.subtitle"), ClientConfiguration.Translation("character.body.description"), "CharacterCamera/Body");
             moCharacterAppearance.AddOption(moCharacterBody);
 
@@ -339,7 +367,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             Dictionary<string, Tuple<string, string, List<long>, long>> characterBodyOptions = new();
 
             characterFaceOptions.Add("CharacterSetComponent/Eyes", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.eyes.label"), ClientConfiguration.Translation("character.face.eyes.description"), _ped.Eyes, _ped.PedComponents.Eyes.Value));
-            characterFaceOptions.Add("CharacterSetComponent/Head", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.head.label"), ClientConfiguration.Translation("character.face.head.description"), _ped.Heads, _ped.PedComponents.Head.Value));
+            
             characterFaceOptions.Add("CharacterSetComponent/Teeth", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.teeth.label"), ClientConfiguration.Translation("character.face.teeth.description"), _ped.Teeth, _ped.PedComponents.Teeth.Value));
 
             if (_ped.IsMale)
@@ -350,8 +378,11 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             if (!_ped.IsMale)
                 characterFaceOptions.Add("CharacterSetComponent/HairAccessories", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.hairAccessories.label"), ClientConfiguration.Translation("character.face.hairAccessories.description"), _ped.CreatorHairAccessories, _ped.PedComponents.HairAccessory.Value));
 
+            MenuOption menuAppreanceBodyWaist = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.waist.label"), ClientConfiguration.Translation("character.body.waist.description"), "CharacterSetComponent/BodyWaist", _ped.BodyWaist, _ped.PedComponents.BodyWaist.Value, "CharacterCamera/Body");
+            moCharacterAppearance.AddOption(menuAppreanceBodyWaist);
+
+            characterBodyOptions.Add("CharacterSetComponent/Head", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.head.label"), ClientConfiguration.Translation("character.face.head.description"), _ped.Heads, _ped.PedComponents.Head.Value));
             characterBodyOptions.Add("CharacterSetComponent/BodyType", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.type.label"), ClientConfiguration.Translation("character.body.type.description"), _ped.BodyType, _ped.PedComponents.BodyType.Value));
-            characterBodyOptions.Add("CharacterSetComponent/BodyWaist", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.waist.label"), ClientConfiguration.Translation("character.body.waist.description"), _ped.BodyWaist, _ped.PedComponents.BodyWaist.Value));
             characterBodyOptions.Add("CharacterSetComponent/BodyUpper", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.upper.label"), ClientConfiguration.Translation("character.body.upper.description"), _ped.BodiesUpper, _ped.PedComponents.BodyUpper.Value));
             characterBodyOptions.Add("CharacterSetComponent/BodyLower", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.body.lower.label"), ClientConfiguration.Translation("character.body.lower.description"), _ped.BodiesLower, _ped.PedComponents.BodyLower.Value));
 
@@ -435,6 +466,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
             MenuOption moCharacterSave = MenuOption.MenuOptionButton("Confirm", "Confirm and save your character.", "CharacterConfirm");
             menuBase.AddOption(moCharacterSave);
+
+            Logger.Debug($"{menuBase}");
 
             if (!update)
                 Instance.NuiManager.Set("character/CREATOR", menuBase);
