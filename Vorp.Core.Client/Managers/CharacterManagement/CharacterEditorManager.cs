@@ -319,9 +319,6 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             MenuOption moDivider = MenuOption.MenuOptionDivider();
             menuBase.AddOption(moDivider);
 
-            MenuOption moCharacterName = MenuOption.MenuOptionButton(ClientConfiguration.Translation("character.name.label"), ClientConfiguration.Translation("character.name.description"), "CharacterChangeName", ClientConfiguration.Translation("character.name.label.right"));
-            menuBase.AddOption(moCharacterName);
-
             MenuOption moCharacterAppearance = MenuOption.MenuOptionMenu(ClientConfiguration.Translation("character.appearance.label"), ClientConfiguration.Translation("character.appearance.subtitle"), ClientConfiguration.Translation("character.appearance.description"));
             menuBase.AddOption(moCharacterAppearance);
 
