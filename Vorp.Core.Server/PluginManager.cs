@@ -132,6 +132,9 @@ namespace Vorp.Core.Server
 
             IsServerReady = true;
             Logger.Info($"VORP CORE - LOAD COMPLETED");
+
+            BaseScript.TriggerEvent("vorp:server:activated");
+            Logger.Info($"VORP CORE - Broadcasted event 'vorp:server:activated' to let other resources know the CORE is ready");
         }
 
         public object LoadManager(Type type)
