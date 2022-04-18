@@ -345,7 +345,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 MenuOption body = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.type.label"), ClientConfiguration.Translation("character.body.type.description"), "CharacterSetComponent/BodyType", _ped.BodyType, _ped.PedComponents.BodyType.Value, "CharacterCamera/Body");
                 menuItemBodyType.AddOption(body);
 
-                MenuOption menuItemBodyHead = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.type.label"), ClientConfiguration.Translation("character.body.type.description"), "CharacterSetComponent/Head", textureCategory.Heads, _ped.PedComponents.Head.Value, "CharacterCamera/Body");
+                MenuOption menuItemBodyHead = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.head.label"), ClientConfiguration.Translation("character.body.head.description"), "CharacterSetComponent/Head", textureCategory.Heads, _ped.PedComponents.Head.Value, "CharacterCamera/Body");
                 body.AddOption(menuItemBodyHead);
 
                 MenuOption menuItemBodyUpper = MenuOption.MenuOptionList(ClientConfiguration.Translation("character.body.upper.label"), ClientConfiguration.Translation("character.body.upper.description"), "CharacterSetComponent/BodyUpper", textureCategory.BodiesUpper, _ped.PedComponents.BodyUpper.Value, "CharacterCamera/Body");
