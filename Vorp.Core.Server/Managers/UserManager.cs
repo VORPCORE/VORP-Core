@@ -342,10 +342,11 @@ namespace Vorp.Core.Server.Managers
             {
                 bool isUserInWhitelist = await UserStore.IsUserInWhitelist(steamDatabaseIdentifier);
                 await BaseScript.Delay(0);
-                if (isUserInWhitelist) goto USER_CAN_ENTER; // skip over, goto is old, but handy to jump around
-
-                DefferAndKick("user_is_not_whitelisted", denyWithReason, deferrals);
-                return;
+                if (!isUserInWhitelist)
+                {
+                    DefferAndKick("user_is_not_whitelisted", denyWithReason, deferrals);
+                    return;
+                }
             }
 
             // Discord Role Whitelisting
@@ -357,13 +358,13 @@ namespace Vorp.Core.Server.Managers
                     return;
                 }
                 bool isUserRoleCorrect = await _discord.CheckDiscordIdIsInGuild(player);
-                if (isUserRoleCorrect) goto USER_CAN_ENTER;
-
-                DefferAndKick("user_is_not_whitelisted", denyWithReason, deferrals);
-                return;
+                if (!isUserRoleCorrect)
+                {
+                    DefferAndKick("user_is_not_whitelisted", denyWithReason, deferrals);
+                    return;
+                }
             }
 
-        USER_CAN_ENTER:
             deferrals.update(ServerConfiguration.GetTranslation("user_is_loading"));
             bool isCurrentlyConnected = Instance.IsUserActive(steamDatabaseIdentifier);
             if (isCurrentlyConnected)
