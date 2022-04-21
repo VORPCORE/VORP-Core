@@ -1,0 +1,14 @@
+{
+    "IsConnected": "🚫 Duplisert konto tilkoblet (steam | rockstar)",
+    "NoSteam": "🚫 Du må ha Steam åpen, vennligst åpne Steam & restart RedM",
+    "NoInWhitelist": "🚫 Du er ikke på whitelisten",
+    "NoPermissions": "Du har ikke nok tillatelser",
+    "CheckingIdentifier": "Sjekker Lisenser",
+    "LoadingUser": "Laster Bruker",
+    "BannedUser": "Du er utestengt",
+    "TitleOnDead": "Du har død",
+    "SubTitleOnDead": "Du vil igjenoppstå om {0} sekunder",
+    "SubTitlePressKey": "Trykk ~e~E~q~ for å igjenoppstå",
+    "YouAreCarried": "Du blir bært av en person",
+    "VoiceRangeChanged": "Talechat-rekkevidde endret til {0} meter"
+}

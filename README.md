@@ -3,7 +3,7 @@ This is VORP CORE for RedM made in C# compatible with LUA
 [Discord VORP](https://discord.gg/23MPbQ6)
 
 ## Requirements
-- [ghmattimysql](https://github.com/GHMatti/ghmattimysql/releases)
+- [ghmattimysql](https://github.com/VORPCORE/ghmattimysql-oxmysql)
 - [VORP-Core](https://github.com/VORPCORE/VORP-Core/releases)
 - [VORP-Inputs](https://github.com/VORPCORE/VORP-Inputs/releases)
 - [VORP-Character](https://github.com/VORPCORE/VORP-Character/releases)
