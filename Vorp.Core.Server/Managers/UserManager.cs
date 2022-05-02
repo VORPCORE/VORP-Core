@@ -89,7 +89,7 @@ namespace Vorp.Core.Server.Managers
 
                 User user = source.User;
 
-                if (Instance.IsOneSyncEnabled)
+                if (IsOneSyncEnabled)
                 {
                     player.State.Set(StateBagKey.PlayerName, player.Name, true);
                 }
@@ -234,6 +234,14 @@ namespace Vorp.Core.Server.Managers
             if (!UserSessions.ContainsKey(steamId)) return;
             User user = UserSessions[steamId];
 
+            if (IsOneSyncEnabled)
+            {
+                Ped ped = player.Character;
+                Position position = ped.Position.ToPosition(ped.Heading);
+                user.ActiveCharacter.Coords = $"{position}";
+                Logger.Trace($"Player position of '{position}' set.");
+            }
+
             if (user.ActiveCharacter != null)
                 await user.ActiveCharacter.Save(); // save the characters information now, just to be sure
 
@@ -258,7 +266,7 @@ namespace Vorp.Core.Server.Managers
                         if (user.ActiveCharacter is not null)
                         {
                             Player player = PlayersList[user.CFXServerID];
-                            if (player != null && Instance.IsOneSyncEnabled)
+                            if (player != null && IsOneSyncEnabled)
                             {
                                 Vector3 playerPosition = player.Character.Position;
                                 float playerHeading = player.Character.Heading;

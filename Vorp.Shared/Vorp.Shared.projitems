@@ -24,6 +24,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Models\Loadout.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PedComponentOptions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\PedComponents.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Position.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\Weapon.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Records\Character.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Records\User.cs" />

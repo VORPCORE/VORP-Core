@@ -18,6 +18,7 @@ namespace Vorp.Core.Server.Managers
         public void Event(string name, Delegate @delegate) => Instance.Hook(name, @delegate);
         public ExportDictionary ExportDictionary => Instance.ExportDictionary;
         public ServerGateway ServerGateway => Instance.Events;
+        public bool IsOneSyncEnabled => PluginManager.IsOneSyncEnabled;
 
         protected Manager()
         {

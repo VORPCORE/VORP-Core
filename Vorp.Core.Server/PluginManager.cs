@@ -28,7 +28,7 @@ namespace Vorp.Core.Server
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
         public ServerGateway Events;
         public static ConcurrentDictionary<string, User> UserSessions = new ConcurrentDictionary<string, User>();
-        public bool IsOneSyncEnabled => GetConvar("onesync", "off") != "off";
+        public static bool IsOneSyncEnabled => GetConvar("onesync", "off") != "off";
         public CommandFramework CommandFramework;
         public bool IsServerReady = false;
 
