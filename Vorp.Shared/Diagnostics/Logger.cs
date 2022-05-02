@@ -51,5 +51,15 @@
         {
             CitizenFX.Core.Debug.WriteLine($"{msg}");
         }
+
+        public static void CriticalError(string msg)
+        {
+            Format($"[CRITICAL ERROR] {msg}");
+        }
+
+        public static void CriticalError(Exception ex, string msg)
+        {
+            Format($"[CRITICAL ERROR] {msg}\r\n{ex}");
+        }
     }
 }
