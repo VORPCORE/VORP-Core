@@ -13,13 +13,13 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             {
                 Logger.Trace($"Received {characters.Count} characters from the server, max {maxCharcters} allowed.");
 
-                await Screen.FadeOut(500);
+                //await Screen.FadeOut(500);
 
-                DisplayHud(false);
-                DisplayRadar(false);
-                SetMinimapHideFow(true);
+                //DisplayHud(false);
+                //DisplayRadar(false);
+                //SetMinimapHideFow(true);
 
-                await characterCreatorManager.StartCharacterCreator();
+                //await characterCreatorManager.StartCharacterCreator();
 
                 //if (characters.Count == 0)
                 //{
