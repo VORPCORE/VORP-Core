@@ -41,6 +41,28 @@ namespace Vorp.Core.Server.Managers.Legacy
             Event("vorp:ImDead", new Action<Player, bool>(OnPlayerIsDeadAsync));
 
             Event("getCore", new Action<CallbackDelegate>(OnGetCoreAsync));
+
+            // New Exports
+            ExportDictionary.Add("SetActiveCharacter", new Func<int, int, bool>(ExportSetActiveCharacter));
+        }
+
+        private User GetUser(int serverId)
+        {
+            Player player = PlayersList[serverId];
+            if (player == null)
+            {
+                Logger.Error($"[LegacyApi] Player '{serverId}' not found.");
+                return null;
+            }
+
+            string steamId = player.Identifiers["steam"];
+
+            if (!UserSessions.ContainsKey(steamId))
+            {
+                Logger.Error($"[LegacyApi] Player [{steamId}] '{player.Name}' not found in Active Users.");
+                return null;
+            }
+            return UserSessions[steamId];
         }
 
         // Sadly no server side native for IsEntityDead yet.
@@ -77,8 +99,8 @@ namespace Vorp.Core.Server.Managers.Legacy
             try
             {
                 // PENDING WARNING WHEN SET TO DO CHANGES, WHY, BECAUSE THIS IS HORRIBLE!
-                //Logger.Warn($"Event 'getCore' is deprecated, please update your methods to use the exports.");
-                //Logger.Warn($"This will be removed in the future, and the version will be stated when this happens.");
+                Logger.Warn($"Event 'getCore' is deprecated, please update your methods to use the exports.");
+                Logger.Warn($"This will be removed in the future, and the version will be stated when this happens.");
                 Dictionary<string, dynamic> Core = new Dictionary<string, dynamic>()
                 {
                     { "getUser", new AuxDelegate(ExportGetUser) },
@@ -232,23 +254,10 @@ namespace Vorp.Core.Server.Managers.Legacy
             return user.GetUser();
         }
 
-        private User GetUser(int serverId)
+        private bool ExportSetActiveCharacter(int serverId, int characterId)
         {
-            Player player = PlayersList[serverId];
-            if (player == null)
-            {
-                Logger.Error($"[LegacyApi] Player '{serverId}' not found.");
-                return null;
-            }
-
-            string steamId = player.Identifiers["steam"];
-
-            if (!UserSessions.ContainsKey(steamId))
-            {
-                Logger.Error($"[LegacyApi] Player [{steamId}] '{player.Name}' not found in Active Users.");
-                return null;
-            }
-            return UserSessions[steamId];
+            User user = GetUser(serverId);
+            return user.SetActiveCharacter(characterId);
         }
     }
 }
