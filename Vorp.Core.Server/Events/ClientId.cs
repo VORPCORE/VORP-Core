@@ -24,13 +24,7 @@ namespace Vorp.Core.Server.Events
                 holder.Add(GetPlayerIdentifier(handle.ToString(), index));
             }
 
-            Player player = PluginManager.PlayersList[handle];
-            string steamId = player.Identifiers["steam"];
-
-            if (PluginManager.UserSessions.ContainsKey($"{steamId}"))
-            {
-                User = PluginManager.UserSessions[$"{steamId}"];
-            }
+            User = PluginManager.ToUser(handle);
 
             Identifiers = holder.ToArray();
         }

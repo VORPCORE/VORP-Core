@@ -46,25 +46,6 @@ namespace Vorp.Core.Server.Managers.Legacy
             ExportDictionary.Add("SetActiveCharacter", new Func<int, int, bool>(ExportSetActiveCharacter));
         }
 
-        private User GetUser(int serverId)
-        {
-            Player player = PlayersList[serverId];
-            if (player == null)
-            {
-                Logger.Error($"[LegacyApi] Player '{serverId}' not found.");
-                return null;
-            }
-
-            string steamId = player.Identifiers["steam"];
-
-            if (!UserSessions.ContainsKey(steamId))
-            {
-                Logger.Error($"[LegacyApi] Player [{steamId}] '{player.Name}' not found in Active Users.");
-                return null;
-            }
-            return UserSessions[steamId];
-        }
-
         // Sadly no server side native for IsEntityDead yet.
         private async void OnPlayerIsDeadAsync([FromSource] Player player, bool isDead)
         {
@@ -159,7 +140,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportSetCharacterGroupAsync(int serverId, string group)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             return await user.ActiveCharacter.SetGroup(group);
         }
@@ -171,7 +152,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportSetJobAsync(int serverId, string job)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             return await user.ActiveCharacter.SetJob(job);
         }
@@ -183,7 +164,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportRemoveExperienceAsync(int serverId, int experience)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             bool result = await user.ActiveCharacter.AdjustExperience(false, experience);
             return result;
@@ -196,7 +177,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportAddExperienceAsync(int serverId, int experience)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             bool result = await user.ActiveCharacter.AdjustExperience(true, experience);
             return result;
@@ -209,7 +190,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportRemoveMoneyAsync(int serverId, int currency, double amount)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             bool result = await user.ActiveCharacter.AdjustCurrency(false, currency, amount);
             return result;
@@ -222,7 +203,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportAddMoneyAsync(int serverId, int currency, double amount)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             bool result = await user.ActiveCharacter.AdjustCurrency(true, currency, amount);
             return result;
@@ -240,7 +221,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private Dictionary<string, dynamic> ExportGetCharacter(int serverId)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             // return something that can be checked by the calling member
             if (user == null) return new Dictionary<string, dynamic>();
             return user.GetActiveCharacter();
@@ -248,7 +229,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private Dictionary<string, dynamic> ExportGetUser(int serverId)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             // return something that can be checked by the calling member
             if (user == null) return new Dictionary<string, dynamic>();
             return user.GetUser();
@@ -256,7 +237,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private bool ExportSetActiveCharacter(int serverId, int characterId)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             return user.SetActiveCharacter(characterId);
         }
     }

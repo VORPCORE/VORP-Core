@@ -41,7 +41,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportSetCharacterGroupAsync(int serverId, string job)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             return await user.ActiveCharacter.SetGroup(job);
         }
@@ -54,7 +54,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportSetCharacterJobAsync(int serverId, string job)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             return await user.ActiveCharacter.SetJob(job);
         }
@@ -67,7 +67,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportRemoveExperienceAsync(int serverId, int amount)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             return await user.ActiveCharacter.AdjustExperience(false, amount);
         }
@@ -80,7 +80,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportAddExperienceAsync(int serverId, int amount)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             return await user.ActiveCharacter.AdjustExperience(true, amount);
         }
@@ -93,7 +93,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportRemoveCurrencyAsync(int serverId, int currencyType, double amount)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             return await user.ActiveCharacter.AdjustCurrency(false, currencyType, amount);
         }
@@ -106,7 +106,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async Task<bool> ExportAddCurrencyAsync(int serverId, int currencyType, double amount)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return false;
             return await user.ActiveCharacter.AdjustCurrency(true, currencyType, amount);
         }
@@ -119,7 +119,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private Dictionary<string, dynamic> ExportActiveGetCharacter(int serverId)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user == null) return null;
             return user.GetActiveCharacter();
         }
@@ -131,7 +131,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private Dictionary<string, dynamic> ExportGetUser(int serverId)
         {
-            User user = GetUser(serverId);
+            User user = PluginManager.ToUser(serverId);
             if (user is null)
             {
                 Logger.CriticalError($"Cannot find user for serverId '{serverId}'");
@@ -168,18 +168,6 @@ namespace Vorp.Core.Server.Managers.Legacy
             }
 
             player.TriggerEvent("vorp_GoToSelectionMenu");
-        }
-
-        private User GetUser(int serverId)
-        {
-            string srvId = $"{serverId}";
-
-            if (!UserSessions.ContainsKey(srvId))
-            {
-                return null;
-            }
-
-            return UserSessions[srvId];
         }
     }
 }
