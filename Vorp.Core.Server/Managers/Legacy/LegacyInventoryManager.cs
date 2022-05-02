@@ -10,10 +10,10 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         public override void Begin()
         {
-            Event("vorpinventory:getInventory", new Action<Player>(OnGetInventory));
+            Event("vorpinventory:getInventory", new Action<Player>(OnGetInventoryAsync));
         }
 
-        private async void OnGetInventory([FromSource] Player player)
+        private async void OnGetInventoryAsync([FromSource] Player player)
         {
             try
             {

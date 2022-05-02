@@ -22,21 +22,21 @@ namespace Vorp.Core.Server.Managers
 
         public override void Begin()
         {
-            Event("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnecting));
+            Event("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnectingAsync));
             Event("playerJoining", new Action<Player, string>(OnPlayerJoining));
-            Event("playerDropped", new Action<Player, string>(OnPlayerDropped));
-            Event("onResourceStop", new Action<string>(OnResourceStop));
+            Event("playerDropped", new Action<Player, string>(OnPlayerDroppedAsync));
+            Event("onResourceStop", new Action<string>(OnResourceStopAsync));
 
             Event("vorp:user:activate", new Action<Player>(OnUserActivate));
 
-            ServerGateway.Mount("vorp:user:active", new Func<ClientId, int, Task<string>>(OnUserActive));
-            ServerGateway.Mount("vorp:user:list:active", new Func<ClientId, int, Task<List<dynamic>>>(OnGetActiveUserList));
-            ServerGateway.Mount("vorp:user:group", new Func<ClientId, int, Task<string>>(OnGetUsersGroup));
+            ServerGateway.Mount("vorp:user:active", new Func<ClientId, int, Task<string>>(OnUserActiveAsync));
+            ServerGateway.Mount("vorp:user:list:active", new Func<ClientId, int, Task<List<dynamic>>>(OnGetActiveUserListAsync));
+            ServerGateway.Mount("vorp:user:group", new Func<ClientId, int, Task<string>>(OnGetUsersGroupAsync));
 
             lastTimeCleanupRan = GetGameTimer();
         }
 
-        private async Task<string> OnGetUsersGroup(ClientId source, int serverHandle)
+        private async Task<string> OnGetUsersGroupAsync(ClientId source, int serverHandle)
         {
             Player player = PlayersList[source.Handle];
             if (player == null) return DEFAULT_GROUP;
@@ -77,7 +77,7 @@ namespace Vorp.Core.Server.Managers
             ServerGateway.Send(player, "vorp:user:group:client", user.Group);
         }
 
-        private async Task<string> OnUserActive(ClientId source, int serverHandle)
+        private async Task<string> OnUserActiveAsync(ClientId source, int serverHandle)
         {
             Player player = PlayersList[source.Handle];
             if (player == null) return "failed";
@@ -182,9 +182,7 @@ namespace Vorp.Core.Server.Managers
             //}
         }
 
-#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
-        private async Task<List<dynamic>> OnGetActiveUserList(ClientId source, int id)
-#pragma warning restore CS1998 // Async method lacks 'await' operators and will run synchronously
+        private async Task<List<dynamic>> OnGetActiveUserListAsync(ClientId source, int id)
         {
             List<dynamic> list = new List<dynamic>();
             if (source.Handle != id) return list;
@@ -197,7 +195,7 @@ namespace Vorp.Core.Server.Managers
             return list;
         }
 
-        private async void OnResourceStop(string resourceName)
+        private async void OnResourceStopAsync(string resourceName)
         {
             if (resourceName != GetCurrentResourceName()) return;
             foreach (KeyValuePair<string, User> kvp in UserSessions)
@@ -228,7 +226,7 @@ namespace Vorp.Core.Server.Managers
             Logger.Trace($"Player '{player.Name}' is joining.");
         }
 
-        private async void OnPlayerDropped([FromSource] Player player, string reason)
+        private async void OnPlayerDroppedAsync([FromSource] Player player, string reason)
         {
             Logger.Trace($"Player '{player.Name}' dropped (Reason: {reason}).");
             string steamId = player.Identifiers["steam"];
@@ -243,7 +241,7 @@ namespace Vorp.Core.Server.Managers
         }
 
         [TickHandler]
-        private async Task OnPlayerCleanUp()
+        private async Task OnPlayerCleanUpAsync()
         {
             if ((GetGameTimer() - lastTimeCleanupRan) > TWO_MINUTES)
             {
@@ -301,7 +299,7 @@ namespace Vorp.Core.Server.Managers
             await BaseScript.Delay(5000); // run every 5 seconds
         }
 
-        private async void OnPlayerConnecting([FromSource] Player player, string name, CallbackDelegate denyWithReason, dynamic deferrals)
+        private async void OnPlayerConnectingAsync([FromSource] Player player, string name, CallbackDelegate denyWithReason, dynamic deferrals)
         {
             deferrals.update(ServerConfiguration.GetTranslation("user_checking_identifier"));
 

@@ -18,33 +18,33 @@ namespace Vorp.Core.Server.Managers.Legacy
             ExportDictionary.Add("GetCharacter", new Func<int, Dictionary<string, dynamic>>(ExportGetCharacter));
             ExportDictionary.Add("GetUser", new Func<int, Dictionary<string, dynamic>>(ExportGetUser));
 
-            Event("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
+            Event("vorp:addMoney", new Action<int, int, double>(OnAddMoneyAsync));
             ExportDictionary.Add("AddMoney", new Func<int, int, double, Task<bool>>(ExportAddMoneyAsync));
 
-            Event("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoney));
+            Event("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoneyAsync));
             ExportDictionary.Add("RemoveMoney", new Func<int, int, double, Task<bool>>(ExportRemoveMoneyAsync));
 
-            Event("vorp:addXp", new Action<int, int>(OnAddExperience));
+            Event("vorp:addXp", new Action<int, int>(OnAddExperienceAsync));
             ExportDictionary.Add("AddExperience", new Func<int, int, Task<bool>>(ExportAddExperienceAsync));
 
-            Event("vorp:removeXp", new Action<int, int>(OnRemoveExperience));
+            Event("vorp:removeXp", new Action<int, int>(OnRemoveExperienceAsync));
             ExportDictionary.Add("RemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperienceAsync));
 
-            Event("vorp:setJob", new Action<int, string>(OnSetJob));
+            Event("vorp:setJob", new Action<int, string>(OnSetJobAsync));
             ExportDictionary.Add("SetJob", new Func<int, string, Task<bool>>(ExportSetJobAsync));
 
-            Event("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
+            Event("vorp:setGroup", new Action<int, string>(OnSetCharacterGroupAsync));
             ExportDictionary.Add("SetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroupAsync));
 
             // Review these events
             Event("vorp:saveLastCoords", new Action<Player, Vector3, float>(OnSaveLastCoords));
-            Event("vorp:ImDead", new Action<Player, bool>(OnPlayerIsDead));
+            Event("vorp:ImDead", new Action<Player, bool>(OnPlayerIsDeadAsync));
 
-            Event("getCore", new Action<CallbackDelegate>(OnGetCore));
+            Event("getCore", new Action<CallbackDelegate>(OnGetCoreAsync));
         }
 
         // Sadly no server side native for IsEntityDead yet.
-        private async void OnPlayerIsDead([FromSource] Player player, bool isDead)
+        private async void OnPlayerIsDeadAsync([FromSource] Player player, bool isDead)
         {
             if (!UserSessions.ContainsKey(player.Handle)) return;
             User user = UserSessions[player.Handle];
@@ -67,7 +67,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             user.ActiveCharacter.Coords = jb.Build();
         }
 
-        private async void OnGetCore(CallbackDelegate cb)
+        private async void OnGetCoreAsync(CallbackDelegate cb)
         {
             while (!Instance.IsServerReady)
             {
@@ -142,7 +142,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return await user.ActiveCharacter.SetGroup(group);
         }
 
-        private async void OnSetCharacterGroup(int serverId, string group)
+        private async void OnSetCharacterGroupAsync(int serverId, string group)
         {
             await ExportSetJobAsync(serverId, group);
         }
@@ -154,7 +154,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return await user.ActiveCharacter.SetJob(job);
         }
 
-        private async void OnSetJob(int serverId, string job)
+        private async void OnSetJobAsync(int serverId, string job)
         {
             await ExportSetJobAsync(serverId, job);
         }
@@ -167,7 +167,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return result;
         }
 
-        private async void OnRemoveExperience(int serverId, int experience)
+        private async void OnRemoveExperienceAsync(int serverId, int experience)
         {
             await ExportRemoveExperienceAsync(serverId, experience);
         }
@@ -180,7 +180,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return result;
         }
 
-        private async void OnAddExperience(int serverId, int experience)
+        private async void OnAddExperienceAsync(int serverId, int experience)
         {
             await ExportAddExperienceAsync(serverId, experience);
         }
@@ -193,7 +193,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return result;
         }
 
-        private async void OnRemoveMoney(int serverId, int currency, double amount)
+        private async void OnRemoveMoneyAsync(int serverId, int currency, double amount)
         {
             await ExportRemoveMoneyAsync(serverId, currency, amount);
         }
@@ -206,7 +206,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return result;
         }
 
-        private async void OnAddMoney(int serverId, int currency, double amount)
+        private async void OnAddMoneyAsync(int serverId, int currency, double amount)
         {
             await ExportAddMoneyAsync(serverId, currency, amount);
         }

@@ -20,22 +20,22 @@ namespace Vorp.Core.Server.Managers.Legacy
             ExportDictionary.Add("GetActiveCharacter", new Func<int, Dictionary<string, dynamic>>(ExportActiveGetCharacter));
 
             // This event is not secure
-            Event("vorp:addMoney", new Action<int, int, double>(OnAddMoney));
+            Event("vorp:addMoney", new Action<int, int, double>(OnAddMoneyAsync));
             ExportDictionary.Add("ExportAddCurrency", new Func<int, int, double, Task<bool>>(ExportAddCurrencyAsync));
             // This event is not secure
-            Event("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoney));
+            Event("vorp:removeMoney", new Action<int, int, double>(OnRemoveMoneyAsync));
             ExportDictionary.Add("ExportRemoveCurrency", new Func<int, int, double, Task<bool>>(ExportRemoveCurrencyAsync));
             // This event is not secure
-            Event("vorp:addXp", new Action<int, int>(OnAddExperience));
+            Event("vorp:addXp", new Action<int, int>(OnAddExperienceAsync));
             ExportDictionary.Add("ExportAddExperience", new Func<int, int, Task<bool>>(ExportAddExperienceAsync));
             // This event is not secure
-            Event("vorp:removeXp", new Action<int, int>(OnRemoveExperience));
+            Event("vorp:removeXp", new Action<int, int>(OnRemoveExperienceAsync));
             ExportDictionary.Add("ExportRemoveExperience", new Func<int, int, Task<bool>>(ExportRemoveExperienceAsync));
             // This event is not secure
-            Event("vorp:setJob", new Action<int, string>(OnSetCharacterJob));
+            Event("vorp:setJob", new Action<int, string>(OnSetCharacterJobAsync));
             ExportDictionary.Add("ExportSetCharacterJob", new Func<int, string, Task<bool>>(ExportSetCharacterJobAsync));
             // This event is not secure
-            Event("vorp:setGroup", new Action<int, string>(OnSetCharacterGroup));
+            Event("vorp:setGroup", new Action<int, string>(OnSetCharacterGroupAsync));
             ExportDictionary.Add("ExportSetCharacterGroup", new Func<int, string, Task<bool>>(ExportSetCharacterGroupAsync));
         }
 
@@ -46,7 +46,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return await user.ActiveCharacter.SetGroup(job);
         }
 
-        private async void OnSetCharacterGroup(int serverId, string job)
+        private async void OnSetCharacterGroupAsync(int serverId, string job)
         {
             Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'OnSetCharacterGroup'.");
             await ExportSetCharacterGroupAsync(serverId, job);
@@ -59,7 +59,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return await user.ActiveCharacter.SetJob(job);
         }
 
-        private async void OnSetCharacterJob(int serverId, string job)
+        private async void OnSetCharacterJobAsync(int serverId, string job)
         {
             Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportSetCharacterJob'.");
             await ExportSetCharacterJobAsync(serverId, job);
@@ -72,7 +72,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return await user.ActiveCharacter.AdjustExperience(false, amount);
         }
 
-        private async void OnRemoveExperience(int serverId, int amount)
+        private async void OnRemoveExperienceAsync(int serverId, int amount)
         {
             Logger.Warn($"Event 'vorp:removeXp' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportRemoveExperience'.");
             await ExportRemoveExperienceAsync(serverId, amount);
@@ -85,7 +85,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return await user.ActiveCharacter.AdjustExperience(true, amount);
         }
 
-        private async void OnAddExperience(int serverId, int amount)
+        private async void OnAddExperienceAsync(int serverId, int amount)
         {
             Logger.Warn($"Event 'vorp:addXp' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportAddExperience'.");
             await ExportAddExperienceAsync(serverId, amount);
@@ -98,7 +98,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return await user.ActiveCharacter.AdjustCurrency(false, currencyType, amount);
         }
 
-        private async void OnRemoveMoney(int serverId, int currencyType, double amount)
+        private async void OnRemoveMoneyAsync(int serverId, int currencyType, double amount)
         {
             Logger.Warn($"Event 'vorp:removeMoney' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportRemoveCurrency'.");
             await ExportRemoveCurrencyAsync(serverId, currencyType, amount);
@@ -111,7 +111,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             return await user.ActiveCharacter.AdjustCurrency(true, currencyType, amount);
         }
 
-        private async void OnAddMoney(int serverId, int currencyType, double amount)
+        private async void OnAddMoneyAsync(int serverId, int currencyType, double amount)
         {
             Logger.Warn($"Event 'vorp:addMoney' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportAddCurrency'.");
             await ExportAddCurrencyAsync(serverId, currencyType, amount);
