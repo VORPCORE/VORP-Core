@@ -140,8 +140,6 @@ namespace Vorp.Core.Server.Managers
             int numberOfCharacters = user.NumberOfCharacters;
             Logger.Trace($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
 
-            Dictionary<int, Character> chars = user.Characters;
-
             //ServerGateway.Send(player, "vorp:character:list", chars, ServerConfiguration.MaximumCharacters);
 
             // LEGACY METHODS FOR NOW
@@ -152,24 +150,6 @@ namespace Vorp.Core.Server.Managers
             }
             else
             {
-                List<Dictionary<string, dynamic>> characters = new();
-
-                foreach (KeyValuePair<int, Character> kvp in user.Characters)
-                {
-                    Character character = kvp.Value;
-                    Dictionary<string, dynamic> characterDict = new Dictionary<string, dynamic>();
-                    characterDict.Add("charIdentifier", character.CharacterId);
-                    characterDict.Add("money", character.Cash);
-                    characterDict.Add("gold", character.Gold);
-                    characterDict.Add("firstname", character.Firstname);
-                    characterDict.Add("lastname", character.Lastname);
-                    characterDict.Add("skin", character.Skin);
-                    characterDict.Add("components", character.Components);
-                    characterDict.Add("coords", character.Coords);
-                    characterDict.Add("isDead", character.IsDead);
-                    characters.Add(characterDict);
-                }
-
                 if (ServerConfiguration.MaximumCharacters == 1 && numberOfCharacters <= 1)
                 {
                     player.TriggerEvent("vorpcharacter:spawnUniqueCharacter");
@@ -177,6 +157,26 @@ namespace Vorp.Core.Server.Managers
                 }
                 else
                 {
+                    List<Dictionary<string, dynamic>> characters = new();
+
+                    foreach (KeyValuePair<int, Character> kvp in user.Characters)
+                    {
+                        Character character = kvp.Value;
+                        Dictionary<string, dynamic> characterDict = new Dictionary<string, dynamic>();
+                        characterDict.Add("charIdentifier", character.CharacterId);
+                        characterDict.Add("money", character.Cash);
+                        characterDict.Add("gold", character.Gold);
+                        characterDict.Add("firstname", character.Firstname);
+                        characterDict.Add("lastname", character.Lastname);
+                        characterDict.Add("skin", character.Skin);
+                        characterDict.Add("components", character.Components);
+                        characterDict.Add("coords", character.Coords);
+                        characterDict.Add("isDead", character.IsDead);
+                        characters.Add(characterDict);
+
+                        Logger.Debug($"Added Character: {JsonConvert.SerializeObject(characterDict)}");
+                    }
+
                     player.TriggerEvent("vorpcharacter:selectCharacter", characters);
                     Logger.Debug($"Player '{player.Name}' -> vorpcharacter:selectCharacter");
                 }
