@@ -234,7 +234,7 @@ namespace Vorp.Core.Server.Managers
             if (!UserSessions.ContainsKey(steamId)) return;
             User user = UserSessions[steamId];
 
-            if (IsOneSyncEnabled)
+            if (IsOneSyncEnabled && user.ActiveCharacter != null)
             {
                 Ped ped = player.Character;
                 Position position = ped.Position.ToPosition(ped.Heading);
