@@ -132,6 +132,10 @@ namespace Vorp.Core.Server.Managers.Legacy
         private Dictionary<string, dynamic> ExportGetUser(int serverId)
         {
             User user = GetUser(serverId);
+            if (user is null)
+            {
+                Logger.CriticalError($"Cannot find user for serverId '{serverId}'");
+            }
             return user.GetUser();
         }
 
