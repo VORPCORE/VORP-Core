@@ -80,8 +80,8 @@ namespace Vorp.Core.Server.Managers.Legacy
             try
             {
                 // PENDING WARNING WHEN SET TO DO CHANGES, WHY, BECAUSE THIS IS HORRIBLE!
-                Logger.Warn($"Event 'getCore' is deprecated, please update your methods to use the exports.");
-                Logger.Warn($"This will be removed in the future, and the version will be stated when this happens.");
+                // Logger.Warn($"Event 'getCore' is deprecated, please update your methods to use the exports.");
+                // Logger.Warn($"This will be removed in the future, and the version will be stated when this happens.");
                 Dictionary<string, dynamic> Core = new Dictionary<string, dynamic>()
                 {
                     { "getUser", new AuxDelegate(ExportGetUser) },
