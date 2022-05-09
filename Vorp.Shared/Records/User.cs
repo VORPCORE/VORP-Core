@@ -116,10 +116,15 @@ namespace Vorp.Shared.Records
         public bool SetActiveCharacter(int charId)
         {
             if (!Characters.ContainsKey(charId)) return false;
+
+            Logger.Info($"Setting Character '{charId}' active for '{Name}'.");
+
             Characters.ToList().ForEach(x => x.Value.IsActive = false);
 
             Character character = Characters[charId];
             character.IsActive = true;
+
+            Logger.Info($"Character '{character.Fullname}' is now active for '{Name}'.");
 
             // TODO: Replace this method with something, better.
             BaseScript.TriggerEvent("vorp:SelectedCharacter", CFXServerID, GetActiveCharacter());
