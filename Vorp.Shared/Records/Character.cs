@@ -132,6 +132,8 @@ namespace Vorp.Shared.Records
 
         #region Properties
         public bool IsActive { get; set; } = false;
+
+        public string Fullname => $"{Firstname} {Lastname}";
         #endregion
 
         #region Methods
