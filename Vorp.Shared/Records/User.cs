@@ -117,7 +117,13 @@ namespace Vorp.Shared.Records
         {
             if (!Characters.ContainsKey(charId)) return false;
             Characters.ToList().ForEach(x => x.Value.IsActive = false);
-            Characters[charId].IsActive = true;
+
+            Character character = Characters[charId];
+            character.IsActive = true;
+
+            // TODO: Replace this method with something, better.
+            BaseScript.TriggerEvent("vorp:SelectedCharacter", CFXServerID, GetActiveCharacter());
+
             return true;
         }
 
