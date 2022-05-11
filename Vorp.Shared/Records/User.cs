@@ -117,14 +117,14 @@ namespace Vorp.Shared.Records
         {
             if (!Characters.ContainsKey(charId)) return false;
 
-            Logger.Info($"Setting Character '{charId}' active for '{Name}'.");
+            Logger.Info($"Setting Character '{charId}' active for '{Name}' with ServerID '{CFXServerID}'.");
 
             Characters.ToList().ForEach(x => x.Value.IsActive = false);
 
             Character character = Characters[charId];
             character.IsActive = true;
 
-            Logger.Info($"Character '{character.Fullname}' is now active for '{Name}'.");
+            Logger.Info($"Character '{character.Fullname}' is now active for '{Name}' with ServerID '{CFXServerID}'.");
 
             // TODO: Replace this method with something, better.
             BaseScript.TriggerEvent("vorp:SelectedCharacter", CFXServerID, GetActiveCharacter());
@@ -306,10 +306,10 @@ namespace Vorp.Shared.Records
                 { "setJobGrade", new Action<int>(async jobGrade => await activeChar.SetJobGrade(jobGrade)) },
                 { "setJobAndGrade", new Action<string, int>(async (job, jobGrade) => await activeChar.SetJobAndGrade(job, jobGrade)) },
                 { "setGroup", new Action<string>(async group => await activeChar.SetGroup(group)) },
-                { "setMoney", new Action<double>(cash => activeChar.SetCash(cash)) },
-                { "setGold", new Action<double>(gold => activeChar.SetGold(gold)) },
-                { "setRol", new Action<double>(roleToken => activeChar.SetRoleToken(roleToken)) },
-                { "setXp", new Action<int>(experience => activeChar.SetExperience(experience)) },
+                { "setMoney", new Action<double>(cash => activeChar.SetCashAsync(cash)) },
+                { "setGold", new Action<double>(gold => activeChar.SetGoldAsync(gold)) },
+                { "setRol", new Action<double>(roleToken => activeChar.SetRoleTokenAsync(roleToken)) },
+                { "setXp", new Action<int>(experience => activeChar.SetExperienceAsync(experience)) },
                 { "setFirstname", new Action<string>(firstname => Logger.Error($"[{GetInvokingResource()}] Method 'setFirstname' Deprecated, please inform us if you us this, and why.")) },
                 { "setLastname", new Action<string>(lastname => Logger.Error($"[{GetInvokingResource()}] Method 'setLastname' Deprecated, please inform us if you us this, and why.")) },
                 { "updateSkin", new Action<string>(skin => activeChar.Skin = skin) },
