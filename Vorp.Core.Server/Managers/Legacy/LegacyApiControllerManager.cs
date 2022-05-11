@@ -43,7 +43,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             Event("getCore", new Action<CallbackDelegate>(OnGetCoreAsync));
 
             // New Exports
-            ExportDictionary.Add("SetActiveCharacter", new Func<int, int, bool>(ExportSetActiveCharacter));
+            ExportDictionary.Add("SetActiveCharacter", new Func<int, int, Task<bool>>(ExportSetActiveCharacter));
         }
 
         // Sadly no server side native for IsEntityDead yet.
@@ -235,10 +235,10 @@ namespace Vorp.Core.Server.Managers.Legacy
             return user.GetUser();
         }
 
-        private bool ExportSetActiveCharacter(int serverId, int characterId)
+        private async Task<bool> ExportSetActiveCharacter(int serverId, int characterId)
         {
             User user = PluginManager.ToUser(serverId);
-            return user.SetActiveCharacter(characterId);
+            return await user.SetActiveCharacterAsync(characterId);
         }
     }
 }

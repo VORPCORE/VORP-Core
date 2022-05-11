@@ -113,7 +113,7 @@ namespace Vorp.Shared.Records
         }
 
         // Server must be the location to change these settings, client only needs to read it
-        public bool SetActiveCharacter(int charId)
+        public async Task<bool> SetActiveCharacterAsync(int charId)
         {
             if (!Characters.ContainsKey(charId)) return false;
 
@@ -127,6 +127,8 @@ namespace Vorp.Shared.Records
             Logger.Info($"Character '{character.Fullname}' is now active for '{Name}' with ServerID '{CFXServerID}'.");
 
             // TODO: Replace this method with something, better.
+            Player.TriggerEvent("vorp:SelectedCharacter", charId);
+            await BaseScript.Delay(100);
             BaseScript.TriggerEvent("vorp:SelectedCharacter", CFXServerID, GetActiveCharacter());
 
             return true;
@@ -255,7 +257,7 @@ namespace Vorp.Shared.Records
                 {
                     try
                     {
-                        SetActiveCharacter(charid);
+                        SetActiveCharacterAsync(charid);
                         return true;
                     }
                     catch (Exception e)
