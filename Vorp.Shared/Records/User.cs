@@ -310,8 +310,8 @@ namespace Vorp.Shared.Records
                 { "setGold", new Action<double>(gold => activeChar.SetGoldAsync(gold)) },
                 { "setRol", new Action<double>(roleToken => activeChar.SetRoleTokenAsync(roleToken)) },
                 { "setXp", new Action<int>(experience => activeChar.SetExperienceAsync(experience)) },
-                { "setFirstname", new Action<string>(firstname => Logger.Error($"[{GetInvokingResource()}] Method 'setFirstname' Deprecated, please inform us if you us this, and why.")) },
-                { "setLastname", new Action<string>(lastname => Logger.Error($"[{GetInvokingResource()}] Method 'setLastname' Deprecated, please inform us if you us this, and why.")) },
+                { "setFirstname", new Action<string>(firstname => activeChar.SetFirstnameAsync(firstname)) },
+                { "setLastname", new Action<string>(lastname => activeChar.SetLastnameAsync(lastname)) },
                 { "updateSkin", new Action<string>(skin => activeChar.Skin = skin) },
                 { "updateComps", new Action<string>(comp => activeChar.Components = comp) },
                 { "addCurrency", new Action<int, double>(async (currency, amount) =>

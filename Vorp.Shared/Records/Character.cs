@@ -471,6 +471,26 @@ namespace Vorp.Shared.Records
             RoleToken = result;
         }
 
+        internal async void SetFirstnameAsync(string firstname)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("characterId", CharacterId);
+            dynamicParameters.Add("firstname", firstname);
+            string result = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `firstname` = @firstname WHERE `charIdentifier` = @characterId; select `firstname` from characters where `charIdentifier` = @characterId;", dynamicParameters);
+            await BaseScript.Delay(0);
+            Firstname = result;
+        }
+
+        internal async void SetLastnameAsync(string lastname)
+        {
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("characterId", CharacterId);
+            dynamicParameters.Add("lastname", lastname);
+            string result = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `lastname` = @lastname WHERE `charIdentifier` = @characterId; select `lastname` from characters where `charIdentifier` = @characterId;", dynamicParameters);
+            await BaseScript.Delay(0);
+            Lastname = result;
+        }
+
 #endif
 
         #endregion
