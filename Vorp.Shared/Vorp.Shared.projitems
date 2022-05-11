@@ -17,6 +17,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedComponentCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedType.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\eWeatherType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GeneralExtension.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordAvatar.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordMember.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Models\InventoryItem.cs" />

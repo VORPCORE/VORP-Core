@@ -212,7 +212,7 @@ namespace Vorp.Shared.Records
                         return false;
                     }
                 }),
-                ["getUsedCharacter"] = ActiveCharacter ?? null,
+                ["getUsedCharacter"] = GetActiveCharacter(),
                 ["getUserCharacters"] = Characters,
                 ["getNumOfCharacters"] = Characters.Count,
                 ["addCharacter"] = new Func<string, string, string, string, Task<bool>>(async (firstname, lastname, skin, comps) =>
@@ -284,7 +284,7 @@ namespace Vorp.Shared.Records
                 return null;
             }
 
-            return new Dictionary<string, dynamic>()
+            Dictionary<string, dynamic> characterDict = new()
             {
                 { "identifier", activeChar.SteamIdentifier },
                 { "charIdentifier", activeChar.CharacterId },
@@ -337,6 +337,10 @@ namespace Vorp.Shared.Records
                     })
                 },
             };
+
+            Logger.Trace($"Requested Active Character '{characterDict["charIdentifier"]}' with name '{activeChar.Fullname}'.");
+
+            return characterDict;
         }
 #endif
 

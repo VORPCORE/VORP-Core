@@ -85,7 +85,6 @@
     <Compile Include="Environment\Entities\WorldPlayer.cs" />
     <Compile Include="Events\ClientGateway.cs" />
     <Compile Include="Events\ServerId.cs" />
-    <Compile Include="Extensions\GeneralExtension.cs" />
     <Compile Include="Interface\PromptHandler.cs" />
     <Compile Include="Interface\Screen.cs" />
     <Compile Include="Managers\Admin\KeyCodeManager.cs" />
@@ -126,7 +125,9 @@
     <Compile Include="TickHandler.cs" />
     <Compile Include="RedM\VorpAPI.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

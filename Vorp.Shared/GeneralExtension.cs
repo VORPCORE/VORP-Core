@@ -1,4 +1,4 @@
-﻿namespace Vorp.Core.Client.Extensions
+﻿namespace Vorp.Shared
 {
     public static class GeneralExtension
     {

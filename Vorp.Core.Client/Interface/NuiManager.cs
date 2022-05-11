@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using Vorp.Core.Client.Extensions;
 using Vorp.Shared;
 
 namespace Vorp.Core.Client.Interface
