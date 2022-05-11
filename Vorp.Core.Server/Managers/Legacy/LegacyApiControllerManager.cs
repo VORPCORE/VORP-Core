@@ -99,7 +99,7 @@ namespace Vorp.Core.Server.Managers.Legacy
                                 case "info":
                                     Logger.Info(msg);
                                     break;
-                                case "success":
+                                case "trace":
                                     Logger.Trace(msg);
                                     break;
                                 default:
