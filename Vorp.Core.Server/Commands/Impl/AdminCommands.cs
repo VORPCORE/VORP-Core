@@ -100,13 +100,13 @@ namespace Vorp.Core.Server.Commands.Impl
                 switch (arguments[1])
                 {
                     case "cash":
-                        targetUser.ActiveCharacter.SetCash(amount);
+                        targetUser.ActiveCharacter.SetCashAsync(amount);
                         break;
                     case "gold":
-                        targetUser.ActiveCharacter.SetGold(amount);
+                        targetUser.ActiveCharacter.SetGoldAsync(amount);
                         break;
                     case "rol":
-                        targetUser.ActiveCharacter.SetRoleToken(amount);
+                        targetUser.ActiveCharacter.SetRoleTokenAsync(amount);
                         break;
                     default:
                         // Need notification of type unknown
