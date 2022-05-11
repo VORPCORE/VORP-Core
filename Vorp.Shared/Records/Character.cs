@@ -431,24 +431,44 @@ namespace Vorp.Shared.Records
             }
         }
 
-        internal void SetExperience(int experience)
+        internal async void SetExperienceAsync(int experience)
         {
-            Experience = experience;
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("characterId", CharacterId);
+            dynamicParameters.Add("xp", experience);
+            int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `xp` = @xp WHERE `charIdentifier` = @characterId; select `xp` from characters where `charIdentifier` = @characterId;", dynamicParameters);
+            await BaseScript.Delay(0);
+            Experience = result;
         }
 
-        internal void SetCash(double amount)
+        internal async void SetCashAsync(double amount)
         {
-            Cash = amount;
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("characterId", CharacterId);
+            dynamicParameters.Add("money", amount);
+            int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `money` = @money WHERE `charIdentifier` = @characterId; select `money` from characters where `charIdentifier` = @characterId;", dynamicParameters);
+            await BaseScript.Delay(0);
+            Cash = result;
         }
 
-        internal void SetGold(double amount)
+        internal async void SetGoldAsync(double amount)
         {
-            Gold = amount;
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("characterId", CharacterId);
+            dynamicParameters.Add("gold", amount);
+            int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `gold` = @gold WHERE `charIdentifier` = @characterId; select `gold` from characters where `charIdentifier` = @characterId;", dynamicParameters);
+            await BaseScript.Delay(0);
+            Gold = result;
         }
 
-        internal void SetRoleToken(double amount)
+        internal async void SetRoleTokenAsync(double amount)
         {
-            RoleToken = amount;
+            DynamicParameters dynamicParameters = new DynamicParameters();
+            dynamicParameters.Add("characterId", CharacterId);
+            dynamicParameters.Add("rol", amount);
+            int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `rol` = @rol WHERE `charIdentifier` = @characterId; select `rol` from characters where `charIdentifier` = @characterId;", dynamicParameters);
+            await BaseScript.Delay(0);
+            RoleToken = result;
         }
 
 #endif
