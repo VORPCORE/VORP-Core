@@ -2,6 +2,7 @@
 global using Newtonsoft.Json;
 global using System;
 global using Vorp.Core.Server.Attributes;
+global using Vorp.Shared;
 global using Vorp.Shared.Diagnostics;
 global using static CitizenFX.Core.Native.API;
 using System.Collections.Concurrent;

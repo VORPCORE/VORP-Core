@@ -38,7 +38,7 @@
         //            case ePromptType.StandardizedHold:
         //                while (prompt.IsHoldModeRunning)
         //                {
-        //                    await BaseScript.Delay(0);
+        //                    Common.MoveToMainThread();
 
         //                    if (prompt.HasHoldModeCompleted && !prompt.EventTriggered)
         //                    {

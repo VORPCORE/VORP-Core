@@ -8,6 +8,7 @@ global using System.Threading.Tasks;
 global using Vorp.Core.Client.RedM;
 global using Vorp.Core.Client.RedM.Enums;
 global using Vorp.Diagnostics;
+global using Vorp.Shared;
 global using Vorp.Shared.Diagnostics;
 global using static CitizenFX.Core.Native.API;
 using System.Reflection;
