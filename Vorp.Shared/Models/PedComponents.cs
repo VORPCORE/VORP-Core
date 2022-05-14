@@ -85,42 +85,4 @@ namespace Vorp.Shared.Models
             return JsonConvert.SerializeObject(Shirt);
         }
     }
-
-    public class PedComponents // this is going
-    {
-        public long Hat;
-        public long EyeWear;
-        public long Mask;
-        public long NeckWear;
-        public long NeckTies;
-        public long Shirt;
-        public long Suspender;
-        public long Vest;
-        public long Coat;
-        public long Poncho;
-        public long Cloak;
-        public long Glove;
-        public long RingRh;
-        public long RingLh;
-        public long Bracelet;
-        public long Gunbelt;
-        public long Belt;
-        public long Buckle;
-        public long Holster;
-        public long Pant;
-        public long Skirt;
-        public long bow;
-        public long armor;
-        public long teeth;
-        public long Chap;
-        public long Boots;
-        public long Spurs;
-        public long Spats;
-        public long GunbeltAccs;
-        public long Gauntlets;
-        public long Loadouts;
-        public long Accessories;
-        public long Satchels;
-        public long CoatClosed;
-    }
 }
