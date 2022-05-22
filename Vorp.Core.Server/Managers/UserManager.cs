@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Vorp.Core.Server.Commands;
 using Vorp.Core.Server.Database.Store;
@@ -24,7 +23,7 @@ namespace Vorp.Core.Server.Managers
         public override void Begin()
         {
             Event("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnectingAsync));
-            Event("playerJoining", new Action<Player, string>(OnPlayerJoiningAsync));
+            Event("playerJoining", new Action<Player, string>(OnPlayerJoining));
             Event("playerDropped", new Action<Player, string>(OnPlayerDroppedAsync));
             Event("onResourceStop", new Action<string>(OnResourceStopAsync));
 
@@ -61,12 +60,11 @@ namespace Vorp.Core.Server.Managers
         {
             string steamId = player.Identifiers["steam"];
             string license = player.Identifiers["license"];
-            int playHandle = int.Parse(player.Handle);
 
-            if (UserSessions.ContainsKey(playHandle)) return;
+            if (UserSessions.ContainsKey(steamId)) return;
 
             User user = await UserStore.GetUser(player.Handle, player.Name, $"steam:{steamId}", license, true);
-            UserSessions.TryAdd(playHandle, user);
+            UserSessions.TryAdd(steamId, user);
 
             user.IsActive = true;
             user.AddPlayer(player);
@@ -201,7 +199,7 @@ namespace Vorp.Core.Server.Managers
         private async void OnResourceStopAsync(string resourceName)
         {
             if (resourceName != GetCurrentResourceName()) return;
-            foreach (KeyValuePair<int, User> kvp in UserSessions)
+            foreach (KeyValuePair<string, User> kvp in UserSessions)
             {
                 try
                 {
@@ -215,29 +213,16 @@ namespace Vorp.Core.Server.Managers
             }
         }
 
-        private async void OnPlayerJoiningAsync([FromSource] Player player, string oldId)
+        private void OnPlayerJoining([FromSource] Player player, string oldId)
         {
             string steamId = player.Identifiers["steam"];
-            string license = player?.Identifiers["license2"] ?? string.Empty;
-            string steamDatabaseIdentifier = $"steam:{steamId}";
-            int playHandle = int.Parse(player.Handle);
 
-            User user = await UserStore.GetUser(player.Handle, player.Name, steamDatabaseIdentifier, license, true);
-            
-            Common.MoveToMainThread();
-
-            if (user == null)
-            {
-                player.Drop(ServerConfiguration.GetTranslation("error_creating_user"));
-                return;
-            }
-
+            if (!UserSessions.ContainsKey(steamId)) return;
+            User user = UserSessions[steamId];
             user.IsActive = true;
-            user.AddPlayer(player);
-            UserSessions.AddOrUpdate(playHandle, user, (key, oldValue) => oldValue = user);
 
-            Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
-            Logger.Trace($"Number of Sessions: {UserSessions.Count}");
+            user.AddPlayer(player);
+            user.UpdateServerId(player.Handle);
 
             Logger.Trace($"Player '{player.Name}' is joining.");
         }
@@ -245,10 +230,9 @@ namespace Vorp.Core.Server.Managers
         private async void OnPlayerDroppedAsync([FromSource] Player player, string reason)
         {
             Logger.Trace($"Player '{player.Name}' dropped (Reason: {reason}).");
-            int playHandle = int.Parse(player.Handle);
-
-            if (!UserSessions.ContainsKey(playHandle)) return;
-            User user = UserSessions[playHandle];
+            string steamId = player.Identifiers["steam"];
+            if (!UserSessions.ContainsKey(steamId)) return;
+            User user = UserSessions[steamId];
 
             if (IsOneSyncEnabled && user.ActiveCharacter != null)
             {
@@ -273,10 +257,10 @@ namespace Vorp.Core.Server.Managers
                 try
                 {
                     // copy the active user list so we don't run into any errors
-                    Dictionary<int, User> users = new Dictionary<int, User>(UserSessions);
+                    Dictionary<string, User> users = new Dictionary<string, User>(UserSessions);
 
                     // loop each user in the active list
-                    foreach (KeyValuePair<int, User> kvp in users)
+                    foreach (KeyValuePair<string, User> kvp in users)
                     {
                         User user = kvp.Value;
                         if (user.ActiveCharacter is not null)
@@ -337,6 +321,7 @@ namespace Vorp.Core.Server.Managers
             }
 
             string discordId = player?.Identifiers["discord"] ?? string.Empty;
+            string license = player?.Identifiers["license2"] ?? string.Empty;
 
             // player tokens are hardware keys and other information, best to use for checking players when going over bans
             // Future feature
@@ -388,8 +373,48 @@ namespace Vorp.Core.Server.Managers
             }
 
             deferrals.update(ServerConfiguration.GetTranslation("user_is_loading"));
+            bool isCurrentlyConnected = Instance.IsUserActive(steamDatabaseIdentifier);
+            if (isCurrentlyConnected)
+            {
+                // need to check some extras, so that if the SteamID matches a live player
+                // if some other information differs, it should drop them
+                User user = UserSessions[steamId];
 
-            deferrals.done();
+                if (user.LicenseIdentifier == license)
+                {
+                    DefferAndKick("error_user_with_matching_steam_already_connected", denyWithReason, deferrals);
+                    return;
+                }
+
+                // should this fire an event at the player?! It honestly should, then they know to request a character list
+                Logger.Trace($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
+                deferrals.done();
+            }
+
+            if (!isCurrentlyConnected)
+            {
+                // either they are new, or already exist
+                User user = await UserStore.GetUser(player.Handle, player.Name, steamDatabaseIdentifier, license, true);
+
+                Common.MoveToMainThread();
+
+                if (user == null)
+                {
+                    DefferAndKick("error_creating_user", denyWithReason, deferrals);
+                    deferrals.done();
+                    return;
+                }
+
+                UserSessions.AddOrUpdate(steamId, user, (key, oldValue) => oldValue = user);
+
+                Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
+                Logger.Trace($"Number of Sessions: {UserSessions.Count}");
+                deferrals.done();
+                return;
+
+                // review if needed
+                // DefferAndKick("error_creating_user_session", denyWithReason, deferrals);
+            }
         }
 
         private void DefferAndKick(string languageKey, CallbackDelegate denyWithReason, dynamic deferrals)

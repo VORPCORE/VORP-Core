@@ -28,7 +28,7 @@ namespace Vorp.Core.Server
         public Dictionary<Type, List<MethodInfo>> TickHandlers { get; set; } = new Dictionary<Type, List<MethodInfo>>();
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
         public ServerGateway Events;
-        public static ConcurrentDictionary<int, User> UserSessions = new();
+        public static ConcurrentDictionary<string, User> UserSessions = new ConcurrentDictionary<string, User>();
         public static bool IsOneSyncEnabled => GetConvar("onesync", "off") != "off";
         public CommandFramework CommandFramework;
         public bool IsServerReady = false;
@@ -63,8 +63,9 @@ namespace Vorp.Core.Server
         {
             Player player = Instance.Players[handle];
             if (player is null) return null;
-            if (!UserSessions.ContainsKey(handle)) return null;
-            return UserSessions[handle];
+            string steamId = player.Identifiers["steam"];
+            if (!UserSessions.ContainsKey(steamId)) return null;
+            return UserSessions[steamId];
         }
 
         private async void Load()
@@ -200,14 +201,14 @@ namespace Vorp.Core.Server
         {
             try
             {
-                Dictionary<int, User> userDictionary = new Dictionary<int, User>(UserSessions);
-                foreach (KeyValuePair<int, User> kvp in userDictionary)
+                Dictionary<string, User> userDictionary = new Dictionary<string, User>(UserSessions);
+                foreach (KeyValuePair<string, User> kvp in userDictionary)
                 {
                     User user = kvp.Value;
 
                     if (user == null) return false;
 
-                    if (user.SteamIdentifier == steamIdentifier)
+                    if (kvp.Key == steamIdentifier)
                     {
                         // if the currently known user returns an endpoint with that server Id, then they are still connected.
                         // if it returns nothing, then the server should allow the connection and pass their current data back
