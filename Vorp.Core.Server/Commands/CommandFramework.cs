@@ -64,11 +64,9 @@ namespace Vorp.Core.Server.Commands
             string alias,
             IReadOnlyList<object> arguments)
         {
-            string playerHandle = $"{playerHandleInt}";
+            if (!PluginManager.UserSessions.ContainsKey(playerHandleInt)) return;
 
-            if (!PluginManager.UserSessions.ContainsKey(playerHandle)) return;
-
-            User user = PluginManager.UserSessions[playerHandle];
+            User user = PluginManager.UserSessions[playerHandleInt];
             Player player = PluginManager.GetPlayer(playerHandleInt);
 
             if (context.IsRestricted && !context.RequiredRoles.Contains(user.Group))

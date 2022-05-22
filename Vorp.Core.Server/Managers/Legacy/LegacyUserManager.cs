@@ -147,13 +147,14 @@ namespace Vorp.Core.Server.Managers.Legacy
         // TODO: REplace with internal methods
         private void OnPlayerSpawn([FromSource] Player player)
         {
-            if (!UserSessions.ContainsKey(player.Handle))
+            int playerHandle = int.Parse(player.Handle);
+            if (!UserSessions.ContainsKey(playerHandle))
             {
                 Logger.Error($"Player '{player.Handle}' tried to spawn, but isn't setup.");
                 return;
             }
 
-            User user = UserSessions[player.Handle];
+            User user = UserSessions[playerHandle];
             int numberOfCharacters = user.NumberOfCharacters;
             if (numberOfCharacters == 0)
             {

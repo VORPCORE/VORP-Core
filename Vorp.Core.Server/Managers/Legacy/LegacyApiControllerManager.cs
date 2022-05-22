@@ -49,8 +49,9 @@ namespace Vorp.Core.Server.Managers.Legacy
         // Sadly no server side native for IsEntityDead yet.
         private async void OnPlayerIsDeadAsync([FromSource] Player player, bool isDead)
         {
-            if (!UserSessions.ContainsKey(player.Handle)) return;
-            User user = UserSessions[player.Handle];
+            int playerHandle = int.Parse(player.Handle);
+            if (!UserSessions.ContainsKey(playerHandle)) return;
+            User user = UserSessions[playerHandle];
             await user.ActiveCharacter.SetDead(isDead);
         }
 
@@ -58,8 +59,9 @@ namespace Vorp.Core.Server.Managers.Legacy
         // If OneSync is enabled, we can just ask for this information on the server via player.Character
         private void OnSaveLastCoords([FromSource] Player player, Vector3 position, float heading)
         {
-            if (!UserSessions.ContainsKey(player.Handle)) return;
-            User user = UserSessions[player.Handle];
+            int playerHandle = int.Parse(player.Handle);
+            if (!UserSessions.ContainsKey(playerHandle)) return;
+            User user = UserSessions[playerHandle];
 
             JsonBuilder jb = new();
             jb.Add("x", position.X);
@@ -131,9 +133,10 @@ namespace Vorp.Core.Server.Managers.Legacy
             Dictionary<string, Dictionary<string, dynamic>> users = new Dictionary<string, Dictionary<string, dynamic>>();
             foreach (Player player in PlayersList)
             {
-                if (!UserSessions.ContainsKey(player.Handle)) continue;
+                int playerHandle = int.Parse(player.Handle);
+                if (!UserSessions.ContainsKey(playerHandle)) continue;
                 string steamIdent = $"steam:{player.Identifiers["steam"]}";
-                users.Add(steamIdent, UserSessions[player.Handle].GetUser());
+                users.Add(steamIdent, UserSessions[playerHandle].GetUser());
             }
             return users;
         }
