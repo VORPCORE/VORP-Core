@@ -49,7 +49,7 @@ namespace Vorp.Core.Server.Database.Store
             dynamicParameters.Add("steam", steamIdent);
             User user = await DapperDatabase<User>.GetSingleAsync("SELECT * FROM users WHERE `identifier` = @steam LIMIT 1;", dynamicParameters);
 
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
 
             if (user is not null)
             {
@@ -64,14 +64,14 @@ namespace Vorp.Core.Server.Database.Store
 
                 // if they are the first user, then set them as an admin
                 int countOfUsers = await GetCountOfUsers();
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 bool isFirstUser = countOfUsers == 0;
 
                 if (isFirstUser)
                     await user.SetGroup("admin", true);
 
                 bool saved = await user.Save();
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
 
                 if (saved)
                     Logger.Debug($"Created a new user steamIdent [{user.SteamIdentifier}]");
@@ -84,7 +84,7 @@ namespace Vorp.Core.Server.Database.Store
             {
                 await BaseScript.Delay(1000);
                 await user.GetCharacters(); // Assign characters here
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
             }
 
             return user;

@@ -170,7 +170,7 @@ namespace Vorp.Shared.Records
                         Logger.Error($"Character.AdjustCurrency {currency} value is unknown");
                         return false;
                 }
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return true;
             }
             catch (Exception ex)
@@ -189,7 +189,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("experience", amt);
                 Experience = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `xp` += @experience WHERE `charIdentifier` = @characterId; SELECT `xp` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return true;
             }
             catch (Exception ex)
@@ -207,7 +207,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("job", job);
                 Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `job` = @job WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return true;
             }
             catch (Exception ex)
@@ -225,7 +225,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("grade", grade);
                 Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `jobgrade` = @grade WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return true;
             }
             catch (Exception ex)
@@ -244,7 +244,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("job", job);
                 dynamicParameters.Add("grade", grade);
                 Job = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `job` = @job, `jobgrade` = @grade WHERE `charIdentifier` = @characterId; SELECT `job` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return true;
             }
             catch (Exception ex)
@@ -262,7 +262,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("group", group);
                 Group = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `group` = @group WHERE `charIdentifier` = @characterId; SELECT `group` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return true;
             }
             catch (Exception ex)
@@ -280,7 +280,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("dead", isDead);
                 int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `isdead` = @dead WHERE `charIdentifier` = @characterId; SELECT `isdead` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return result > 0; // if result is true, then user is dead
             }
             catch (Exception ex)
@@ -316,7 +316,7 @@ namespace Vorp.Shared.Records
                 dynamicParameters.Add("characterId", CharacterId);
                 dynamicParameters.Add("inventory", Inventory);
                 bool result = await DapperDatabase<bool>.ExecuteAsync($"UPDATE characters SET `inventory` = @inventory WHERE `charIdentifier` = @characterId;", dynamicParameters);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return result;
             }
             catch (Exception ex)
@@ -351,7 +351,7 @@ namespace Vorp.Shared.Records
                 DynamicParameters dynamicParameters = new DynamicParameters();
                 dynamicParameters.Add("characterId", CharacterId);
                 List<Loadout> loadouts = await DapperDatabase<Loadout>.GetListAsync($"select * from loadout WHERE `charIdentifier` = @characterId;", dynamicParameters);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 return loadouts;
             }
             catch (Exception ex)
@@ -437,7 +437,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("characterId", CharacterId);
             dynamicParameters.Add("xp", experience);
             int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `xp` = @xp WHERE `charIdentifier` = @characterId; select `xp` from characters where `charIdentifier` = @characterId;", dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             Experience = result;
         }
 
@@ -447,7 +447,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("characterId", CharacterId);
             dynamicParameters.Add("money", amount);
             int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `money` = @money WHERE `charIdentifier` = @characterId; select `money` from characters where `charIdentifier` = @characterId;", dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             Cash = result;
         }
 
@@ -457,7 +457,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("characterId", CharacterId);
             dynamicParameters.Add("gold", amount);
             int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `gold` = @gold WHERE `charIdentifier` = @characterId; select `gold` from characters where `charIdentifier` = @characterId;", dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             Gold = result;
         }
 
@@ -467,7 +467,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("characterId", CharacterId);
             dynamicParameters.Add("rol", amount);
             int result = await DapperDatabase<int>.GetSingleAsync($"UPDATE characters SET `rol` = @rol WHERE `charIdentifier` = @characterId; select `rol` from characters where `charIdentifier` = @characterId;", dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             RoleToken = result;
         }
 
@@ -477,7 +477,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("characterId", CharacterId);
             dynamicParameters.Add("firstname", firstname);
             string result = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `firstname` = @firstname WHERE `charIdentifier` = @characterId; select `firstname` from characters where `charIdentifier` = @characterId;", dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             Firstname = result;
         }
 
@@ -487,7 +487,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("characterId", CharacterId);
             dynamicParameters.Add("lastname", lastname);
             string result = await DapperDatabase<string>.GetSingleAsync($"UPDATE characters SET `lastname` = @lastname WHERE `charIdentifier` = @characterId; select `lastname` from characters where `charIdentifier` = @characterId;", dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             Lastname = result;
         }
 

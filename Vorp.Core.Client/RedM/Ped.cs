@@ -81,7 +81,7 @@ namespace Vorp.Core.Client.RedM
         {
             while (!IsPedReadyToRender)
             {
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
             }
 
             Function.Call((Hash)0x0BFA1BD465CDFEFD, Handle);
@@ -152,7 +152,7 @@ namespace Vorp.Core.Client.RedM
 
             while (VorpAPI.IsTextureValid(textureId))
             {
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
             }
 
             ApplyTexture(GetHashKey("heads"), textureId);

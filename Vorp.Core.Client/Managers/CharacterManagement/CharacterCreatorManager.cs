@@ -170,7 +170,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             // BUT I SUMISE, THAT IT IS DUE TO THE NATIVE NOT WORKING IN THE FIRST CALL
             // SO WE CALL IT TWICE
             ped.RandomiseClothingAsync();
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             ped.RandomiseClothingAsync();
         }
 

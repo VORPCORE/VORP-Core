@@ -63,10 +63,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.5490" ExcludeAssets="runtime" />
+    <PackageReference Include="CitizenFX.Core.Server" Version="1.0.5604" ExcludeAssets="runtime" />
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
-    <PackageReference Include="MySqlConnector" Version="2.1.8" />
+    <PackageReference Include="MySqlConnector" Version="2.1.9" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" ExcludeAssets="runtime" />
   </ItemGroup>
 

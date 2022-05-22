@@ -42,7 +42,7 @@ namespace Vorp.Core.Client.Events
                 var stopwatch = StopwatchUtil.StartNew();
 
                 while (_signature == null)
-                    Common.MoveToMainThread();
+                    await Common.MoveToMainThread();
 
                 Logger.Debug($"[{message}] Signature fetch took {stopwatch.Elapsed.TotalMilliseconds}ms.");
             }

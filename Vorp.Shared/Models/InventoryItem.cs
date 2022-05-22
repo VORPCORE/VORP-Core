@@ -51,7 +51,7 @@ namespace Vorp.Shared.Models
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("item", item);
             InventoryItem inventoryItem = await DapperDatabase<InventoryItem>.GetSingleAsync("select * from `items` where `item` = @item", dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             return inventoryItem;
         }
 #endif

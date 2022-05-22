@@ -81,7 +81,7 @@ namespace Vorp.Core.Client.Environment.Entities
                 Function.Call(Hash.REQUEST_MODEL, hash);
                 while (!Function.Call<bool>(Hash.HAS_MODEL_LOADED, hash))
                 {
-                    Common.MoveToMainThread();
+                    await Common.MoveToMainThread();
                 }
             }
             else

@@ -147,7 +147,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("identifier", SteamIdentifier);
             dynamicParameters.Add("group", group);
             bool changePersisted = await DapperDatabase<User>.ExecuteAsync(SQL_UPDATE_GROUP, dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             if (changePersisted)
                 Group = group;
             return changePersisted;
@@ -159,7 +159,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("identifier", SteamIdentifier);
             dynamicParameters.Add("warningCount", Warnings);
             bool changePersisted = await DapperDatabase<User>.ExecuteAsync(SQL_UPDATE_WARNING, dynamicParameters);
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             if (changePersisted)
                 Warnings = warnings;
             return changePersisted;
@@ -173,7 +173,7 @@ namespace Vorp.Shared.Records
             dynamicParameters.Add("identifier", SteamIdentifier);
             List<Character> characters = await DapperDatabase<Character>.GetListAsync(SQL_GET_CHARACTERS, dynamicParameters);
 
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
 
             foreach (Character character in characters)
                 Characters.Add(character.CharacterId, character);

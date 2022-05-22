@@ -132,7 +132,7 @@ namespace Vorp.Core.Server.Web
             if (string.IsNullOrEmpty(discordIdStr))
             {
                 Logger.Debug($"DiscordClient : {player.Name} not authorised with FiveM.");
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 player.Drop($"Discord Identity failed validation, please restart FiveM and Discord. Make sure Discord is running on the same machine as FiveM. After you have opened Discord, then open FiveM, please check the #help-connecting channel for more information.\n\nDiscord URL: {_discordUrl}");
                 return IsMember;
             }
@@ -141,7 +141,7 @@ namespace Vorp.Core.Server.Web
             if (!ulong.TryParse(discordIdStr, out discordId))
             {
                 Logger.Debug($"DiscordClient : {player.Name} Discord Information is invalid.");
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 player.Drop($"Discord Identity failed validation, please restart FiveM and Discord. Make sure Discord is running on the same machine as FiveM. After you have opened Discord, then open FiveM, please check the #help-connecting channel for more information.\n\nDiscord URL: {_discordUrl}");
                 return IsMember;
             }
@@ -149,18 +149,18 @@ namespace Vorp.Core.Server.Web
             if (discordId == 0)
             {
                 Logger.Debug($"DiscordClient : {player.Name} Discord ID is invalid, and not found.");
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 player.Drop($"Discord Identity failed validation, please restart FiveM and Discord. Make sure Discord is running on the same machine as FiveM. After you have opened Discord, then open FiveM, please check the #help-connecting channel for more information.\n\nDiscord URL: {_discordUrl}");
                 return IsMember;
             }
 
             RequestResponse requestResponse = await DiscordRequest("GET", $"guilds/{_srvCfg.Discord.GuildId}/members/{discordId}");
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
 
             if (requestResponse.status == System.Net.HttpStatusCode.NotFound)
             {
                 Logger.Debug($"DiscordClient : {player.Name} is NOT a member of the Discord Guild.");
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 player.Drop($"This server requires you to be a member of their Discord and Verified (click the react role in the #verify-me channel), please check the #help-connecting channel, if you're still having issues please open a ticket.\n\nDiscord URL: {_discordUrl}");
                 return IsMember;
             }
@@ -168,7 +168,7 @@ namespace Vorp.Core.Server.Web
             if (!(requestResponse.status == System.Net.HttpStatusCode.OK))
             {
                 Logger.Error($"DiscordClient : Error communicating with Discord");
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 player.Drop($"Error communicating with Discord, please raise a support ticket or try connecting again later.");
                 return IsMember;
             }
@@ -187,14 +187,14 @@ namespace Vorp.Core.Server.Web
                 else
                 {
                     Logger.Debug($"DiscordClient : {player.Name} is not a verified member of the Discord Guild.");
-                    Common.MoveToMainThread();
+                    await Common.MoveToMainThread();
                     player.Drop($"This server requires you to be a member of their Discord and Verified.\n\nDiscord URL: {_discordUrl}");
                     return false;
                 }
             }
 
             IsMember = discordMember.JoinedAt.HasValue;
-            Common.MoveToMainThread();
+            await Common.MoveToMainThread();
             Logger.Trace($"DiscordClient : {player.Name} is a member of the Discord Guild.");
 
             return IsMember;
@@ -227,7 +227,7 @@ namespace Vorp.Core.Server.Web
                 embed.Color = (int)discordColor;
 
                 webhook.Embeds.Add(embed);
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
                 await webhook.Send();
 
                 await Task.FromResult(0);
@@ -249,7 +249,7 @@ namespace Vorp.Core.Server.Web
                 webhook.Content = StripUnicodeCharactersFromString($"{name} > {message.Trim('"')}");
                 webhook.Username = StripUnicodeCharactersFromString(username);
 
-                Common.MoveToMainThread();
+                await Common.MoveToMainThread();
 
                 await webhook.Send();
 
