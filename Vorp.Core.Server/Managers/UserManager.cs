@@ -91,6 +91,7 @@ namespace Vorp.Core.Server.Managers
 
                 User user = source.User;
                 user.AddPlayer(player);
+                user.UpdateServerId(source.Handle);
 
                 if (IsOneSyncEnabled)
                 {
@@ -264,6 +265,7 @@ namespace Vorp.Core.Server.Managers
                     return;
                 }
 
+                user.UpdateServerId(playerHandle);
                 UserSessions.AddOrUpdate(playerHandle, user, (key, oldValue) => oldValue = user);
 
                 Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
@@ -314,16 +316,19 @@ namespace Vorp.Core.Server.Managers
                             Player player = PlayersList[user.CFXServerID];
                             if (player != null && IsOneSyncEnabled)
                             {
-                                Vector3 playerPosition = player.Character.Position;
-                                float playerHeading = player.Character.Heading;
-                                JsonBuilder jb = new();
-                                jb.Add("x", playerPosition.X);
-                                jb.Add("y", playerPosition.Y);
-                                jb.Add("z", playerPosition.Z);
-                                jb.Add("heading", playerHeading);
-                                user.ActiveCharacter.Coords = $"{jb}";
+                                if (player.Character is not null)
+                                {
+                                    Vector3 playerPosition = player.Character.Position;
+                                    float playerHeading = player.Character.Heading;
+                                    JsonBuilder jb = new();
+                                    jb.Add("x", playerPosition.X);
+                                    jb.Add("y", playerPosition.Y);
+                                    jb.Add("z", playerPosition.Z);
+                                    jb.Add("heading", playerHeading);
+                                    user.ActiveCharacter.Coords = $"{jb}";
 
-                                UserSessions[kvp.Key].ActiveCharacter.Coords = user.ActiveCharacter.Coords;
+                                    UserSessions[kvp.Key].ActiveCharacter.Coords = user.ActiveCharacter.Coords;
+                                }
                             }
                             await user.ActiveCharacter.Save();
                             await user.Save();
