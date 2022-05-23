@@ -132,7 +132,6 @@ namespace Vorp.Core.Server.Web
             if (string.IsNullOrEmpty(discordIdStr))
             {
                 Logger.Debug($"DiscordClient : {player.Name} not authorised with FiveM.");
-                await Common.MoveToMainThread();
                 player.Drop($"Discord Identity failed validation, please restart FiveM and Discord. Make sure Discord is running on the same machine as FiveM. After you have opened Discord, then open FiveM, please check the #help-connecting channel for more information.\n\nDiscord URL: {_discordUrl}");
                 return IsMember;
             }
@@ -141,7 +140,6 @@ namespace Vorp.Core.Server.Web
             if (!ulong.TryParse(discordIdStr, out discordId))
             {
                 Logger.Debug($"DiscordClient : {player.Name} Discord Information is invalid.");
-                await Common.MoveToMainThread();
                 player.Drop($"Discord Identity failed validation, please restart FiveM and Discord. Make sure Discord is running on the same machine as FiveM. After you have opened Discord, then open FiveM, please check the #help-connecting channel for more information.\n\nDiscord URL: {_discordUrl}");
                 return IsMember;
             }
@@ -149,7 +147,6 @@ namespace Vorp.Core.Server.Web
             if (discordId == 0)
             {
                 Logger.Debug($"DiscordClient : {player.Name} Discord ID is invalid, and not found.");
-                await Common.MoveToMainThread();
                 player.Drop($"Discord Identity failed validation, please restart FiveM and Discord. Make sure Discord is running on the same machine as FiveM. After you have opened Discord, then open FiveM, please check the #help-connecting channel for more information.\n\nDiscord URL: {_discordUrl}");
                 return IsMember;
             }
@@ -160,7 +157,6 @@ namespace Vorp.Core.Server.Web
             if (requestResponse.status == System.Net.HttpStatusCode.NotFound)
             {
                 Logger.Debug($"DiscordClient : {player.Name} is NOT a member of the Discord Guild.");
-                await Common.MoveToMainThread();
                 player.Drop($"This server requires you to be a member of their Discord and Verified (click the react role in the #verify-me channel), please check the #help-connecting channel, if you're still having issues please open a ticket.\n\nDiscord URL: {_discordUrl}");
                 return IsMember;
             }
@@ -168,36 +164,41 @@ namespace Vorp.Core.Server.Web
             if (!(requestResponse.status == System.Net.HttpStatusCode.OK))
             {
                 Logger.Error($"DiscordClient : Error communicating with Discord");
-                await Common.MoveToMainThread();
                 player.Drop($"Error communicating with Discord, please raise a support ticket or try connecting again later.");
                 return IsMember;
             }
 
             DiscordMember discordMember = JsonConvert.DeserializeObject<DiscordMember>(requestResponse.content);
 
-            string verifiedRoleConvar = API.GetConvar("discord_verified_roleId", "ROLE_NOT_SET");
+            ServerConfig serverConfig = ServerConfiguration.Config;
 
-            if (verifiedRoleConvar != "ROLE_NOT_SET")
+            if (serverConfig.Discord.Whitelist.Count == 0)
             {
-                if (discordMember.Roles.Contains($"{verifiedRoleConvar}"))
+                Logger.Error($"Whitelist is missing roles.");
+                return true;
+            }
+
+            if (discordMember.Roles.Length == 0)
+            {
+                player.Drop($"You do not have any roles on the discord server.");
+                return false;
+            }
+
+            foreach(string role in discordMember.Roles)
+            {
+                foreach(string whitelistedRole in serverConfig.Discord.Whitelist)
                 {
-                    Logger.Debug($"DiscordClient : {player.Name} is a verified member of the Discord Guild.");
-                    return true;
-                }
-                else
-                {
-                    Logger.Debug($"DiscordClient : {player.Name} is not a verified member of the Discord Guild.");
-                    await Common.MoveToMainThread();
-                    player.Drop($"This server requires you to be a member of their Discord and Verified.\n\nDiscord URL: {_discordUrl}");
-                    return false;
+                    if (whitelistedRole == role)
+                    {
+                        IsMember = discordMember.JoinedAt.HasValue;
+                        Logger.Trace($"DiscordClient : {player.Name} is a member of the Discord Guild.");
+                        return true;
+                    }
                 }
             }
 
-            IsMember = discordMember.JoinedAt.HasValue;
-            await Common.MoveToMainThread();
-            Logger.Trace($"DiscordClient : {player.Name} is a member of the Discord Guild.");
-
-            return IsMember;
+            player.Drop($"You do not have a whitelisted role on the server.");
+            return false;
         }
 
         public async Task SendDiscordEmbededMessage(WebhookChannel webhookChannel, string name, string title, string description, DiscordColor discordColor)

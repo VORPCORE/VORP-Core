@@ -16,7 +16,7 @@ namespace Vorp.Core.Server.Models
         public DiscordWebhooks Webhooks;
 
         [DataMember(Name = "whitelist")]
-        public List<ulong> Whitelist;
+        public List<string> Whitelist;
 
         [DataMember(Name = "guildId")]
         public ulong GuildId;
