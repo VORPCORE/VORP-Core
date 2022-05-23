@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Collections.Generic;
+using System.Runtime.Serialization;
 
 namespace Vorp.Core.Server.Models
 {
@@ -15,7 +16,7 @@ namespace Vorp.Core.Server.Models
         public DiscordWebhooks Webhooks;
 
         [DataMember(Name = "whitelist")]
-        public DiscordWhitelist Whitelist;
+        public List<ulong> Whitelist;
 
         [DataMember(Name = "guildId")]
         public ulong GuildId;

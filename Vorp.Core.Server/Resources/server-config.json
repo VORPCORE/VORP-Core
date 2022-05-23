@@ -12,9 +12,7 @@
     "botname": "VORP Discord",
     "guildId": 0,
     "url": "",
-    "whitelist": {
-      "role": 0
-    },
+    "whitelist": [],
     "webhooks": {
       "server-debug": "",
       "server-error": "",
