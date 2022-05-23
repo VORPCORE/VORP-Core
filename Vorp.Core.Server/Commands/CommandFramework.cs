@@ -59,17 +59,15 @@ namespace Vorp.Core.Server.Commands
                 $"[CommandFramework] Found {found.Count} nested `ICommand` class(es) in `{type.Name}`, registered {registered} of them!");
         }
 
-        private void HandleCommandInput(int playerHandleInt, CommandContext context,
+        private void HandleCommandInput(int playerHandle, CommandContext context,
             IReadOnlyCollection<Tuple<CommandInfo, ICommand>> registry,
             string alias,
             IReadOnlyList<object> arguments)
         {
-            string playerHandle = $"{playerHandleInt}";
-
             if (!PluginManager.UserSessions.ContainsKey(playerHandle)) return;
 
             User user = PluginManager.UserSessions[playerHandle];
-            Player player = PluginManager.GetPlayer(playerHandleInt);
+            Player player = PluginManager.GetPlayer(playerHandle);
 
             if (context.IsRestricted && !context.RequiredRoles.Contains(user.Group))
             {
