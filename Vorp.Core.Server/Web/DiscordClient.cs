@@ -180,7 +180,7 @@ namespace Vorp.Core.Server.Web
 
             if (discordMember.Roles.Length == 0)
             {
-                player.Drop($"You do not have any roles on the discord server.");
+                player.Drop($"This server does not have any roles configured on the discord server.");
                 return false;
             }
 
