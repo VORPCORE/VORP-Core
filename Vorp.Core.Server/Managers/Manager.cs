@@ -13,7 +13,7 @@ namespace Vorp.Core.Server.Managers
 
         public PluginManager Instance { get; private set; }
         public PlayerList PlayersList => PluginManager.PlayersList;
-        public ConcurrentDictionary<string, User> UserSessions => PluginManager.UserSessions;
+        public ConcurrentDictionary<int, User> UserSessions => PluginManager.UserSessions;
 
         public void Event(string name, Delegate @delegate) => Instance.Hook(name, @delegate);
         public ExportDictionary ExportDictionary => Instance.ExportDictionary;
