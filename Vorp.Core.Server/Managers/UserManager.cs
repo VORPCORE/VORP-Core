@@ -89,6 +89,7 @@ namespace Vorp.Core.Server.Managers
                 if (source.User == null) return "failed";
 
                 User user = source.User;
+                user.AddPlayer(player);
 
                 if (IsOneSyncEnabled)
                 {
