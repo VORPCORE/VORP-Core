@@ -9,7 +9,8 @@ version '1.1.320'
 -- CLIENT FILES
 
 client_scripts {
-  'Vorp.Core.Client.net.dll'
+  '*.Client.net.dll',
+  'NotificationExports.js'
 }
 
 files {

@@ -136,6 +136,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Interface\NuiManager.cs" />
+    <Content Include="NotificationExports.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\client-config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
