@@ -134,6 +134,7 @@ namespace Vorp.Core.Server.Managers
             }
         }
 
+        // To be moved to UserCharacterManager
         void SendPlayerCharacters(Player player, User user)
         {
             // Legacy Methods to be removed
