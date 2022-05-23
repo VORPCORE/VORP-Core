@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>$(MSBuildProjectName).net</AssemblyName>
-    <LangVersion>preview</LangVersion>
+    <LangVersion>latest</LangVersion>
     <PackageProjectUrl>https://github.com/VORPCORE/VORP-Core</PackageProjectUrl>
     <RepositoryUrl>https://github.com/VORPCORE/VORP-Core</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
