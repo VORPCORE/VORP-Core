@@ -61,10 +61,11 @@ namespace Vorp.Core.Server.Managers
             string steamId = player.Identifiers["steam"];
             string license = player.Identifiers["license"];
 
-            if (UserSessions.ContainsKey(steamId)) return;
+            int playerHandle = int.Parse(player.Handle);
+            if (UserSessions.ContainsKey(playerHandle)) return;
 
             User user = await UserStore.GetUser(player.Handle, player.Name, $"steam:{steamId}", license, true);
-            UserSessions.TryAdd(steamId, user);
+            UserSessions.AddOrUpdate(playerHandle, user, (key, oldValue) => oldValue = user);
 
             user.IsActive = true;
             user.AddPlayer(player);
@@ -199,7 +200,7 @@ namespace Vorp.Core.Server.Managers
         private async void OnResourceStopAsync(string resourceName)
         {
             if (resourceName != GetCurrentResourceName()) return;
-            foreach (KeyValuePair<string, User> kvp in UserSessions)
+            foreach (KeyValuePair<int, User> kvp in UserSessions)
             {
                 try
                 {
@@ -218,6 +219,7 @@ namespace Vorp.Core.Server.Managers
             string steamId = player.Identifiers["steam"];
             string license = player?.Identifiers["license2"] ?? string.Empty;
             string steamDatabaseIdentifier = $"steam:{steamId}";
+            int playerHandle = int.Parse(player.Handle);
 
             //if (!UserSessions.ContainsKey(steamId)) return;
             //User user = UserSessions[steamId];
@@ -233,7 +235,7 @@ namespace Vorp.Core.Server.Managers
             {
                 // need to check some extras, so that if the SteamID matches a live player
                 // if some other information differs, it should drop them
-                User user = UserSessions[steamId];
+                User user = UserSessions[playerHandle];
 
                 if (user.LicenseIdentifier == license)
                 {
@@ -258,7 +260,7 @@ namespace Vorp.Core.Server.Managers
                     return;
                 }
 
-                UserSessions.AddOrUpdate(player.Handle, user, (key, oldValue) => oldValue = user);
+                UserSessions.AddOrUpdate(playerHandle, user, (key, oldValue) => oldValue = user);
 
                 Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
                 Logger.Trace($"Number of Sessions: {UserSessions.Count}");
@@ -270,8 +272,9 @@ namespace Vorp.Core.Server.Managers
         {
             Logger.Trace($"Player '{player.Name}' dropped (Reason: {reason}).");
             string steamId = player.Identifiers["steam"];
-            if (!UserSessions.ContainsKey(steamId)) return;
-            User user = UserSessions[steamId];
+            int playerHandle = int.Parse(player.Handle);
+            if (!UserSessions.ContainsKey(playerHandle)) return;
+            User user = UserSessions[playerHandle];
 
             if (IsOneSyncEnabled && user.ActiveCharacter != null)
             {
@@ -296,10 +299,10 @@ namespace Vorp.Core.Server.Managers
                 try
                 {
                     // copy the active user list so we don't run into any errors
-                    Dictionary<string, User> users = new Dictionary<string, User>(UserSessions);
+                    Dictionary<int, User> users = new Dictionary<int, User>(UserSessions);
 
                     // loop each user in the active list
-                    foreach (KeyValuePair<string, User> kvp in users)
+                    foreach (KeyValuePair<int, User> kvp in users)
                     {
                         User user = kvp.Value;
                         if (user.ActiveCharacter is not null)
