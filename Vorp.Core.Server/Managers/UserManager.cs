@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Vorp.Core.Server.Commands;
 using Vorp.Core.Server.Database.Store;
 using Vorp.Core.Server.Events;
+using Vorp.Core.Server.Extensions;
 using Vorp.Core.Server.Web;
 using Vorp.Shared.Commands;
 using Vorp.Shared.Data;
@@ -69,7 +70,7 @@ namespace Vorp.Core.Server.Managers
 
             user.IsActive = true;
             user.AddPlayer(player);
-            user.UpdateServerId(player.Handle);
+            user.UpdateServerId(player.ServerHandle());
 
             SendPlayerChatSuggestions(player, user);
             SendPlayerCharacters(player, user);
@@ -238,6 +239,7 @@ namespace Vorp.Core.Server.Managers
                 // need to check some extras, so that if the SteamID matches a live player
                 // if some other information differs, it should drop them
                 User user = UserSessions[playerHandle];
+                user.UpdateServerId(playerHandle);
 
                 if (user.LicenseIdentifier == license)
                 {

@@ -62,7 +62,7 @@ namespace Vorp.Shared.Records
                     string group,
                     int warnings)
         {
-            CFXServerID = cfxServerHandle;
+            CFXServerID = int.Parse(cfxServerHandle);
             Name = name;
             SteamIdentifier = steamId;
             LicenseIdentifier = license;
@@ -76,9 +76,9 @@ namespace Vorp.Shared.Records
         public void AddPlayer(Player player) => Player = player;
         public void SetName(string name) => Name = name;
 
-        [JsonIgnore] public string Endpoint => GetPlayerEndpoint(CFXServerID);
+        [JsonIgnore] public string Endpoint => GetPlayerEndpoint($"{CFXServerID}");
 #endif
-        [JsonIgnore] public string CFXServerID { get; private set; }
+        [JsonIgnore] public int CFXServerID { get; private set; } = 0;
         // DB Keys
         [JsonIgnore] public ulong DiscordIdentifier { get; private set; }
         [JsonIgnore] public string LicenseIdentifier { get; private set; }
@@ -269,7 +269,7 @@ namespace Vorp.Shared.Records
             };
         }
 
-        internal void UpdateServerId(string handle)
+        internal void UpdateServerId(int handle)
         {
             CFXServerID = handle;
         }
