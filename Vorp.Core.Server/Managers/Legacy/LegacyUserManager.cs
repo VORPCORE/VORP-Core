@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Vorp.Core.Server.Extensions;
 using Vorp.Core.Server.Models;
 using Vorp.Shared.Records;
 
@@ -147,13 +148,14 @@ namespace Vorp.Core.Server.Managers.Legacy
         // TODO: REplace with internal methods
         private void OnPlayerSpawn([FromSource] Player player)
         {
-            if (!UserSessions.ContainsKey(player.Handle))
+            int playerHandle = player.ServerHandle();
+            if (!UserSessions.ContainsKey(playerHandle))
             {
-                Logger.Error($"Player '{player.Handle}' tried to spawn, but isn't setup.");
+                Logger.Error($"Player '{playerHandle}' tried to spawn, but isn't setup.");
                 return;
             }
 
-            User user = UserSessions[player.Handle];
+            User user = UserSessions[playerHandle];
             int numberOfCharacters = user.NumberOfCharacters;
             if (numberOfCharacters == 0)
             {
