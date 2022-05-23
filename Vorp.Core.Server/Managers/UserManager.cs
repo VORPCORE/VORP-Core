@@ -66,6 +66,7 @@ namespace Vorp.Core.Server.Managers
             if (UserSessions.ContainsKey(playerHandle)) return;
 
             User user = await UserStore.GetUser(player.Handle, player.Name, $"steam:{steamId}", license, true);
+            await Common.MoveToMainThread();
             UserSessions.AddOrUpdate(playerHandle, user, (key, oldValue) => oldValue = user);
 
             user.IsActive = true;
@@ -76,6 +77,8 @@ namespace Vorp.Core.Server.Managers
             SendPlayerCharacters(player, user);
 
             Logger.Trace($"{user.Group.ToUpper()} [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+            BaseScript.TriggerEvent("vorp:user:ready", player.Handle);
+            await Common.MoveToMainThread();
             ServerGateway.Send(player, "vorp:user:group:client", user.Group);
         }
 
@@ -104,6 +107,8 @@ namespace Vorp.Core.Server.Managers
 
                 Logger.Trace($"{user.Group.ToUpper()} [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
 
+                BaseScript.TriggerEvent("vorp:user:ready", player.Handle);
+                await Common.MoveToMainThread();
                 return user.Group;
             }
             catch (Exception ex)
