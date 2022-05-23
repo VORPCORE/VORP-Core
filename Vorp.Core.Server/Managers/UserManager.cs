@@ -23,7 +23,7 @@ namespace Vorp.Core.Server.Managers
         public override void Begin()
         {
             Event("playerConnecting", new Action<Player, string, CallbackDelegate, dynamic>(OnPlayerConnectingAsync));
-            Event("playerJoining", new Action<Player, string>(OnPlayerJoining));
+            Event("playerJoining", new Action<Player, string>(OnPlayerJoiningAsync));
             Event("playerDropped", new Action<Player, string>(OnPlayerDroppedAsync));
             Event("onResourceStop", new Action<string>(OnResourceStopAsync));
 
@@ -213,18 +213,57 @@ namespace Vorp.Core.Server.Managers
             }
         }
 
-        private void OnPlayerJoining([FromSource] Player player, string oldId)
+        private async void OnPlayerJoiningAsync([FromSource] Player player, string oldId)
         {
             string steamId = player.Identifiers["steam"];
+            string license = player?.Identifiers["license2"] ?? string.Empty;
+            string steamDatabaseIdentifier = $"steam:{steamId}";
 
-            if (!UserSessions.ContainsKey(steamId)) return;
-            User user = UserSessions[steamId];
-            user.IsActive = true;
+            //if (!UserSessions.ContainsKey(steamId)) return;
+            //User user = UserSessions[steamId];
+            //user.IsActive = true;
 
-            user.AddPlayer(player);
-            user.UpdateServerId(player.Handle);
+            //user.AddPlayer(player);
+            //user.UpdateServerId(player.Handle);
 
-            Logger.Trace($"Player '{player.Name}' is joining.");
+            //Logger.Trace($"Player '{player.Name}' is joining.");
+
+            bool isCurrentlyConnected = Instance.IsUserActive(steamDatabaseIdentifier);
+            if (isCurrentlyConnected)
+            {
+                // need to check some extras, so that if the SteamID matches a live player
+                // if some other information differs, it should drop them
+                User user = UserSessions[steamId];
+
+                if (user.LicenseIdentifier == license)
+                {
+                    player.Drop(ServerConfiguration.GetTranslation("error_user_with_matching_steam_already_connected"));
+                    return;
+                }
+
+                // should this fire an event at the player?! It honestly should, then they know to request a character list
+                Logger.Trace($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
+            }
+
+            if (!isCurrentlyConnected)
+            {
+                // either they are new, or already exist
+                User user = await UserStore.GetUser(player.Handle, player.Name, steamDatabaseIdentifier, license, true);
+
+                await Common.MoveToMainThread();
+
+                if (user == null)
+                {
+                    player.Drop(ServerConfiguration.GetTranslation("error_creating_user"));
+                    return;
+                }
+
+                UserSessions.AddOrUpdate(player.Handle, user, (key, oldValue) => oldValue = user);
+
+                Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
+                Logger.Trace($"Number of Sessions: {UserSessions.Count}");
+                return;
+            }
         }
 
         private async void OnPlayerDroppedAsync([FromSource] Player player, string reason)
@@ -321,7 +360,6 @@ namespace Vorp.Core.Server.Managers
             }
 
             string discordId = player?.Identifiers["discord"] ?? string.Empty;
-            string license = player?.Identifiers["license2"] ?? string.Empty;
 
             // player tokens are hardware keys and other information, best to use for checking players when going over bans
             // Future feature
@@ -374,48 +412,53 @@ namespace Vorp.Core.Server.Managers
 
             await Common.MoveToMainThread();
             deferrals.update(ServerConfiguration.GetTranslation("user_is_loading"));
-            bool isCurrentlyConnected = Instance.IsUserActive(steamDatabaseIdentifier);
-            if (isCurrentlyConnected)
-            {
-                // need to check some extras, so that if the SteamID matches a live player
-                // if some other information differs, it should drop them
-                User user = UserSessions[steamId];
 
-                if (user.LicenseIdentifier == license)
-                {
-                    DefferAndKick("error_user_with_matching_steam_already_connected", denyWithReason, deferrals);
-                    return;
-                }
+            deferrals.done();
 
-                // should this fire an event at the player?! It honestly should, then they know to request a character list
-                Logger.Trace($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
-                deferrals.done();
-            }
+            return;
 
-            if (!isCurrentlyConnected)
-            {
-                // either they are new, or already exist
-                User user = await UserStore.GetUser(player.Handle, player.Name, steamDatabaseIdentifier, license, true);
+            //bool isCurrentlyConnected = Instance.IsUserActive(steamDatabaseIdentifier);
+            //if (isCurrentlyConnected)
+            //{
+            //    // need to check some extras, so that if the SteamID matches a live player
+            //    // if some other information differs, it should drop them
+            //    User user = UserSessions[steamId];
 
-                await Common.MoveToMainThread();
+            //    if (user.LicenseIdentifier == license)
+            //    {
+            //        DefferAndKick("error_user_with_matching_steam_already_connected", denyWithReason, deferrals);
+            //        return;
+            //    }
 
-                if (user == null)
-                {
-                    DefferAndKick("error_creating_user", denyWithReason, deferrals);
-                    deferrals.done();
-                    return;
-                }
+            //    // should this fire an event at the player?! It honestly should, then they know to request a character list
+            //    Logger.Trace($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
+            //    deferrals.done();
+            //}
 
-                UserSessions.AddOrUpdate(steamId, user, (key, oldValue) => oldValue = user);
+            //if (!isCurrentlyConnected)
+            //{
+            //    // either they are new, or already exist
+            //    User user = await UserStore.GetUser(player.Handle, player.Name, steamDatabaseIdentifier, license, true);
 
-                Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
-                Logger.Trace($"Number of Sessions: {UserSessions.Count}");
-                deferrals.done();
-                return;
+            //    await Common.MoveToMainThread();
 
-                // review if needed
-                // DefferAndKick("error_creating_user_session", denyWithReason, deferrals);
-            }
+            //    if (user == null)
+            //    {
+            //        DefferAndKick("error_creating_user", denyWithReason, deferrals);
+            //        deferrals.done();
+            //        return;
+            //    }
+
+            //    UserSessions.AddOrUpdate(steamId, user, (key, oldValue) => oldValue = user);
+
+            //    Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
+            //    Logger.Trace($"Number of Sessions: {UserSessions.Count}");
+            //    deferrals.done();
+            //    return;
+
+            //    // review if needed
+            //    // DefferAndKick("error_creating_user_session", denyWithReason, deferrals);
+            //}
         }
 
         private void DefferAndKick(string languageKey, CallbackDelegate denyWithReason, dynamic deferrals)
