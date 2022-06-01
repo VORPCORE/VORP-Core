@@ -1,3 +1,5 @@
+[![Join Discord](https://img.shields.io/discord/704317931453939803?style=flat-square)](https://discord.gg/JgYeAr6Tp6)
+
 ## VORP-CORE
 This is VORP CORE for RedM made in C# compatible with LUA
 [Discord VORP](https://discord.gg/23MPbQ6)
