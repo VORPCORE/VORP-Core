@@ -4,14 +4,14 @@ global using System;
 global using Vorp.Core.Server.Attributes;
 global using Vorp.Shared;
 global using Vorp.Shared.Diagnostics;
+global using CitizenFX.Core.Native;
 global using static CitizenFX.Core.Native.API;
+global using Vorp.Shared.Attributes;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Vorp.Core.Server.Commands;
-using Vorp.Core.Server.Commands.Impl;
 using Vorp.Core.Server.Events;
 using Vorp.Core.Server.Managers;
 using Vorp.Shared.Records;
@@ -30,7 +30,6 @@ namespace Vorp.Core.Server
         public ServerGateway Events;
         public static ConcurrentDictionary<int, User> UserSessions = new();
         public static bool IsOneSyncEnabled => GetConvar("onesync", "off") != "off";
-        public CommandFramework CommandFramework;
         public bool IsServerReady = false;
 
         public PluginManager()
@@ -113,9 +112,6 @@ namespace Vorp.Core.Server
                 method?.Invoke(manager.Value, null);
             }
 
-            CommandFramework = new CommandFramework();
-            CommandFramework.Bind(typeof(AdminCommands));
-
             Logger.Info($"[Managers] Successfully loaded in {loaded} manager(s)!");
 
             bool databaseTest = await Database.DapperDatabase<bool>.GetSingleAsync("select 1;");
@@ -127,6 +123,8 @@ namespace Vorp.Core.Server
             {
                 Logger.Error($"Database Connection Test Failed!");
             }
+            
+            LoadCommands();
 
             IsServerReady = true;
             Logger.Info($"VORP CORE - LOAD COMPLETED");
@@ -224,6 +222,58 @@ namespace Vorp.Core.Server
                 Logger.Error(ex, $"IsUserActive: {steamIdentifier}");
                 return false;
             }
+        }
+
+        public void LoadCommands()
+        {
+            try
+            {
+                Assembly.GetExecutingAssembly().GetExportedTypes()
+                    .SelectMany(self => self.GetMethods(BindingFlags.NonPublic | BindingFlags.Instance))
+                    .Where(self => self.GetCustomAttribute(typeof(CommandAliasAttribute), false) != null).ToList()
+                    .ForEach(self =>
+                    {
+                        var type = self.DeclaringType;
+
+                        if (type == null) return;
+
+                        CommandAliasAttribute commandAlias = self.GetCustomAttribute<CommandAliasAttribute>();
+                        var classType = GetTheType(type.FullName);
+
+                        if (type != classType) return;
+
+                        foreach (string command in commandAlias.Commands)
+                        {
+                            API.RegisterCommand(command, new Action<int, List<object>, string>((source, args, rawCommand) =>
+                            {
+                                Logger.Debug($"Invoking command: {command}");
+                                self.Invoke(classType, new object[] { source, args, rawCommand });
+                            }), commandAlias.Restricted);
+
+                            Logger.Debug($"Added Command Alias: {command}");
+                        }
+
+                        Logger.Debug($"Command Alias Registered: {type.FullName}::{self.Name}");
+                    });
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"[Command Alias] {ex}");
+            }
+        }
+
+        public Type GetTheType(string strFullyQualifiedName)
+        {
+            Type type = Type.GetType(strFullyQualifiedName);
+            if (type != null)
+                return type;
+            foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                type = asm.GetType(strFullyQualifiedName);
+                if (type != null)
+                    return type;
+            }
+            return null;
         }
     }
 }

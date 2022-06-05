@@ -120,26 +120,26 @@ namespace Vorp.Core.Server.Managers
 
         private void SendPlayerChatSuggestions(Player player, User user)
         {
-            foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
-            {
-                CommandContext commandContext = entry.Key;
-                List<Tuple<CommandInfo, ICommand>> tuples = entry.Value;
+            //foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, ICommand>>> entry in Instance.CommandFramework.Registry)
+            //{
+            //    CommandContext commandContext = entry.Key;
+            //    List<Tuple<CommandInfo, ICommand>> tuples = entry.Value;
 
-                if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(user.Group))
-                {
-                    foreach (Tuple<CommandInfo, ICommand> item in tuples)
-                    {
-                        player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
-                    }
-                }
-                else
-                {
-                    foreach (Tuple<CommandInfo, ICommand> item in tuples)
-                    {
-                        player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
-                    }
-                }
-            }
+            //    if (commandContext.IsRestricted && commandContext.RequiredRoles.Contains(user.Group))
+            //    {
+            //        foreach (Tuple<CommandInfo, ICommand> item in tuples)
+            //        {
+            //            player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        foreach (Tuple<CommandInfo, ICommand> item in tuples)
+            //        {
+            //            player.TriggerEvent("chat:addSuggestion", $"/{commandContext.Aliases[0]} {item.Item1.Aliases[0]}", $"{item.Item1.Description}");
+            //        }
+            //    }
+            //}
         }
 
         // To be moved to UserCharacterManager
