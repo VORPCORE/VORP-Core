@@ -9,6 +9,7 @@
     <Import_RootNamespace>Vorp.Shared</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\CommandAliasAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common.cs" />
