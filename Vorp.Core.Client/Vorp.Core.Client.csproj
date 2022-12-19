@@ -72,6 +72,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Globals.cs" />
     <Compile Include="ClientConfiguration.cs" />
     <Compile Include="Commands\CommandFramework.cs" />
     <Compile Include="Commands\ICommand.cs" />
