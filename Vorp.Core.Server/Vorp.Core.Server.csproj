@@ -10,7 +10,7 @@
     <PackageTags>redm,cfx,vorp</PackageTags>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <Configurations>Debug;Release;Server</Configurations>
-    <BaseOutputPath>Y:\GTA\FXServer\RedM\server-data-refactor\resources\[vorp_core]\vorp_core</BaseOutputPath>
+    <BaseOutputPath></BaseOutputPath>
     <GenerateDocumentationFile>False</GenerateDocumentationFile>
     <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>

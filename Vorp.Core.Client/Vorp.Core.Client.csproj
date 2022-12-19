@@ -44,7 +44,7 @@
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DevelopmentClient|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
-    <OutputPath>Y:\GTA\FXServer\RedM\server-data-refactor\resources\[vorp_core]\vorp_core\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE;DEBUG;CLIENT;DEVELOPMENT_CLIENT;RDR3</DefineConstants>
     <DebugType>embedded</DebugType>
     <PlatformTarget>AnyCPU</PlatformTarget>
