@@ -16,7 +16,7 @@ namespace Vorp.Core.Client.Commands.Impl
         {
             public void On(VorpPlayer player, List<string> arguments)
             {
-                Logger.Trace($"Pong");
+                PluginManager.Logger.Info($"Pong");
             }
         }
 

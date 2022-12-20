@@ -26,23 +26,24 @@ namespace Vorp.Core.Client
                     selectedLanguage = _config.Language.DefaultLanguage;
                 }
 
-                Logger.Info($"Language '{selectedLanguage}.json' loading");
+                PluginManager.Logger.Info($"Language '{selectedLanguage}.json' loading");
 
                 string languagesFile = LoadResourceFile(GetCurrentResourceName(), $"/Resources/Languages/{selectedLanguage}.json");
 
                 if (!string.IsNullOrEmpty(languagesFile))
                 {
                     _language = JsonConvert.DeserializeObject<Dictionary<string, string>>(languagesFile);
-                    Logger.Info($"Language '{selectedLanguage}.json' loaded!");
+                    PluginManager.Logger.Info($"Language '{selectedLanguage}.json' loaded!");
                 }
 
-                Logger.Trace($"Client Configuration Loaded");
+                PluginManager.Logger.Info($"Client Configuration Loaded");
 
                 return _config;
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Client Configuration was unable to be loaded.");
+                PluginManager.Logger.Error($"Client Configuration was unable to be loaded.");
+                PluginManager.Logger.Error(ex.Message);
                 return default!;
             }
         }

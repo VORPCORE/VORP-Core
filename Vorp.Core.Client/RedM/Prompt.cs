@@ -17,7 +17,7 @@ namespace Vorp.Core.Client.RedM
         {
             _promptType = promptType;
             _label = label;
-            Logger.Trace($"Registered '{label}'");
+            PluginManager.Logger.Info($"Registered '{label}'");
         }
 
         // void func_2074(

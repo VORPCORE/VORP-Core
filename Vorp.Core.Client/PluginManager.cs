@@ -1,9 +1,10 @@
-﻿using System.Reflection;
+﻿using FxEvents;
+using Logger;
+using System.Reflection;
 using Vorp.Core.Client.Commands;
 using Vorp.Core.Client.Commands.Impl;
 using Vorp.Core.Client.Environment;
 using Vorp.Core.Client.Environment.Entities;
-using Vorp.Core.Client.Events;
 using Vorp.Core.Client.Interface;
 using Vorp.Core.Client.Managers;
 
@@ -12,7 +13,7 @@ namespace Vorp.Core.Client
     public class PluginManager : BaseScript
     {
         public static PluginManager Instance { get; private set; }
-        public ClientGateway ClientGateway;
+        public static Log Logger;
         public VorpPlayer LocalPlayer;
         public EventHandlerDictionary EventRegistry => EventHandlers;
         public ExportDictionary ExportDictionary => Exports;
@@ -27,7 +28,7 @@ namespace Vorp.Core.Client
         public PluginManager()
         {
             Instance = this;
-            ClientGateway = new ClientGateway(this);
+            Logger = new();
 
             EventHandlers["onResourceStart"] += new Action<string>(OnResourceStart);
             EventHandlers["onResourceStop"] += new Action<string>(OnResourceStop);
@@ -103,20 +104,21 @@ namespace Vorp.Core.Client
                 // Need to find a better way, currently having to wait 5s before saying we're active
                 await BaseScript.Delay(5000);
 
-                ClientGateway.Send("vorp:user:active", Session.ServerId);
+                EventDispatcher.Send("vorp:user:active", Session.ServerId);
                 BaseScript.TriggerServerEvent("vorp:user:activate");
                 LocalPlayer = new VorpPlayer(PlayerId());
 
                 if (clientConfig.PvpEnabled) // TODO: Add PVP Native Handling
                 {
-                    Logger.Trace($"PVP is Enabled");
+                    Logger.Info($"PVP is Enabled");
                 }
 
                 Logger.Info("Load method has been completed.");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Plugin Manager Load Error");
+                Logger.Error($"Plugin Manager Load Error");
+                Logger.Error(ex.Message);
             }
         }
 
@@ -137,7 +139,7 @@ namespace Vorp.Core.Client
             Vector3 position = LocalPlayer.Character.Position;
             float heading = LocalPlayer.Character.Heading;
 
-            ClientGateway.Send("vorp:character:coords:save", position, heading);
+            EventDispatcher.Send("vorp:character:coords:save", position, heading);
         }
 
         public object LoadManager(Type type)
@@ -179,7 +181,8 @@ namespace Vorp.Core.Client
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, $"AttachTickHandlers");
+                    Logger.Error($"AttachTickHandlers");
+                    Logger.Error(ex.Message);
                 }
             });
         }

@@ -111,7 +111,7 @@ namespace Vorp.Core.Server.Database
             sb.Append($"Query: {query}\n");
             sb.Append($"Exception Message: {exceptionMessage}\n");
             sb.Append($"Time Elapsed: {elapsedMilliseconds}ms");
-            Logger.Error($"{sb}");
+            PluginManager.Logger.Error($"{sb}");
         }
 
         private static void SetupTypeMap()

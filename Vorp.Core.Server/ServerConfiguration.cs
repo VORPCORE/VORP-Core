@@ -19,15 +19,11 @@ namespace Vorp.Core.Server
                 _serverConfig = JsonConvert.DeserializeObject<ServerConfig>(serverConfigFile);
                 string languagesFile = LoadResourceFile(GetCurrentResourceName(), $"/server/Resources/Languages/{_serverConfig.Language}.json");
                 _serverLanguage = JsonConvert.DeserializeObject<Dictionary<string, string>>(languagesFile);
-                Logger.Info($"Language '{_serverConfig.Language}.json' loaded!");
-
-                Logger.Info($"Config: Max Characters; {_serverConfig.UserConfig.Characters.Maximum}");
 
                 return _serverConfig;
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Server Configuration was unable to be loaded.");
                 return (ServerConfig)default!;
             }
         }

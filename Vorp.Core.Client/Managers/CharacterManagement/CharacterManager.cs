@@ -1,4 +1,5 @@
-﻿using Vorp.Core.Client.Interface;
+﻿using FxEvents;
+using Vorp.Core.Client.Interface;
 using Vorp.Shared.Records;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
@@ -9,9 +10,9 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
 
         public override void Begin()
         {
-            ClientGateway.Mount("vorp:character:list", new Action<Dictionary<int, Character>, int>(async (characters, maxCharcters) =>
+            EventDispatcher.Mount("vorp:character:list", new Action<Dictionary<int, Character>, int>(async (characters, maxCharcters) =>
             {
-                Logger.Trace($"Received {characters.Count} characters from the server, max {maxCharcters} allowed.");
+                Logger.Info($"Received {characters.Count} characters from the server, max {maxCharcters} allowed.");
 
                 //await Screen.FadeOut(500);
 

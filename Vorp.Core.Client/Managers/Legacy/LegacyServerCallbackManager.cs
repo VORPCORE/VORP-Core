@@ -31,7 +31,7 @@
         {
             if (!_shownWarning)
             {
-                Logger.Warn($"vorp:ExecuteServerCallBack will be deprecated, please change your own resource to no longer use this event.");
+                Logger.Warning($"vorp:ExecuteServerCallBack will be deprecated, please change your own resource to no longer use this event.");
             }
             _shownWarning = true;
 

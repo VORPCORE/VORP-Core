@@ -53,13 +53,13 @@ namespace Vorp.Core.Server.Database.Store
 
             if (user is not null)
             {
-                Logger.Debug($"User found with steamIdent [{user.SteamIdentifier}]");
+                PluginManager.Logger.Debug($"User found with steamIdent [{user.SteamIdentifier}]");
                 user.SetName(cfxName);
             }
 
             if (user == null)
             {
-                Logger.Debug($"No user found with steamIdent [{steamIdent}]");
+                PluginManager.Logger.Debug($"No user found with steamIdent [{steamIdent}]");
                 user = new User(cfxServerHandle, cfxName, steamIdent, license, _srvCfg.UserConfig.NewUserGroup, 0);
 
                 // if they are the first user, then set them as an admin
@@ -74,7 +74,7 @@ namespace Vorp.Core.Server.Database.Store
                 await Common.MoveToMainThread();
 
                 if (saved)
-                    Logger.Debug($"Created a new user steamIdent [{user.SteamIdentifier}]");
+                    PluginManager.Logger.Debug($"Created a new user steamIdent [{user.SteamIdentifier}]");
 
                 if (!saved)
                     return null;

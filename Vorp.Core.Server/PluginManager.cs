@@ -1,9 +1,9 @@
-﻿using System.Collections.Concurrent;
+﻿using Logger;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
-using Vorp.Core.Server.Events;
 using Vorp.Core.Server.Managers;
 using Vorp.Shared.Records;
 
@@ -12,13 +12,13 @@ namespace Vorp.Core.Server
     public class PluginManager : BaseScript
     {
         public static PluginManager Instance { get; private set; }
+        public static Log Logger;
         public static PlayerList PlayersList { get; private set; }
         public EventHandlerDictionary EventRegistry => EventHandlers;
         public ExportDictionary ExportDictionary => Exports;
         public Dictionary<Type, object> Managers { get; } = new Dictionary<Type, object>();
         public Dictionary<Type, List<MethodInfo>> TickHandlers { get; set; } = new Dictionary<Type, List<MethodInfo>>();
         public List<Type> RegisteredTickHandlers { get; set; } = new List<Type>();
-        public ServerGateway Events;
         public static ConcurrentDictionary<int, User> UserSessions = new();
         public static bool IsOneSyncEnabled => GetConvar("onesync", "off") != "off";
         public bool IsServerReady = false;
@@ -26,7 +26,7 @@ namespace Vorp.Core.Server
         public PluginManager()
         {
             Instance = this;
-            Events = new ServerGateway(Instance);
+            Logger = new();
 
             Load();
         }
@@ -108,13 +108,13 @@ namespace Vorp.Core.Server
             bool databaseTest = await Database.DapperDatabase<bool>.GetSingleAsync("select 1;");
             if (databaseTest)
             {
-                Logger.Trace($"Database Connection Test Successful!");
+                Logger.Info($"Database Connection Test Successful!");
             }
             else
             {
                 Logger.Error($"Database Connection Test Failed!");
             }
-            
+
             LoadCommands();
 
             IsServerReady = true;
@@ -187,7 +187,7 @@ namespace Vorp.Core.Server
         {
             try
             {
-                Dictionary<int, User > userDictionary = new Dictionary<int, User>(UserSessions);
+                Dictionary<int, User> userDictionary = new Dictionary<int, User>(UserSessions);
                 foreach (KeyValuePair<int, User> kvp in userDictionary)
                 {
                     User user = kvp.Value;
@@ -210,7 +210,8 @@ namespace Vorp.Core.Server
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"IsUserActive: {steamIdentifier}");
+                Logger.Error($"IsUserActive: {steamIdentifier}");
+                Logger.Error(ex.Message);
                 return false;
             }
         }

@@ -1,6 +1,4 @@
-﻿using CitizenFX.Core.Native;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Vorp.Core.Server.Managers;
@@ -184,14 +182,14 @@ namespace Vorp.Core.Server.Web
                 return false;
             }
 
-            foreach(string role in discordMember.Roles)
+            foreach (string role in discordMember.Roles)
             {
-                foreach(string whitelistedRole in serverConfig.Discord.Whitelist)
+                foreach (string whitelistedRole in serverConfig.Discord.Whitelist)
                 {
                     if (whitelistedRole == role)
                     {
                         IsMember = discordMember.JoinedAt.HasValue;
-                        Logger.Trace($"DiscordClient : {player.Name} is a member of the Discord Guild.");
+                        Logger.Info($"DiscordClient : {player.Name} is a member of the Discord Guild.");
                         return true;
                     }
                 }
@@ -207,7 +205,7 @@ namespace Vorp.Core.Server.Web
             {
                 if (!Webhooks.ContainsKey(webhookChannel))
                 {
-                    Logger.Warn($"SendDiscordEmbededMessage() -> Discord {webhookChannel} Webhook Missing");
+                    Logger.Warning($"SendDiscordEmbededMessage() -> Discord {webhookChannel} Webhook Missing");
                     return;
                 }
 

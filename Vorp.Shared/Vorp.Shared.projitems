@@ -13,8 +13,6 @@
     <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandContext.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Common.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\Logger.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Diagnostics\EventLogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Data\StateBagKey.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedComponentCategory.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedType.cs" />

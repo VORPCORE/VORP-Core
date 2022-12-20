@@ -1,4 +1,5 @@
-﻿using Vorp.Shared.Enums;
+﻿using Logger;
+using Vorp.Shared.Enums;
 using Vorp.Shared.Models;
 
 namespace Vorp.Core.Client.Managers.CharacterManagement
@@ -6,6 +7,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
     static class CharacterComponentConfig
     {
         static PedComponentOptions _pedComponentOptions;
+        static Log Logger => PluginManager.Logger;
 
         private static PedComponentOptions LoadConfiguration()
         {
@@ -21,7 +23,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"Configuration was unable to be loaded.");
+                Logger.Error($"Configuration was unable to be loaded.");
+                Logger.Error(ex.Message);
                 return (PedComponentOptions)default!;
             }
         }
@@ -74,7 +77,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Error Getting Components");
+                Logger.Error("Error Getting Components");
+                Logger.Error(ex.Message);
                 return new();
             }
         }

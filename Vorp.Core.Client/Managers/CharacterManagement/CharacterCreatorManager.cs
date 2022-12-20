@@ -132,7 +132,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             await VorpAPI.GetImap(-1699673416);
             await VorpAPI.GetImap(1679934574);
             await VorpAPI.GetImap(183712523);
-            Logger.Trace($"All IMAPs loaded");
+            Logger.Info($"All IMAPs loaded");
         }
 
         async Task CreateSelections()
@@ -144,7 +144,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"CreateSelections");
+                Logger.Error($"CreateSelections");
+                Logger.Error(ex.Message);
             }
         }
 

@@ -2,51 +2,18 @@
 using Dapper;
 using Vorp.Core.Server.Database;
 using System.Threading.Tasks;
+using Vorp.Core.Server;
 #endif
 
-using Lusive.Events.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using Vorp.Shared.Models;
 
 namespace Vorp.Shared.Records
 {
-    [Serialization]
     public partial class Character
     {
         // I DON'T KNOW WHY, I DON'T WANT TO KNOW WHY, BUT, IF YOU CAN FIX IT, MAY THE GENERATOR SEE IN YOUR FAVOUR!
-#if CLIENT
-        public Character(BinaryReader binaryReader)
-        {
-            SteamIdentifier = binaryReader.ReadString();
-            SteamName = binaryReader.ReadString();
-            CharacterId = binaryReader.ReadInt32();
-            Group = binaryReader.ReadString();
-            Cash = binaryReader.ReadDouble();
-            Gold = binaryReader.ReadDouble();
-            RoleToken = binaryReader.ReadDouble();
-            Experience = binaryReader.ReadInt32();
-            Inventory = binaryReader.ReadString();
-            Job = binaryReader.ReadString();
-            Status = binaryReader.ReadString();
-            Meta = binaryReader.ReadString();
-            Firstname = binaryReader.ReadString();
-            Lastname = binaryReader.ReadString();
-            Skin = binaryReader.ReadString();
-            Components = binaryReader.ReadString();
-            JobGrade = binaryReader.ReadInt32();
-            Coords = binaryReader.ReadString();
-            IsDead = binaryReader.ReadBoolean();
-            ClanId = binaryReader.ReadInt32();
-            Trust = binaryReader.ReadInt32();
-            Supporter = binaryReader.ReadInt32();
-            Walk = binaryReader.ReadString();
-            Crafting = binaryReader.ReadString();
-            Info = binaryReader.ReadString();
-            GunSmith = binaryReader.ReadDouble();
-        }
-#endif
 
         #region Fields
         [Description("identifier")]
@@ -167,7 +134,7 @@ namespace Vorp.Shared.Records
                         RoleToken = await DapperDatabase<double>.GetSingleAsync($"UPDATE characters SET `rol` += @roleToken WHERE `charIdentifier` = @characterId; SELECT `rol` from characters WHERE `charIdentifier` = @characterId;", dynamicParameters);
                         break;
                     default:
-                        Logger.Error($"Character.AdjustCurrency {currency} value is unknown");
+                        PluginManager.Logger.Error($"Character.AdjustCurrency {currency} value is unknown");
                         return false;
                 }
                 await Common.MoveToMainThread();
@@ -175,7 +142,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "AdjustCurrency");
+                PluginManager.Logger.Error("AdjustCurrency");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -194,7 +162,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "AdjustExperience");
+                PluginManager.Logger.Error("AdjustExperience");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -212,7 +181,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetJob");
+                PluginManager.Logger.Error("SetJob");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -230,7 +200,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetJobGrade");
+                PluginManager.Logger.Error("SetJobGrade");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -249,7 +220,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetJobAndGrade");
+                PluginManager.Logger.Error("SetJobAndGrade");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -267,7 +239,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetGroup");
+                PluginManager.Logger.Error("SetGroup");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -285,7 +258,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "SetDead");
+                PluginManager.Logger.Error("SetDead");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -321,7 +295,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "UpdateInventory");
+                PluginManager.Logger.Error("UpdateInventory");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -338,7 +313,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "UpdateInventory");
+                PluginManager.Logger.Error("UpdateInventory");
+                PluginManager.Logger.Error(ex.Message);
                 return "{}";
             }
         }
@@ -356,7 +332,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "UpdateInventory");
+                PluginManager.Logger.Error("UpdateInventory");
+                PluginManager.Logger.Error(ex.Message);
                 return new();
             }
         }
@@ -411,7 +388,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Save Character");
+                PluginManager.Logger.Error("Save Character");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }
@@ -426,7 +404,8 @@ namespace Vorp.Shared.Records
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "Delete Character");
+                PluginManager.Logger.Error("Delete Character");
+                PluginManager.Logger.Error(ex.Message);
                 return false;
             }
         }

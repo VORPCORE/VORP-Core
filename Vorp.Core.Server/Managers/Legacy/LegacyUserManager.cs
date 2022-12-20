@@ -49,7 +49,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnSetCharacterGroupAsync(int serverId, string job)
         {
-            Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'OnSetCharacterGroup'.");
+            Logger.Warning($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'OnSetCharacterGroup'.");
             await ExportSetCharacterGroupAsync(serverId, job);
         }
 
@@ -62,7 +62,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnSetCharacterJobAsync(int serverId, string job)
         {
-            Logger.Warn($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportSetCharacterJob'.");
+            Logger.Warning($"Event 'vorp:setJob' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportSetCharacterJob'.");
             await ExportSetCharacterJobAsync(serverId, job);
         }
 
@@ -75,7 +75,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnRemoveExperienceAsync(int serverId, int amount)
         {
-            Logger.Warn($"Event 'vorp:removeXp' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportRemoveExperience'.");
+            Logger.Warning($"Event 'vorp:removeXp' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportRemoveExperience'.");
             await ExportRemoveExperienceAsync(serverId, amount);
         }
 
@@ -88,7 +88,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnAddExperienceAsync(int serverId, int amount)
         {
-            Logger.Warn($"Event 'vorp:addXp' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportAddExperience'.");
+            Logger.Warning($"Event 'vorp:addXp' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportAddExperience'.");
             await ExportAddExperienceAsync(serverId, amount);
         }
 
@@ -101,7 +101,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnRemoveMoneyAsync(int serverId, int currencyType, double amount)
         {
-            Logger.Warn($"Event 'vorp:removeMoney' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportRemoveCurrency'.");
+            Logger.Warning($"Event 'vorp:removeMoney' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportRemoveCurrency'.");
             await ExportRemoveCurrencyAsync(serverId, currencyType, amount);
         }
 
@@ -114,7 +114,7 @@ namespace Vorp.Core.Server.Managers.Legacy
 
         private async void OnAddMoneyAsync(int serverId, int currencyType, double amount)
         {
-            Logger.Warn($"Event 'vorp:addMoney' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportAddCurrency'.");
+            Logger.Warning($"Event 'vorp:addMoney' was invoked by '{GetInvokingResource()}', this is an unsecure event, it is recommended to use the export 'ExportAddCurrency'.");
             await ExportAddCurrencyAsync(serverId, currencyType, amount);
         }
 
@@ -135,7 +135,7 @@ namespace Vorp.Core.Server.Managers.Legacy
             User user = PluginManager.ToUser(serverId);
             if (user is null)
             {
-                Logger.CriticalError($"Cannot find user for serverId '{serverId}'");
+                Logger.Error($"Cannot find user for serverId '{serverId}'");
             }
             return user.GetUser();
         }

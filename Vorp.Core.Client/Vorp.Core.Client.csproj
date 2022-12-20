@@ -1,142 +1,29 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{590CC09F-3F68-4554-ABE1-BFDFAA65357E}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Vorp.Core.Client</RootNamespace>
-    <AssemblyName>Vorp.Core.Client.net</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <Deterministic>true</Deterministic>
+    <TargetFramework>net472</TargetFramework>
+    <AssemblyName>$(MSBuildProjectName).net</AssemblyName>
+    <PackageId>$(AssemblyName).net</PackageId>
     <LangVersion>latest</LangVersion>
-    <TargetFrameworkProfile />
+    <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+    <Configurations>Debug;Release;Client</Configurations>
+    <BaseOutputPath></BaseOutputPath>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <AppendTargetFrameworkToOutputPath>False</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>False</AppendRuntimeIdentifierToOutputPath>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CLIENT</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Client|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Client\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CLIENT</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'DevelopmentClient|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;CLIENT;DEVELOPMENT_CLIENT;RDR3</DefineConstants>
-    <DebugType>embedded</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>latest</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="CitizenFX.Core">
-      <HintPath>..\dependancies\RedM\CitizenFX.Core.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\dependancies\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <None Remove="fxmanifest.lua" />
+    <None Remove="NotificationExports.js" />
+    <None Remove="Resources\client-config.json" />
   </ItemGroup>
+
   <ItemGroup>
-    <Compile Include="Globals.cs" />
-    <Compile Include="ClientConfiguration.cs" />
-    <Compile Include="Commands\CommandFramework.cs" />
-    <Compile Include="Commands\ICommand.cs" />
-    <Compile Include="Commands\Impl\AdminCommands.cs" />
-    <Compile Include="Discord\DiscordRichPresence.cs" />
-    <Compile Include="Environment\ClientConfig.cs" />
-    <Compile Include="Environment\Config\DiscordSettings.cs" />
-    <Compile Include="Environment\Config\Discord\Asset.cs" />
-    <Compile Include="Environment\Config\PlayerNames.cs" />
-    <Compile Include="Environment\Entities\VorpPlayer.cs" />
-    <Compile Include="Environment\Entities\WorldPlayer.cs" />
-    <Compile Include="Events\ClientGateway.cs" />
-    <Compile Include="Events\ServerId.cs" />
-    <Compile Include="Interface\PromptHandler.cs" />
-    <Compile Include="Interface\Screen.cs" />
-    <Compile Include="Managers\Admin\KeyCodeManager.cs" />
-    <Compile Include="Managers\Admin\NoClipManager.cs" />
-    <Compile Include="Managers\CharacterManagement\CharacterComponentConfig.cs" />
-    <Compile Include="Managers\CharacterManagement\CharacterCreatorManager.cs" />
-    <Compile Include="Managers\CharacterManagement\CharacterEditorManager.cs" />
-    <Compile Include="Managers\CharacterManagement\CharacterManager.cs" />
-    <Compile Include="Managers\CharacterManagement\InventoryManager.cs" />
-    <Compile Include="Interface\Menu\MenuBase.cs" />
-    <Compile Include="Managers\GameEvents\GameEventManager.cs" />
-    <Compile Include="Managers\GameWorld\WorldPlayerManager.cs" />
-    <Compile Include="Managers\Interface\GeneralUiManager.cs" />
-    <Compile Include="Managers\Legacy\CfxEventsManager.cs" />
-    <Compile Include="Managers\Legacy\LegacyInstanceManager.cs" />
-    <Compile Include="Managers\Legacy\LegacyServerCallbackManager.cs" />
-    <Compile Include="Managers\Manager.cs" />
-    <Compile Include="Managers\UserManager.cs" />
-    <Compile Include="PluginManager.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-    <Compile Include="RedM\Camera.cs" />
-    <Compile Include="RedM\Entity.cs" />
-    <Compile Include="RedM\Enums\eControl.cs" />
-    <Compile Include="RedM\Enums\ePromptType.cs" />
-    <Compile Include="RedM\Enums\eRelationshipType.cs" />
-    <Compile Include="RedM\Enums\eUIGamertagVisibility.cs" />
-    <Compile Include="RedM\Ped.cs" />
-    <Compile Include="RedM\PoolObject.cs" />
-    <Compile Include="RedM\Prompt.cs" />
-    <Compile Include="RedM\World.cs" />
-    <Compile Include="RedM\WorldTime.cs" />
-    <Compile Include="Session.cs" />
-    <Compile Include="TickHandler.cs" />
-    <Compile Include="RedM\VorpAPI.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Interface\NuiManager.cs" />
+    <Content Include="fxmanifest.lua">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="NotificationExports.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -144,23 +31,33 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\vendor\fx-events\src\events\Events.csproj">
-      <Project>{87af19bd-084d-4d37-8763-b25c0c2df459}</Project>
-      <Name>Events</Name>
-    </ProjectReference>
+    <Folder Include="Events\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
+
   <ItemGroup>
-    <Content Include="fxmanifest.lua">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <None Include="Resources\character-components.json">
+    <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" ExcludeAssets="Compile" GeneratePathProperty="true" />
+    <ProjectReference Include="..\vendor\FxEvents\FxEvents\FxEvents.Client\FxEvents.Client.csproj" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(PkgNewtonsoft_Json)\lib\portable-net40+sl5+win8+wp8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="CitizenFX.Core.Client" ExcludeAssets="runtime">
+      <HintPath>..\dependencies\RedM\CitizenFX.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\character-components.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\Languages\english.json">
+    <None Update="Resources\Languages\english.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
   <Import Project="..\Vorp.Shared\Vorp.Shared.projitems" Label="Shared" />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+
 </Project>

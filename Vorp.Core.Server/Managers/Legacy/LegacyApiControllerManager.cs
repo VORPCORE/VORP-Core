@@ -97,13 +97,10 @@ namespace Vorp.Core.Server.Managers.Legacy
                                     Logger.Error(msg);
                                     break;
                                 case "warn":
-                                    Logger.Warn(msg);
+                                    Logger.Warning(msg);
                                     break;
                                 case "info":
                                     Logger.Info(msg);
-                                    break;
-                                case "trace":
-                                    Logger.Trace(msg);
                                     break;
                                 default:
                                     Logger.Error($"Log Type '{type}' is unknown");
@@ -125,7 +122,8 @@ namespace Vorp.Core.Server.Managers.Legacy
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"OnGetCore Exception: {GetInvokingResource()}");
+                Logger.Error($"OnGetCore Exception: {GetInvokingResource()}");
+                Logger.Error(ex.Message);
             }
         }
 

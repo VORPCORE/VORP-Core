@@ -1,4 +1,4 @@
-﻿using Lusive.Events;
+﻿using FxEvents.Shared.EventSubsystem;
 using System.Collections.Generic;
 using System.Linq;
 using Vorp.Shared.Records;

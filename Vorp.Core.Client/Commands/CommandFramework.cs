@@ -12,7 +12,7 @@ namespace Vorp.Core.Client.Commands
         {
             if (type.BaseType == null || type.BaseType != typeof(CommandContext))
             {
-                Logger.Info(
+                PluginManager.Logger.Info(
                     $"[CommandFramework] The binding of `{type.Name}` could not be completed due to the lack of the `CommandContext` implementation.");
 
                 return;
@@ -46,13 +46,13 @@ namespace Vorp.Core.Client.Commands
 
             foreach (string self in context.Aliases.ToList())
             {
-                Logger.Trace($"Register: {self}");
+                PluginManager.Logger.Info($"Register: {self}");
 
                 API.RegisterCommand(self, new Action<int, List<object>, string>((handle, args, raw) =>
                         HandleCommandInput(context, Registry[context], self, args)), false);
             };
 
-            Logger.Info(
+            PluginManager.Logger.Info(
                 $"[CommandFramework] Found {found.Count} nested `ICommand` class(es) in `{type.Name}`, registered {registered} of them!");
         }
 

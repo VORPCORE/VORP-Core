@@ -7,14 +7,12 @@ using System.Threading.Tasks;
 using Vorp.Shared.Models;
 #endif
 
-using Lusive.Events.Attributes;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 
 namespace Vorp.Shared.Records
 {
-    [Serialization]
     public partial class User
     {
 #if SERVER
@@ -71,17 +69,17 @@ namespace Vorp.Shared.Records
         }
 
 #if SERVER
-        [JsonIgnore] [Ignore] public Player Player { get; private set; }
+        internal Player Player { get; private set; }
 
         public void AddPlayer(Player player) => Player = player;
         public void SetName(string name) => Name = name;
 
-        [JsonIgnore] public string Endpoint => GetPlayerEndpoint($"{CFXServerID}");
+        internal string Endpoint => GetPlayerEndpoint($"{CFXServerID}");
 #endif
-        [JsonIgnore] public int CFXServerID { get; private set; } = 0;
+        internal int CFXServerID { get; private set; } = 0;
         // DB Keys
-        [JsonIgnore] public ulong DiscordIdentifier { get; private set; }
-        [JsonIgnore] public string LicenseIdentifier { get; private set; }
+        internal ulong DiscordIdentifier { get; private set; }
+        internal string LicenseIdentifier { get; private set; }
 
         // Character Items
         public Dictionary<int, Character> Characters { get; private set; } = new Dictionary<int, Character>();
@@ -117,14 +115,10 @@ namespace Vorp.Shared.Records
         {
             if (!Characters.ContainsKey(charId)) return false;
 
-            Logger.Info($"Setting Character '{charId}' active for '{Name}' with ServerID '{CFXServerID}'.");
-
             Characters.ToList().ForEach(x => x.Value.IsActive = false);
 
             Character character = Characters[charId];
             character.IsActive = true;
-
-            Logger.Info($"Character '{character.Fullname}' is now active for '{Name}' with ServerID '{CFXServerID}'.");
 
             // TODO: Replace this method with something, better.
             Player.TriggerEvent("vorp:SelectedCharacter", charId);
@@ -167,8 +161,6 @@ namespace Vorp.Shared.Records
 
         public async Task GetCharacters()
         {
-            Logger.Debug($"Requesting characters for '{SteamIdentifier}' '{Name}'");
-
             DynamicParameters dynamicParameters = new DynamicParameters();
             dynamicParameters.Add("identifier", SteamIdentifier);
             List<Character> characters = await DapperDatabase<Character>.GetListAsync(SQL_GET_CHARACTERS, dynamicParameters);
@@ -280,7 +272,6 @@ namespace Vorp.Shared.Records
 
             if (activeChar == null)
             {
-                Logger.Error($"[{GetInvokingResource()}] Player '{Player.Name}' does not current have an active character.");
                 return null;
             }
 
@@ -338,7 +329,7 @@ namespace Vorp.Shared.Records
                 },
             };
 
-            Logger.Trace($"Requested Active Character '{characterDict["charIdentifier"]}' with name '{activeChar.Fullname}'.");
+            PluginManager.Logger.Info($"Requested Active Character '{characterDict["charIdentifier"]}' with name '{activeChar.Fullname}'.");
 
             return characterDict;
         }

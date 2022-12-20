@@ -84,11 +84,12 @@
                 struct2[3] = GetHashKey("toast_mp_status_change");
 
                 Function.Call((Hash)0x26E87218390E6729, struct1, struct2, 1, 1);
-                Logger.Trace($"DisplayLeftNotification: {title}/{subTitle}");
+                PluginManager.Logger.Info($"DisplayLeftNotification: {title}/{subTitle}");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"DisplayLeftNotification");
+                PluginManager.Logger.Error($"DisplayLeftNotification");
+                PluginManager.Logger.Error(ex.ToString());
             }
         }
 

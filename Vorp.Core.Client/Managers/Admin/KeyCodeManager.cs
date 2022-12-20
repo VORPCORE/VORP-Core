@@ -36,14 +36,13 @@ namespace Vorp.Core.Client.Managers.Admin
 
                     var alpha = Math.Pow(Math.Sin(MathUtil.Clamp(secs / 5f, 0f, 1f)), 1f / 16f) * 255f;
 
-                    var color = Color.FromArgb((int)Math.Ceiling(alpha), 255, 255, 255);
-
                     VorpAPI.DrawText($@"{{{string.Join(", ", key.Controls)}}}", new Vector2(0.0f, 1f) - new Vector2(0f, offsetY), 0.3f);
                 }
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"OnKeyCodeRender");
+                PluginManager.Logger.Error($"OnKeyCodeRender");
+                PluginManager.Logger.Error(ex.Message);
             }
         }
 
@@ -83,7 +82,8 @@ namespace Vorp.Core.Client.Managers.Admin
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"OnKeyCodeTick");
+                PluginManager.Logger.Error($"OnKeyCodeTick");
+                
             }
         }
 

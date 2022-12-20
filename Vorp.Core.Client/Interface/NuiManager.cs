@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-using Vorp.Shared;
-
-namespace Vorp.Core.Client.Interface
+﻿namespace Vorp.Core.Client.Interface
 {
     public class NuiManager
     {
@@ -15,14 +12,14 @@ namespace Vorp.Core.Client.Interface
         /// <summary>
         /// Returns cursor position with nui on
         /// </summary>
-        public Point NuiCursorPosition
+        public Vector2 NuiCursorPosition
         {
             get
             {
                 int x = 0, y = 0;
                 GetNuiCursorPosition(ref x, ref y);
 
-                return new Point(x, y);
+                return new Vector2(x, y);
             }
         }
 
@@ -55,7 +52,7 @@ namespace Vorp.Core.Client.Interface
         {
             string message = data.ToJson();
 
-            Logger.Trace($"SendMessage -> {message}");
+            PluginManager.Logger.Info($"SendMessage -> {message}");
 
             SendNuiMessage(message); //use any json serialization you want
         }
@@ -79,7 +76,7 @@ namespace Vorp.Core.Client.Interface
             RegisterNuiCallbackType(@event);
             PluginManager.Instance.Hook($"__cfx_nui:{@event}", new Action<IDictionary<string, object>, CallbackDelegate>((data, callback) =>
             {
-                Logger.Debug($"Called NUI Callback [{@event}] with Payload {data.ToJson()}");
+                PluginManager.Logger.Debug($"Called NUI Callback [{@event}] with Payload {data.ToJson()}");
                 action();
                 callback("ok");
             }));
@@ -95,7 +92,7 @@ namespace Vorp.Core.Client.Interface
             RegisterNuiCallbackType(@event);
             PluginManager.Instance.Hook($"__cfx_nui:{@event}", new Action<IDictionary<string, object>, CallbackDelegate>((data, callback) =>
             {
-                Logger.Debug($"Called NUI Callback {@event} with Payload {data.ToJson()} of type {typeof(T)}");
+                PluginManager.Logger.Debug($"Called NUI Callback {@event} with Payload {data.ToJson()} of type {typeof(T)}");
                 T typedData = data.Count == 1 ? TypeCache<T>.IsSimpleType ? (T)data.Values.ElementAt(0) : data.Values.ElementAt(0).ToJson().FromJson<T>() : data.ToJson().FromJson<T>();
                 action(typedData);
                 callback("ok");
@@ -112,7 +109,7 @@ namespace Vorp.Core.Client.Interface
             RegisterNuiCallbackType(@event);
             PluginManager.Instance.Hook($"__cfx_nui:{@event}", new Action<IDictionary<string, object>, CallbackDelegate>((data, callback) =>
             {
-                Logger.Debug($"Called NUI Callback {@event} with Payload {data.ToJson()}");
+                PluginManager.Logger.Debug($"Called NUI Callback {@event} with Payload {data.ToJson()}");
                 TReturn result = action();
                 callback(result.ToJson());
             }));
@@ -128,7 +125,7 @@ namespace Vorp.Core.Client.Interface
             RegisterNuiCallbackType(@event);
             PluginManager.Instance.Hook($"__cfx_nui:{@event}", new Action<IDictionary<string, object>, CallbackDelegate>((data, callback) =>
             {
-                Logger.Debug($"Called NUI Callback {@event} with Payload {data.ToJson()}");
+                PluginManager.Logger.Debug($"Called NUI Callback {@event} with Payload {data.ToJson()}");
                 T typedData = data.Count == 1 ? TypeCache<T>.IsSimpleType ? (T)data.Values.ElementAt(0) : data.Values.ElementAt(0).ToJson().FromJson<T>() : data.ToJson().FromJson<T>();
                 TReturn result = action(typedData);
                 callback(result.ToJson());

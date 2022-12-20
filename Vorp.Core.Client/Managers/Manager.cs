@@ -1,4 +1,4 @@
-﻿using Vorp.Core.Client.Events;
+﻿using Logger;
 
 namespace Vorp.Core.Client.Managers
 {
@@ -12,8 +12,8 @@ namespace Vorp.Core.Client.Managers
         }
 
         public PluginManager Instance { get; set; }
+        public Log Logger => PluginManager.Logger;
         public void Event(string eventName, Delegate @delegate) => Instance.Hook(eventName, @delegate);
-        public ClientGateway ClientGateway => Instance.ClientGateway;
 
         protected Manager()
         {

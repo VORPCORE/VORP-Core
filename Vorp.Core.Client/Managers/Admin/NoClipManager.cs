@@ -285,12 +285,12 @@ namespace Vorp.Core.Client.Managers.Admin
                 {
                     DisableControlAction(0, (uint)ctrl, true);
                 }
-
+                
                 if (IsDisabledControlPressed(0, (uint)eControl.FrontendAccept))
                 {
-                    Logger.Trace($"Camera Position: {CurrentCamera.Position}");
-                    Logger.Trace($"Camera Rotation: {CurrentCamera.Rotation}");
-                    Logger.Trace($"Camera FOV: {CurrentCamera.FieldOfView}");
+                    Logger.Info($"Camera Position: {CurrentCamera.Position}");
+                    Logger.Info($"Camera Rotation: {CurrentCamera.Rotation}");
+                    Logger.Info($"Camera FOV: {CurrentCamera.FieldOfView}");
                     await BaseScript.Delay(100);
                 }
 
@@ -302,7 +302,8 @@ namespace Vorp.Core.Client.Managers.Admin
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"OnNoClipControlTick");
+                Logger.Error($"OnNoClipControlTick");
+                Logger.Error(ex.Message);
             }
         }
 
@@ -325,7 +326,8 @@ namespace Vorp.Core.Client.Managers.Admin
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"OnNoClipCheckRotationTick");
+                Logger.Error($"OnNoClipCheckRotationTick");
+                Logger.Error(ex.Message);
             }
         }
     }

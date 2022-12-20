@@ -1,4 +1,4 @@
-﻿using Vorp.Core.Client.Commands;
+﻿using FxEvents;
 using Vorp.Shared.Commands;
 
 namespace Vorp.Core.Client.Environment.Entities
@@ -36,13 +36,13 @@ namespace Vorp.Core.Client.Environment.Entities
             PlayerId = playerId;
             ServerId = GetPlayerServerId(playerId);
             PlayerName = GetPlayerName(playerId);
-            Logger.Trace($"New Player Created: {playerId}: {PlayerName}");
+            PluginManager.Logger.Info($"New Player Created: {playerId}: {PlayerName}");
             RequestServerInformation();
 
-            pluginManager.ClientGateway.Mount("vorp:user:group:client", new Action<string>(group =>
+            EventDispatcher.Mount("vorp:user:group:client", new Action<string>(group =>
             {
                 Group = group;
-                Logger.Trace($"Group updated to: {Group}");
+                PluginManager.Logger.Info($"Group updated to: {Group}");
 
                 foreach (KeyValuePair<CommandContext, List<Tuple<CommandInfo, Commands.ICommand>>> entry in pluginManager.CommandFramework.Registry)
                 {
@@ -72,7 +72,7 @@ namespace Vorp.Core.Client.Environment.Entities
             uint hash = (uint)GetHashKey(model);
             if (!(Function.Call<bool>(Hash.IS_MODEL_IN_CDIMAGE, hash)))
             {
-                Logger.Error($"Model is not loaded.");
+                PluginManager.Logger.Error($"Model is not loaded.");
                 return;
             }
 
@@ -91,11 +91,11 @@ namespace Vorp.Core.Client.Environment.Entities
 
             Function.Call((Hash)0xED40380076A31506, PlayerId(), hash, true);
         }
-
+        
         async void RequestServerInformation()
         {
-            string group = await pluginManager.ClientGateway.Get<string>("vorp:user:group", ServerId);
-            Logger.Trace($"Server returned group '{group}'");
+            string group = await EventDispatcher.Get<string>("vorp:user:group", ServerId);
+            PluginManager.Logger.Info($"Server returned group '{group}'");
             Group = group;
         }
 

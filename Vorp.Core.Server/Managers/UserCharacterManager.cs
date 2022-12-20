@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using FxEvents;
+using System.Threading.Tasks;
 using Vorp.Core.Server.Events;
 using Vorp.Shared.Models;
 
@@ -8,8 +9,8 @@ namespace Vorp.Core.Server.Managers
     {
         public override void Begin()
         {
-            ServerGateway.Mount("vorp:character:coords:save", new Func<ClientId, int, Vector3, float, Task<bool>>(OnSaveCoordsAsync));
-            ServerGateway.Mount("vorp:character:dead", new Func<ClientId, int, bool, Task<bool>>(OnUpdateIsDeadAsync));
+            EventDispatcher.Mount("vorp:character:coords:save", new Func<ClientId, int, Vector3, float, Task<bool>>(OnSaveCoordsAsync));
+            EventDispatcher.Mount("vorp:character:dead", new Func<ClientId, int, bool, Task<bool>>(OnUpdateIsDeadAsync));
         }
 
         private async Task<bool> OnUpdateIsDeadAsync(ClientId source, int id, bool isDead)

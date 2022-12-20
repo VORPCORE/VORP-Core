@@ -86,7 +86,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                     return;
                 }
 
-                Logger.Trace($"Current Camera: {_currentCamera.Handle} / Next Camera: {nextCamera.Handle}");
+                Logger.Info($"Current Camera: {_currentCamera.Handle} / Next Camera: {nextCamera.Handle}");
 
                 SetCamActiveWithInterp(nextCamera.Handle, _currentCamera.Handle, 2000, 250, 250);
                 await BaseScript.Delay(2000);
@@ -94,7 +94,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 _currentCamera.IsActive = false;
                 isTransitioning = false;
             }));
-
+            
             Instance.NuiManager.RegisterCallback("CharacterSetComponent", new Action<List<string>>(args =>
             {
                 try
@@ -252,7 +252,8 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, $"Error occurred when trying to change item");
+                    PluginManager.Logger.Error($"Error occurred when trying to change item");
+                    PluginManager.Logger.Error(ex.Message);
                 }
             }));
         }
@@ -283,7 +284,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             _cameraBody = VorpAPI.CreateCameraWithParams(new Vector3(-561.569f, -3780.841f, 238.5f), rot, fov);
             _cameraLegs = VorpAPI.CreateCameraWithParams(new Vector3(-559.4195f, -3780.841f, 238.9249f), rot, fov);
 
-            Logger.Trace($"Cameras: Face {_cameraFace.Handle} / Body {_cameraBody.Handle} / Legs {_cameraLegs.Handle}");
+            PluginManager.Logger.Info($"Cameras: Face {_cameraFace.Handle} / Body {_cameraBody.Handle} / Legs {_cameraLegs.Handle}");
 
             Instance.AttachTickHandler(OnNuiHandling);
 
@@ -364,7 +365,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             Dictionary<string, Tuple<string, string, List<long>, long>> characterBodyOptions = new();
 
             characterFaceOptions.Add("CharacterSetComponent/Eyes", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.eyes.label"), ClientConfiguration.Translation("character.face.eyes.description"), _ped.Eyes, _ped.PedComponents.Eyes.Value));
-            
+
             characterFaceOptions.Add("CharacterSetComponent/Teeth", new Tuple<string, string, List<long>, long>(ClientConfiguration.Translation("character.face.teeth.label"), ClientConfiguration.Translation("character.face.teeth.description"), _ped.Teeth, _ped.PedComponents.Teeth.Value));
 
             if (_ped.IsMale)
@@ -464,7 +465,7 @@ namespace Vorp.Core.Client.Managers.CharacterManagement
             MenuOption moCharacterSave = MenuOption.MenuOptionButton("Confirm", "Confirm and save your character.", "CharacterConfirm");
             menuBase.AddOption(moCharacterSave);
 
-            Logger.Debug($"{menuBase}");
+            PluginManager.Logger.Debug($"{menuBase}");
 
             if (!update)
                 Instance.NuiManager.Set("character/CREATOR", menuBase);

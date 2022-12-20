@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using FxEvents;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Vorp.Core.Server.Commands;
 using Vorp.Core.Server.Database.Store;
 using Vorp.Core.Server.Events;
 using Vorp.Core.Server.Extensions;
 using Vorp.Core.Server.Web;
-using Vorp.Shared.Commands;
 using Vorp.Shared.Data;
 using Vorp.Shared.Models;
 using Vorp.Shared.Records;
@@ -30,9 +29,9 @@ namespace Vorp.Core.Server.Managers
 
             Event("vorp:user:activate", new Action<Player>(OnUserActivate));
 
-            ServerGateway.Mount("vorp:user:active", new Func<ClientId, int, Task<string>>(OnUserActiveAsync));
-            ServerGateway.Mount("vorp:user:list:active", new Func<ClientId, int, Task<List<dynamic>>>(OnGetActiveUserListAsync));
-            ServerGateway.Mount("vorp:user:group", new Func<ClientId, int, Task<string>>(OnGetUsersGroupAsync));
+            EventDispatcher.Mount("vorp:user:active", new Func<ClientId, int, Task<string>>(OnUserActiveAsync));
+            EventDispatcher.Mount("vorp:user:list:active", new Func<ClientId, int, Task<List<dynamic>>>(OnGetActiveUserListAsync));
+            EventDispatcher.Mount("vorp:user:group", new Func<ClientId, int, Task<string>>(OnGetUsersGroupAsync));
 
             lastTimeCleanupRan = GetGameTimer();
         }
@@ -52,7 +51,8 @@ namespace Vorp.Core.Server.Managers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "OnGetUsersGroup");
+                Logger.Error("OnGetUsersGroup");
+                Logger.Error(ex.Message);
                 return DEFAULT_GROUP;
             }
         }
@@ -76,10 +76,10 @@ namespace Vorp.Core.Server.Managers
             SendPlayerChatSuggestions(player, user);
             SendPlayerCharacters(player, user);
 
-            Logger.Trace($"{user.Group.ToUpper()} [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+            Logger.Info($"{user.Group.ToUpper()} [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
             BaseScript.TriggerEvent("vorp:user:ready", player.Handle);
             await Common.MoveToMainThread();
-            ServerGateway.Send(player, "vorp:user:group:client", user.Group);
+            EventDispatcher.Send(player, "vorp:user:group:client", user.Group);
         }
 
         private async Task<string> OnUserActiveAsync(ClientId source, int serverHandle)
@@ -105,7 +105,7 @@ namespace Vorp.Core.Server.Managers
                 SendPlayerChatSuggestions(player, user);
                 SendPlayerCharacters(player, user);
 
-                Logger.Trace($"{user.Group.ToUpper()} [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
+                Logger.Info($"{user.Group.ToUpper()} [{user.SteamIdentifier}] '{user.Player.Name}' is now Active!");
 
                 BaseScript.TriggerEvent("vorp:user:ready", player.Handle);
                 await Common.MoveToMainThread();
@@ -113,7 +113,8 @@ namespace Vorp.Core.Server.Managers
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, "OnUserActive");
+                Logger.Error("OnUserActive");
+                Logger.Error(ex.Message);
                 return "failed";
             }
         }
@@ -148,7 +149,7 @@ namespace Vorp.Core.Server.Managers
             // Legacy Methods to be removed
             // Make this internal to VORP_CORE
             int numberOfCharacters = user.NumberOfCharacters;
-            Logger.Trace($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
+            Logger.Info($"Player '{player.Name}' has {numberOfCharacters} Character(s) Loaded");
 
             //ServerGateway.Send(player, "vorp:character:list", chars, ServerConfiguration.MaximumCharacters);
 
@@ -237,7 +238,7 @@ namespace Vorp.Core.Server.Managers
             //user.AddPlayer(player);
             //user.UpdateServerId(player.Handle);
 
-            //Logger.Trace($"Player '{player.Name}' is joining.");
+            //Logger.Info($"Player '{player.Name}' is joining.");
 
             bool isCurrentlyConnected = Instance.IsUserActive(steamDatabaseIdentifier);
             if (isCurrentlyConnected)
@@ -254,7 +255,7 @@ namespace Vorp.Core.Server.Managers
                 }
 
                 // should this fire an event at the player?! It honestly should, then they know to request a character list
-                Logger.Trace($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
+                Logger.Info($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
             }
 
             if (!isCurrentlyConnected)
@@ -273,15 +274,15 @@ namespace Vorp.Core.Server.Managers
                 user.UpdateServerId(playerHandle);
                 UserSessions.AddOrUpdate(playerHandle, user, (key, oldValue) => oldValue = user);
 
-                Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
-                Logger.Trace($"Number of Sessions: {UserSessions.Count}");
+                Logger.Info($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
+                Logger.Info($"Number of Sessions: {UserSessions.Count}");
                 return;
             }
         }
 
         private async void OnPlayerDroppedAsync([FromSource] Player player, string reason)
         {
-            Logger.Trace($"Player '{player.Name}' dropped (Reason: {reason}).");
+            Logger.Info($"Player '{player.Name}' dropped (Reason: {reason}).");
             string steamId = player.Identifiers["steam"];
             int playerHandle = int.Parse(player.Handle);
             if (!UserSessions.ContainsKey(playerHandle)) return;
@@ -292,7 +293,7 @@ namespace Vorp.Core.Server.Managers
                 Ped ped = player.Character;
                 Position position = ped.Position.ToPosition(ped.Heading);
                 user.ActiveCharacter.Coords = $"{position}";
-                Logger.Trace($"Player position of '{position}' set.");
+                Logger.Info($"Player position of '{position}' set.");
             }
 
             if (user.ActiveCharacter != null)
@@ -356,7 +357,8 @@ namespace Vorp.Core.Server.Managers
                 }
                 catch (Exception ex)
                 {
-                    Logger.Error(ex, $"OnPlayerCleanUp");
+                    Logger.Error($"OnPlayerCleanUp");
+                    Logger.Error(ex.Message);
                 }
 
                 lastTimeCleanupRan = GetGameTimer();
@@ -448,7 +450,7 @@ namespace Vorp.Core.Server.Managers
             //    }
 
             //    // should this fire an event at the player?! It honestly should, then they know to request a character list
-            //    Logger.Trace($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
+            //    Logger.Info($"Player: [{player.Handle}] {player.Name} has re-joined the server.");
             //    deferrals.done();
             //}
 
@@ -468,8 +470,8 @@ namespace Vorp.Core.Server.Managers
 
             //    UserSessions.AddOrUpdate(steamId, user, (key, oldValue) => oldValue = user);
 
-            //    Logger.Trace($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
-            //    Logger.Trace($"Number of Sessions: {UserSessions.Count}");
+            //    Logger.Info($"Player: [{steamId}] {player.Name} is connecting to the server with {user.NumberOfCharacters} character(s).");
+            //    Logger.Info($"Number of Sessions: {UserSessions.Count}");
             //    deferrals.done();
             //    return;
 
