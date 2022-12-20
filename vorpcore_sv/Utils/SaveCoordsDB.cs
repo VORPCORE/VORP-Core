@@ -3,8 +3,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using vorpcore_sv.Scripts;
 
 namespace vorpcore_sv.Utils
@@ -20,7 +18,7 @@ namespace vorpcore_sv.Utils
 
         }
 
-        private void OnPlayerDead([FromSource]Player player, bool isDead)
+        private void OnPlayerDead([FromSource] Player player, bool isDead)
         {
             string sid = ("steam:" + player.Identifiers["steam"]);
 
@@ -30,7 +28,7 @@ namespace vorpcore_sv.Utils
             }
         }
 
-       
+
 
         private void SaveLastCoords([FromSource] Player source, Vector3 lastCoords, float lastHeading)
         {
@@ -48,9 +46,9 @@ namespace vorpcore_sv.Utils
 
                 LoadUsers._users[sid].GetUsedCharacter().Coords = JsonConvert.SerializeObject(characterCoords);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
+                Debug.WriteLine($"SaveLastCoords: {ex.Message}");
             }
         }
 

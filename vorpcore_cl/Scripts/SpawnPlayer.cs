@@ -43,12 +43,13 @@ namespace vorpcore_cl.Scripts
                 active = true;
                 await Delay(4000);
             }
-            if(!API.IsPedOnMount(pped) && !API.IsPedInAnyVehicle(pped, false) && active == true)
+            if (!API.IsPedOnMount(pped) && !API.IsPedInAnyVehicle(pped, false) && active == true)
             {
                 Function.Call((Hash)0xBF25EB89375A37AD, 5, playerHash, playerHash);
                 active = false;
 
-            }else if (active == true && (API.IsPedOnMount(pped) || API.IsPedInAnyVehicle(pped, false)))
+            }
+            else if (active == true && (API.IsPedOnMount(pped) || API.IsPedInAnyVehicle(pped, false)))
             {
                 if (API.IsPedInAnyVehicle(pped, false))
                 {

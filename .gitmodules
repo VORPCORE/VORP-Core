@@ -1,0 +1,3 @@
+[submodule "vendor/FxEvents"]
+	path = vendor/FxEvents
+	url = https://github.com/manups4e/FxEvents.git

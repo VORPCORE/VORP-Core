@@ -1,9 +1,5 @@
 ﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using System;
-using System.Collections.Generic;
-using vorpcore_sv.Scripts;
-using vorpcore_sv.Utils;
 
 namespace vorpcore_sv
 {

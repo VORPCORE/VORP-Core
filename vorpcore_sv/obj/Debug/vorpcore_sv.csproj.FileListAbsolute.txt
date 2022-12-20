@@ -1,0 +1,8 @@
+L:\ws\fivem\VORP-Core\build\vorp_core\Config.json
+L:\ws\fivem\VORP-Core\build\vorp_core\Es.json
+L:\ws\fivem\VORP-Core\build\vorp_core\vorpcore_sv.net.dll
+L:\ws\fivem\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.csproj.AssemblyReference.cache
+L:\ws\fivem\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.csproj.CoreCompileInputs.cache
+L:\ws\fivem\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.net.dll
+L:\ws\fivem\VORP-Core\build\vorp_core\vorpcore_sv.net.pdb
+L:\ws\fivem\VORP-Core\vorpcore_sv\obj\Debug\vorpcore_sv.net.pdb

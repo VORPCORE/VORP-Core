@@ -2,10 +2,6 @@
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Json;
-using System.Threading.Tasks;
 using vorpcore_sv.Scripts;
 
 namespace vorpcore_sv.Utils
@@ -35,15 +31,12 @@ namespace vorpcore_sv.Utils
                      {
                          try
                          {
-                             Console.ForegroundColor = ConsoleColor.Green;
                              Console.WriteLine($"Vorp Core: {name} function callback registered!");
-                             Console.ForegroundColor = ConsoleColor.White;
-
                              Callbacks.ServerCallBacks[name] = callback;
                          }
                          catch (Exception e)
                          {
-                             Debug.WriteLine(e.Message);
+                             Debug.WriteLine($"addRpcCallback: {e.Message}");
                          }
                      }),
                     ["getUsers"] = new getUsersSource(getConnectedUsers),
@@ -71,9 +64,9 @@ namespace vorpcore_sv.Utils
         {
             PlayerList p = vorpcore_sv.PlayerList;
             Dictionary<string, Dictionary<string, dynamic>> UsersDictionary = new Dictionary<string, Dictionary<string, dynamic>>();
-            foreach(Player player in p)
+            foreach (Player player in p)
             {
-                string steam = "steam:"+player.Identifiers["steam"];
+                string steam = "steam:" + player.Identifiers["steam"];
                 if (LoadUsers._users.ContainsKey(steam) && !UsersDictionary.ContainsKey(steam))
                 {
                     UsersDictionary.Add(steam, LoadUsers._users[steam].GetUser());
@@ -91,7 +84,9 @@ namespace vorpcore_sv.Utils
                 PlayerList pl = vorpcore_sv.PlayerList;
                 p = pl[handle];
             }
+#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
                 Debug.WriteLine("Server Handle Not Found");
                 p = null;
@@ -128,13 +123,13 @@ namespace vorpcore_sv.Utils
                 Console.ForegroundColor = ConsoleColor.White;
             }
 
-           
+
 
         }
 
         private void addMoney(int handle, int typeCash, double quantity)
         {
-          
+
             Player player = getSource(handle);
 
             string sid = ("steam:" + player.Identifiers["steam"]);
@@ -164,7 +159,7 @@ namespace vorpcore_sv.Utils
 
         private void addXp(int handle, int quantity)
         {
-          
+
             Player player = getSource(handle);
 
             string sid = ("steam:" + player.Identifiers["steam"]);
@@ -190,7 +185,7 @@ namespace vorpcore_sv.Utils
 
         private void removeXp(int handle, int quantity)
         {
-            
+
             Player player = getSource(handle);
 
             string sid = ("steam:" + player.Identifiers["steam"]);

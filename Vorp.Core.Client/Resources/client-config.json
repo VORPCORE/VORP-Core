@@ -1,0 +1,20 @@
+{
+  "language": {
+    "defaultLanguage": "english",
+    "languages": ["english"]
+  },
+  "pvp": false,
+  "playerNames": {
+    "display": true,
+    "distance": 30.0
+  },
+  "discord": {
+    "appId": 0,
+    "asset": {
+      "title": "A VORP RP Server",
+      "description": "vorp.net",
+      "icon": "vorp",
+      "iconText": "A VORP RP Server"
+    }
+  }
+}

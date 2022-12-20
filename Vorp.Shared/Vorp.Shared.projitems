@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>a9b29b21-9445-4aad-84c0-1bcebe9e1c73</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Vorp.Shared</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Attributes\CommandAliasAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands\CommandInfo.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Common.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Data\StateBagKey.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedComponentCategory.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\ePedType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Enums\eWeatherType.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)GeneralExtension.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordAvatar.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\DiscordMember.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\InventoryItem.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\JsonBuilder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Loadout.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PedComponentOptions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\PedComponents.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Position.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Models\Weapon.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Records\Character.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Records\User.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)TypeCache.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Data\" />
+  </ItemGroup>
+</Project>

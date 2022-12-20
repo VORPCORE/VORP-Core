@@ -1,7 +1,6 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using System;
-using System.Threading.Tasks;
 
 namespace vorpcore_cl.Scripts
 {
@@ -15,7 +14,7 @@ namespace vorpcore_cl.Scripts
 
         private void SetInstancePlayer(bool instance)
         {
-            
+
             switch (instance)
             {
                 case true:

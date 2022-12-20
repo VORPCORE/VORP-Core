@@ -1,0 +1,57 @@
+{
+  "database": {
+    "server": "localhost",
+    "database": "vorpv2",
+    "username": "DATABASE_USERNAME",
+    "password": "DATABASE_PASSWORD"
+  },
+  "language": "en",
+  "whitelistType": "none",
+  "discord": {
+    "botKey": "",
+    "botname": "VORP Discord",
+    "guildId": 0,
+    "url": "",
+    "whitelist": [],
+    "webhooks": {
+      "server-debug": "",
+      "server-error": "",
+      "server-player-log": ""
+    }
+  },
+  "users": {
+    "newUserGroup": "user",
+    "characters": {
+      "maximum": 2,
+      "init": {
+        "cash": 0.0,
+        "gold": 0.0,
+        "roleToken": 0.0,
+        "experience": 0,
+        "job": "none",
+        "jobGrade": 0,
+        "group": "user"
+      },
+      "creation": {
+        "spawn": {
+          "X": 0,
+          "Y": 0,
+          "Z": 0,
+          "H": 0
+        },
+        "creation": {
+          "X": -563.1345,
+          "Y": -3775.811,
+          "Z": 237.60,
+          "H": -13.56231
+        },
+        "editor": {
+          "X": 0,
+          "Y": 0,
+          "Z": 0,
+          "H": 0
+        }
+      }
+    }
+  } 
+}
